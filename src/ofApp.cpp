@@ -1,22 +1,33 @@
 #include "ofApp.h"
 #include "ofxDebugger/ofxDebugger.h"
 #include "ofxMemoryMapping/ofxMemoryMapping.h"
+#include "ofxGameStates/ofxGameEngine.h"
+#include "States/MenuState.h"
 
 ofxDebugger debug;
+ofxGameEngine* engine;
 
 //--------------------------------------------------------------
 void ofApp::setup(){
-	ofxMemoryMapping file("settings.ini");
+	engine = ofxGameEngine::Instance();
+	engine->setup();
+	engine->PushState(MenuState::Instance());
 }
 
 //--------------------------------------------------------------
 void ofApp::update(){
-
+	engine->update();
 }
 
 //--------------------------------------------------------------
 void ofApp::draw(){
+	// Background
 	ofBackground(ofColor::dimGrey);
+
+	// GameState draw
+	engine->draw();
+
+	// Debug
 	ofSetColor(ofColor::white);
 	debug.push("FrameRate: " + ofToString(ofGetFrameRate()));
 	debug.draw();

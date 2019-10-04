@@ -181,18 +181,23 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="addons\ofxDebugger\ofxDebugger.cpp" />
+    <ClCompile Include="addons\ofxGameStates\ofxGameEngine.cpp" />
     <ClCompile Include="addons\ofxIni\ConvertUTF.c" />
     <ClCompile Include="addons\ofxIni\ofxIniFile.cpp" />
     <ClCompile Include="addons\ofxMemoryMapping\ofxMemoryMapping.cpp" />
+    <ClCompile Include="src\States\MenuState.cpp" />
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\ofApp.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="addons\ofxDebugger\ofxDebugger.h" />
+    <ClInclude Include="addons\ofxGameStates\ofxGameEngine.h" />
+    <ClInclude Include="addons\ofxGameStates\ofxGameState.h" />
     <ClInclude Include="addons\ofxIni\ConvertUTF.h" />
     <ClInclude Include="addons\ofxIni\ofxIniFile.h" />
     <ClInclude Include="addons\ofxIni\SimpleIni.h" />
     <ClInclude Include="addons\ofxMemoryMapping\ofxMemoryMapping.h" />
+    <ClInclude Include="src\States\MenuState.h" />
     <ClInclude Include="src\ofApp.h" />
   </ItemGroup>
   <ItemGroup>

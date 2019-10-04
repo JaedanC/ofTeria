@@ -83,7 +83,7 @@ std::vector<std::string> ofxIniFile::getStringVector(std::string sSection, std::
 			continue;
 		// trim.
 		int val = 0;
-		for(int cur = 0; cur < item.size(); ++cur) {
+		for(unsigned int cur = 0; cur < item.size(); ++cur) {
 			if(item[cur] != ' ') {
 				item[val] = item[cur];
 				val++;

@@ -1,6 +1,6 @@
 #pragma once
-#ifndef OFXDEBUGGER_H
-#define OFXDEBUGGER_H
+#ifndef OFX_DEBUGGER_H
+#define OFX_DEBUGGER_H
 
 #include "ofMain.h"
 
@@ -11,4 +11,4 @@ public:
 	void push(const string& message);
 	void draw();
 };
-#endif /* OFXDEBUGGER_H */
+#endif /* OFX_DEBUGGER_H */

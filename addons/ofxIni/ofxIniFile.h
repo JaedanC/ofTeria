@@ -1,5 +1,5 @@
-#ifndef OFXINIFILEH
-#define OFXINIFILEH
+#ifndef OFX_INI_FILE_H
+#define OFX_INI_FILE_H
 
 #include <string>
 #include <vector>
@@ -126,4 +126,4 @@ private:
 	//dictionary*  ini;
 };
 
-#endif
+#endif /* OFX_INI_FILE_H */

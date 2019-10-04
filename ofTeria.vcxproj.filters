@@ -11,6 +11,8 @@
     <ClCompile Include="addons\ofxIni\ConvertUTF.c" />
     <ClCompile Include="addons\ofxIni\ofxIniFile.cpp" />
     <ClCompile Include="addons\ofxMemoryMapping\ofxMemoryMapping.cpp" />
+    <ClCompile Include="addons\ofxGameStates\ofxGameEngine.cpp" />
+    <ClCompile Include="src\States\MenuState.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="src">
@@ -26,6 +28,9 @@
     <ClInclude Include="addons\ofxIni\ofxIniFile.h" />
     <ClInclude Include="addons\ofxIni\SimpleIni.h" />
     <ClInclude Include="addons\ofxMemoryMapping\ofxMemoryMapping.h" />
+    <ClInclude Include="addons\ofxGameStates\ofxGameState.h" />
+    <ClInclude Include="addons\ofxGameStates\ofxGameEngine.h" />
+    <ClInclude Include="src\States\MenuState.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="icon.rc" />
