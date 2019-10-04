@@ -1,5 +1,7 @@
 #include "ofxDebugger.h"
 
+ofxDebugger ofxDebugger::instance;
+
 void ofxDebugger::push(const string& message)
 {
 	debugStrings.push_back(message);

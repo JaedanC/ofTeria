@@ -1,5 +1,7 @@
 #include "MenuState.h"
 #include "ofMain.h"
+#include "ofxGameStates/ofxGameEngine.h"
+#include "PlayState.h"
 MenuState MenuState::instance;
 
 namespace MenuStateGlobal {
@@ -7,6 +9,7 @@ namespace MenuStateGlobal {
 }
 
 void MenuState::setup() {
+	ofxGameEngine::Instance()->ChangeState(PlayState::Instance());
 }
 
 void MenuState::update(ofxGameEngine* game) {

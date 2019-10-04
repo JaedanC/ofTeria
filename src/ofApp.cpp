@@ -5,7 +5,6 @@
 #include "States/MenuState.h"
 #include "Settings/Settings.h"
 
-ofxDebugger debug;
 ofxGameEngine* engine;
 
 //--------------------------------------------------------------
@@ -50,15 +49,18 @@ void ofApp::draw(){
 	// Background
 	ofBackground(ofColor::dimGrey);
 
+	// Debug Values
+	ofSetColor(ofColor::white);
+	debugPush("FrameRate: " + ofToString(ofGetFrameRate()));
+	debugPush("FrameRate: " + ofToString(ofGetFrameRate()));
+	debugPush("WindowPosition: " + ofToString(ofVec2f(ofGetWindowPositionX(), ofGetWindowPositionY())));
+	debugPush("WindowSize: " + ofToString(ofGetWindowSize()));
+
 	// GameState draw
 	engine->draw();
 
-	// Debug
-	ofSetColor(ofColor::white);
-	debug.push("FrameRate: " + ofToString(ofGetFrameRate()));
-	debug.push("WindowPosition: " + ofToString(ofVec2f(ofGetWindowPositionX(), ofGetWindowPositionY())));
-	debug.push("WindowSize: " + ofToString(ofGetWindowSize()));
-	debug.draw();
+	// Draw the debug info to screen
+	debugDraw();
 }
 
 //--------------------------------------------------------------

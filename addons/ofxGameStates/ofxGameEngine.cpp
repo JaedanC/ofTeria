@@ -14,6 +14,8 @@ void ofxGameEngine::ChangeState(ofxGameState* state)
 		states.pop_back();
 	}
 
+	cout << "ofxGameEngine: Changing current state to " + state->getStateName() << endl;
+
 	// store and init the new state
 	states.push_back(state);
 	states.back()->setup();

@@ -188,6 +188,7 @@
     <ClCompile Include="src\States\MenuState.cpp" />
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\ofApp.cpp" />
+    <ClCompile Include="src\States\PlayState.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="addons\ofxDebugger\ofxDebugger.h" />
@@ -200,6 +201,7 @@
     <ClInclude Include="src\Settings\Settings.h" />
     <ClInclude Include="src\States\MenuState.h" />
     <ClInclude Include="src\ofApp.h" />
+    <ClInclude Include="src\States\PlayState.h" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="$(OF_ROOT)\libs\openFrameworksCompiled\project\vs\openframeworksLib.vcxproj">
