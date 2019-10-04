@@ -185,6 +185,7 @@
     <ClCompile Include="addons\ofxIni\ConvertUTF.c" />
     <ClCompile Include="addons\ofxIni\ofxIniFile.cpp" />
     <ClCompile Include="addons\ofxMemoryMapping\ofxMemoryMapping.cpp" />
+    <ClCompile Include="src\Keyboard\KeyboardInput.cpp" />
     <ClCompile Include="src\States\MenuState.cpp" />
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\ofApp.cpp" />
@@ -198,6 +199,7 @@
     <ClInclude Include="addons\ofxIni\ofxIniFile.h" />
     <ClInclude Include="addons\ofxIni\SimpleIni.h" />
     <ClInclude Include="addons\ofxMemoryMapping\ofxMemoryMapping.h" />
+    <ClInclude Include="src\Keyboard\KeyboardInput.h" />
     <ClInclude Include="src\Settings\Settings.h" />
     <ClInclude Include="src\States\MenuState.h" />
     <ClInclude Include="src\ofApp.h" />

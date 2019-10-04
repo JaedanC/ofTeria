@@ -4,6 +4,7 @@
 #include "ofxGameStates/ofxGameEngine.h"
 #include "States/MenuState.h"
 #include "Settings/Settings.h"
+#include "Keyboard/KeyboardInput.h"
 
 ofxGameEngine* engine;
 
@@ -65,12 +66,12 @@ void ofApp::draw(){
 
 //--------------------------------------------------------------
 void ofApp::keyPressed(int key){
-
+	KeyboardInput::Instance()->keyPressed(key);
 }
 
 //--------------------------------------------------------------
 void ofApp::keyReleased(int key){
-
+	KeyboardInput::Instance()->keyReleased(key);
 }
 
 //--------------------------------------------------------------
@@ -85,12 +86,12 @@ void ofApp::mouseDragged(int x, int y, int button){
 
 //--------------------------------------------------------------
 void ofApp::mousePressed(int x, int y, int button){
-
+	KeyboardInput::Instance()->mousePressed(x, y, button);
 }
 
 //--------------------------------------------------------------
 void ofApp::mouseReleased(int x, int y, int button){
-
+	KeyboardInput::Instance()->mouseReleased(x, y, button);
 }
 
 //--------------------------------------------------------------
