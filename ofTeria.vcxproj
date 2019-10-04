@@ -197,6 +197,7 @@
     <ClInclude Include="addons\ofxIni\ofxIniFile.h" />
     <ClInclude Include="addons\ofxIni\SimpleIni.h" />
     <ClInclude Include="addons\ofxMemoryMapping\ofxMemoryMapping.h" />
+    <ClInclude Include="src\Settings\Settings.h" />
     <ClInclude Include="src\States\MenuState.h" />
     <ClInclude Include="src\ofApp.h" />
   </ItemGroup>
@@ -211,6 +212,9 @@
       <AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">/D_DEBUG %(AdditionalOptions)</AdditionalOptions>
       <AdditionalIncludeDirectories>$(OF_ROOT)\libs\openFrameworksCompiled\project\vs</AdditionalIncludeDirectories>
     </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="bin\settings.ini" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ProjectExtensions>

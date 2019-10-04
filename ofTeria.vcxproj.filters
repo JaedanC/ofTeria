@@ -31,8 +31,12 @@
     <ClInclude Include="addons\ofxGameStates\ofxGameState.h" />
     <ClInclude Include="addons\ofxGameStates\ofxGameEngine.h" />
     <ClInclude Include="src\States\MenuState.h" />
+    <ClInclude Include="src\Settings\Settings.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="icon.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="bin\settings.ini" />
   </ItemGroup>
 </Project>
