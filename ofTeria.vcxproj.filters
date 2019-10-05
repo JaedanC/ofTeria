@@ -35,7 +35,6 @@
     <ClInclude Include="addons\ofxGameStates\ofxGameState.h" />
     <ClInclude Include="addons\ofxGameStates\ofxGameEngine.h" />
     <ClInclude Include="src\States\MenuState.h" />
-    <ClInclude Include="src\Settings\Settings.h" />
     <ClInclude Include="src\States\PlayState.h" />
     <ClInclude Include="src\Keyboard\KeyboardInput.h" />
     <ClInclude Include="src\States\ConsoleState.h" />

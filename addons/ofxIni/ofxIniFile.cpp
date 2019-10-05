@@ -264,3 +264,57 @@ void ofxIniFile::save() {
 
 ofxIniFile::~ofxIniFile() {
 }
+
+bool ofxIniFile::loadSetBool(string section, string key, bool defaultValue)
+{
+	bool result = getBool(section, key, defaultValue);
+	setBool(section, key, result);
+	save();
+	return result;
+}
+
+int ofxIniFile::loadSetInt(string section, string key, int defaultValue)
+{
+	int result = getInt(section, key, defaultValue);
+	setInt(section, key, result);
+	save();
+	return result;
+}
+
+float ofxIniFile::loadSetFloat(string section, string key, float defaultValue)
+{
+	float result = getFloat(section, key, defaultValue);
+	setFloat(section, key, result);
+	save();
+	return result;
+}
+
+long ofxIniFile::loadSetLong(string section, string key, long defaultValue)
+{
+	long result = getLong(section, key, defaultValue);
+	setLong(section, key, result);
+	save();
+	return result;
+}
+
+string ofxIniFile::loadSetString(string section, string key, string defaultValue)
+{
+	string& result = getString(section, key, defaultValue);
+	string toWrite = result;
+	// Wierd case where spaces need to be enclosed
+	if (result == "' '") {
+		result = " ";
+	}
+
+	setString(section, key, toWrite);
+	save();
+	return result;
+}
+
+ofVec3f ofxIniFile::loadSetVec3f(string section, string key, string defaultValue)
+{
+	IniVec3f& result = getVec3f(section, key, defaultValue);
+	setVec3f(section, key, result);
+	save();
+	return *(ofVec3f*)&result;
+}

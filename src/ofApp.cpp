@@ -3,7 +3,6 @@
 #include "ofxIni/ofxIniFile.h"
 #include "ofxGameStates/ofxGameEngine.h"
 #include "States/MenuState.h"
-#include "Settings/Settings.h"
 #include "Keyboard/KeyboardInput.h"
 
 ofxGameEngine* engine;
@@ -18,13 +17,13 @@ void ofApp::setup(){
 	do not exist, write the default values to the settings file. */
 	// ------------------------------------------------------------------------------------
 	// ------------------------------------------------------------------------------------
-	bool fullscreen		= Settings::loadSetBool(settings, "game", "fullscreen", false);
-	bool vsync			= Settings::loadSetBool(settings, "game", "vsync", false);
-	int target_fps		= Settings::loadSetInt(settings, "game", "target_fps", 2000);
+	bool fullscreen		= settings.loadSetBool("game", "fullscreen", false);
+	bool vsync			= settings.loadSetBool("game", "vsync", false);
+	int target_fps		= settings.loadSetInt("game", "target_fps", 2000);
 	if (!fullscreen) {
 		// Only set the window size if the game is not fullscreen
-		int window_width  = Settings::loadSetInt(settings, "game", "window_width", 800);
-		int window_height = Settings::loadSetInt(settings, "game", "window_height", 600);
+		int window_width  = settings.loadSetInt("game", "window_width", 800);
+		int window_height = settings.loadSetInt("game", "window_height", 600);
 		ofSetWindowShape(window_width, window_height);
 	}
 
@@ -35,7 +34,7 @@ void ofApp::setup(){
 	// ------------------------------------------------------------------------------------
 	// ------------------------------------------------------------------------------------
 	
-	string jump = Settings::loadSetString(settings, "bindings", "jump", "' '");
+	string jump = settings.loadSetString("bindings", "jump", "' '");
 
 	KeyboardInput::Instance()->registerAlias("jump", jump[0]);
 

@@ -203,7 +203,6 @@
     <ClInclude Include="addons\ofxMemoryMapping\ofxMemoryMapping.h" />
     <ClInclude Include="addons\pystring\pystring.h" />
     <ClInclude Include="src\Keyboard\KeyboardInput.h" />
-    <ClInclude Include="src\Settings\Settings.h" />
     <ClInclude Include="src\States\ConsoleState.h" />
     <ClInclude Include="src\States\MenuState.h" />
     <ClInclude Include="src\ofApp.h" />

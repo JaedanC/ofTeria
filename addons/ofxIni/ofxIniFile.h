@@ -5,6 +5,7 @@
 #include <vector>
 #include <sstream>
 #include "SimpleIni.h"
+#include "ofMain.h"
 
 struct IniVec3f {
 	IniVec3f(float fX, float fY, float fZ):x(fX),y(fY),z(fZ) {};
@@ -18,7 +19,14 @@ class ofxIniFile {
 public:
 	ofxIniFile(std::string  sFile);
 	~ofxIniFile();
-	
+
+	bool loadSetBool(string section, string key, bool defaultValue);
+	int loadSetInt(string section, string key, int defaultValue);
+	float loadSetFloat(string section, string key, float defaultValue);
+	long loadSetLong(string section, string key, long defaultValue);
+	string loadSetString(string section, string key, string defaultValue);
+	ofVec3f loadSetVec3f(string section, string key, string defaultValue);
+
 	long getLong(
 		 std::string sSection
 		,std::string sKey

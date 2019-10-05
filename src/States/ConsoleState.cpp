@@ -10,14 +10,15 @@ void ConsoleState::setup()
 	width = 285;
 	height = 200;
 
+	// TODO: Remove these three lines for testing
 	history.push_back("Hello world");
 	history.push_back("Second command");
-
 	KeyboardInput::Instance()->registerAlias("jump", 'b');
 }
 
 void ConsoleState::update(ofxGameEngine* game)
 {
+	// TODO: Remove these checks for Alias'
 	if (KeyboardInput::Instance()->queryAliasPressed("jump")) {
 		cout << "Alias for jump pressed!\n";
 	}
