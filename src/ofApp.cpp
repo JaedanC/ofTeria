@@ -34,6 +34,14 @@ void ofApp::setup(){
 	ofSetVerticalSync(vsync);
 	// ------------------------------------------------------------------------------------
 	// ------------------------------------------------------------------------------------
+	
+	string jump = Settings::loadSetString(settings, "bindings", "jump", "' '");
+
+	KeyboardInput::Instance()->registerAlias("jump", jump[0]);
+
+	// ------------------------------------------------------------------------------------
+	// ------------------------------------------------------------------------------------
+
 
 	engine = ofxGameEngine::Instance();
 	engine->setup();
@@ -62,6 +70,9 @@ void ofApp::draw(){
 
 	// Draw the debug info to screen
 	debugDraw();
+
+	//Reset inputs
+	KeyboardInput::Instance()->resetPollingMaps();
 }
 
 //--------------------------------------------------------------

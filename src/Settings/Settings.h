@@ -1,6 +1,7 @@
 #pragma once
 #include "ofMain.h"
 #include "ofxIni/ofxIniFile.h"
+#include "pystring/pystring.h"
 
 /*
 This library simply wraps around some of the ofxIni.h functions. It allows you to read from an ini file and 
@@ -38,7 +39,13 @@ namespace Settings {
 
 	string loadSetString(ofxIniFile& file, string section, string key, string defaultValue) {
 		string& result = file.getString(section, key, defaultValue);
-		file.setString(section, key, result);
+		string toWrite = result;
+		// Wierd case where spaces need to be enclosed
+		if (result == "' '") {
+			result = " ";
+		}
+
+		file.setString(section, key, toWrite);
 		file.save();
 		return result;
 	}

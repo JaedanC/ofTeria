@@ -56,6 +56,13 @@ public:
 	void mousePressed(int x, int y, int button);
 	void mouseReleased(int x, int y, int button);
 
+	void registerAlias(string alias, int key);
+	bool queryAliasPressed(string alias);
+	bool queryAliasReleased(string alias);
+	bool queryAliasDown(string alias);
+
+	void resetPollingMaps();
+
 	static KeyboardInput* Instance() {
 		return &instance;
 	}
@@ -63,6 +70,15 @@ protected:
 	KeyboardInput() {}
 private:
 	static KeyboardInput instance;
+
+	unordered_map<int, bool> keyDownMap;
+	unordered_map<int, bool> keyPressedMap;
+	unordered_map<int, bool> keyReleasedMap;
+	unordered_map<string, vector<int>> aliasMappings;
+
+	bool queryPressed(int key);
+	bool queryReleased(int key);
+	bool queryDown(int key);	
 };
 
 #endif /* KEYBOARD_INPUT_H */
