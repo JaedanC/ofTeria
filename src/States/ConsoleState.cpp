@@ -39,12 +39,12 @@ void ConsoleState::keyPressed(int key)
 		}
 		break;
 	case OF_KEY_UP:
-		lastHistoryMarker = ofWrap(--lastHistoryMarker, 0, history.size());
-		currentCommand = history[lastHistoryMarker];
+		lastHistoryMarker = ofWrap(--lastHistoryMarker, -1, history.size());
+		currentCommand = (lastHistoryMarker == -1) ? "" : history[lastHistoryMarker];
 		break;
 	case OF_KEY_DOWN:
-		lastHistoryMarker = ofWrap(++lastHistoryMarker, 0, history.size());
-		currentCommand = history[lastHistoryMarker];
+		lastHistoryMarker = ofWrap(++lastHistoryMarker, -1, history.size());
+		currentCommand = (lastHistoryMarker == -1) ? "" : history[lastHistoryMarker];
 		break;
 	}
 
