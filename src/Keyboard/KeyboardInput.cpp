@@ -7,6 +7,10 @@ void KeyboardInput::keyPressed(int key)
 	keyDownMap[key] = true;
 	keyPressedMap[key] = true;
 
+	for (KeyboardCallbacks * instance : keyPressedCallbacks) {
+		instance->keyPressed(key);
+	}
+
 	cout << key << endl;
 }
 
@@ -14,6 +18,10 @@ void KeyboardInput::keyReleased(int key)
 {
 	keyDownMap[key] = false;
 	keyReleasedMap[key] = true;
+
+	for (KeyboardCallbacks* instance : keyReleasedCallbacks) {
+		instance->keyReleased(key);
+	}
 }
 
 void KeyboardInput::mousePressed(int x, int y, int button)
@@ -22,6 +30,23 @@ void KeyboardInput::mousePressed(int x, int y, int button)
 
 void KeyboardInput::mouseReleased(int x, int y, int button)
 {
+}
+
+void KeyboardInput::registerPressedCallback(KeyboardCallbacks* callbackInstance)
+{
+	keyPressedCallbacks.push_back(callbackInstance);
+}
+
+/*
+void KeyboardInput::registerDownCallback(KeyboardCallbacks* callbackInstance)
+{
+	keyDownCallbacks.push_back(callbackInstance);
+}
+*/
+
+void KeyboardInput::registerReleasedCallback(KeyboardCallbacks* callbackInstance)
+{
+	keyReleasedCallbacks.push_back(callbackInstance);
 }
 
 void KeyboardInput::registerAlias(string alias, int key)

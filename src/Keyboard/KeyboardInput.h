@@ -49,6 +49,15 @@ bool getBindDown(string& binding) {
 	return downKeys[key];
 }
 */
+
+// Interface
+class KeyboardCallbacks {
+public:
+	virtual void keyPressed(int key) = 0;
+	virtual void keyReleased(int key) = 0;
+};
+
+
 class KeyboardInput {
 public:
 	void keyPressed(int key);
@@ -56,10 +65,13 @@ public:
 	void mousePressed(int x, int y, int button);
 	void mouseReleased(int x, int y, int button);
 
+	void registerPressedCallback(KeyboardCallbacks * callbackInstance);
+	//void registerDownCallback(KeyboardCallbacks * callbackInstance);
+	void registerReleasedCallback(KeyboardCallbacks* callbackInstance);
 	void registerAlias(string alias, int key);
 	bool queryAliasPressed(string alias);
-	bool queryAliasReleased(string alias);
 	bool queryAliasDown(string alias);
+	bool queryAliasReleased(string alias);
 
 	void resetPollingMaps();
 
@@ -71,8 +83,11 @@ protected:
 private:
 	static KeyboardInput instance;
 
-	unordered_map<int, bool> keyDownMap;
+	vector<KeyboardCallbacks*> keyPressedCallbacks;
+	//vector<KeyboardCallbacks*> keyDownCallbacks;
+	vector<KeyboardCallbacks*> keyReleasedCallbacks;
 	unordered_map<int, bool> keyPressedMap;
+	unordered_map<int, bool> keyDownMap;
 	unordered_map<int, bool> keyReleasedMap;
 	unordered_map<string, vector<int>> aliasMappings;
 
