@@ -45,5 +45,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="bin\settings.ini" />
+    <None Include="README.md" />
   </ItemGroup>
 </Project>

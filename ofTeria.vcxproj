@@ -222,6 +222,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="bin\settings.ini" />
+    <None Include="README.md" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ProjectExtensions>

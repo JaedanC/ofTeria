@@ -34,9 +34,11 @@ void ofApp::setup(){
 	// ------------------------------------------------------------------------------------
 	// ------------------------------------------------------------------------------------
 	
-	string jump = settings.loadSetString("bindings", "jump", "' '");
-
-	KeyboardInput::Instance()->registerAlias("jump", jump[0]);
+	vector<string> aliases = settings.getAllValues("alias", "alias");
+	for (string& alias : aliases) {
+		string binding = settings.loadSetString("bindings", alias, "");
+		KeyboardInput::Instance()->registerAlias(alias, binding[0]);
+	}
 
 	// ------------------------------------------------------------------------------------
 	// ------------------------------------------------------------------------------------
