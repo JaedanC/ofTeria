@@ -60,6 +60,7 @@ void ConsoleState::keyReleased(int key)
 
 void ConsoleState::setup()
 {
+	KeyboardInput::Instance()->registerPressedCallback(this);
 	screenPos = { ofGetWidth() - 300.0f, 15.0f };
 	width = 285;
 	height = 200;
@@ -68,7 +69,6 @@ void ConsoleState::setup()
 	history.push_back("Hello world");
 	history.push_back("Second command");
 	KeyboardInput::Instance()->registerAlias("jump", 'b');
-	KeyboardInput::Instance()->registerPressedCallback(this);
 }
 
 void ConsoleState::update(ofxGameEngine* game)
