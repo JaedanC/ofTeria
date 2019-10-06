@@ -12,6 +12,12 @@ void PlayState::setup()
 
 void PlayState::update(ofxGameEngine* game)
 {
+	if (KeyboardInput::Instance()->queryAliasPressed("jump")) {
+		cout << "PlayState seeing the raw jump alias\n";
+	}
+	if (queryAliasPressed(string("jump"))) {
+		cout << "PlayState is not getting blocked!\n";
+	}
 }
 
 void PlayState::draw(ofxGameEngine* game)

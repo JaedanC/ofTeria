@@ -62,6 +62,29 @@ void ofxGameEngine::setup()
 
 void ofxGameEngine::update()
 {
+	// Input Blocking between states
+	for (vector<ofxGameState*>::reverse_iterator i = states.rbegin(); i != states.rend() - 1; ++i) {
+		ofxGameState* thisState = *i;
+		ofxGameState* nextState = *(i + 1);
+
+		unordered_map<string, bool>* thisPassesMap = thisState->getAliasPasses();
+		unordered_map<string, KeyboardInputBlockingType>* thisRegisteredBlocksMap = thisState->getRegisteredAliasBlocks();
+		unordered_map<string, bool>* nextPassesMap = nextState->getAliasPasses();
+
+		nextPassesMap->insert(thisPassesMap->begin(), thisPassesMap->end());
+
+		for (auto& entry : (*thisRegisteredBlocksMap)) {
+			// pair<string, bool>
+			// pair<alias, passes>
+			if (!entry.second) {
+				(*nextPassesMap)[entry.first] = entry.second;
+			}
+		}
+
+		//nextBlockingMap.insert(thisBlockingMap.begin(), thisBlockingMap.end());
+	}
+
+	// Update
 	if (states.empty()) {
 		cout << "ofxGameEngine states is empty. Can't update(). Closing program.\n";
 		assert(false);

@@ -5,6 +5,11 @@
 #include "ofMain.h"
 #include "ofxGameEngine.h"
 
+enum KeyboardInputBlockingType {
+	INPUT_BLOCK,
+	INPUT_PASS
+};
+
 class ofxGameState
 {
 protected:
@@ -15,6 +20,10 @@ protected:
 	bool drawTransparent;
 	bool updateTransparent;
 	string stateName;
+
+	unordered_map<string, bool> aliasPass;
+	unordered_map<string, KeyboardInputBlockingType> registeredAliasBlocks;
+
 	ofxGameState(const bool& updateTransparent, const bool& drawTransparent, const string& stateName) :
 		updateTransparent(updateTransparent),
 		drawTransparent(drawTransparent),
@@ -34,10 +43,22 @@ public:
 		return stateName;
 	}
 
+	unordered_map<string, bool> * getAliasPasses() {
+		return &aliasPass;
+	}
+
+	unordered_map<string, KeyboardInputBlockingType> * getRegisteredAliasBlocks() {
+		return &registeredAliasBlocks;
+	}
+
+	void registerAliasBlock(string alias, KeyboardInputBlockingType blockingType);
+
+	bool queryAliasPressed(string& alias);
+
 	virtual void setup() = 0;
 	virtual void update(ofxGameEngine* game) = 0;
 	virtual void draw(ofxGameEngine* game) = 0;
-
+	
 	void ChangeState(ofxGameEngine* game, ofxGameState* state) {
 		game->ChangeState(state);
 	}

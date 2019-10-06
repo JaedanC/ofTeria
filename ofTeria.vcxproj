@@ -182,6 +182,7 @@
   <ItemGroup>
     <ClCompile Include="addons\ofxDebugger\ofxDebugger.cpp" />
     <ClCompile Include="addons\ofxGameStates\ofxGameEngine.cpp" />
+    <ClCompile Include="addons\ofxGameStates\ofxGameState.cpp" />
     <ClCompile Include="addons\ofxIni\ConvertUTF.c" />
     <ClCompile Include="addons\ofxIni\ofxIniFile.cpp" />
     <ClCompile Include="addons\ofxMemoryMapping\ofxMemoryMapping.cpp" />

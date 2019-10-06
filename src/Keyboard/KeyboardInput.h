@@ -3,6 +3,7 @@
 #define KEYBOARD_INPUT_H
 
 #include "ofMain.h"
+#include "ofxGameStates/ofxGameEngine.h"
 
 /*
  ___________________________________________________________
@@ -69,6 +70,7 @@ public:
 	//void registerDownCallback(KeyboardCallbacks * callbackInstance);
 	void registerReleasedCallback(KeyboardCallbacks* callbackInstance);
 	void registerAlias(string alias, int key);
+
 	bool queryAliasPressed(string alias);
 	bool queryAliasDown(string alias);
 	bool queryAliasReleased(string alias);
@@ -93,7 +95,9 @@ private:
 
 	bool queryPressed(int key);
 	bool queryReleased(int key);
-	bool queryDown(int key);	
+	bool queryDown(int key);
+
+	friend class ofxGameEngine;
 };
 
 #endif /* KEYBOARD_INPUT_H */

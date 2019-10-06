@@ -17,6 +17,7 @@
     <ClCompile Include="src\Keyboard\KeyboardInput.cpp" />
     <ClCompile Include="src\States\ConsoleState.cpp" />
     <ClCompile Include="addons\pystring\pystring.cpp" />
+    <ClCompile Include="addons\ofxGameStates\ofxGameState.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="src">

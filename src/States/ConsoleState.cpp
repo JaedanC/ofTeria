@@ -68,12 +68,13 @@ void ConsoleState::setup()
 	// TODO: Remove these three lines for testing
 	history.push_back("Hello world");
 	history.push_back("Second command");
-	KeyboardInput::Instance()->registerAlias("jump", 'b');
+	registerAliasBlock("jump", INPUT_BLOCK);
 }
 
 void ConsoleState::update(ofxGameEngine* game)
 {
 	// TODO: Remove these checks for Alias'
+	/*
 	if (KeyboardInput::Instance()->queryAliasPressed("jump")) {
 		cout << "Alias for jump pressed!\n";
 	}
@@ -82,6 +83,10 @@ void ConsoleState::update(ofxGameEngine* game)
 	}
 	if (KeyboardInput::Instance()->queryAliasReleased("jump")) {
 		cout << "Alias for jump released!\n";
+	}
+	*/
+	if (queryAliasPressed(string("jump"))) {
+		cout << "New query triggered for jump\n";
 	}
 }
 
