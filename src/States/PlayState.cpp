@@ -15,8 +15,11 @@ void PlayState::update(ofxGameEngine* game)
 	if (KeyboardInput::Instance()->queryAliasPressed("jump")) {
 		cout << "PlayState seeing the raw jump alias\n";
 	}
-	if (queryAliasPressed(string("jump"))) {
+	if (queryAliasPressed("jump")) {
 		cout << "PlayState is not getting blocked!\n";
+	}
+	if (queryAliasPressed("toggleConsole")) {
+		ofxGameEngine::Instance()->PushState(ConsoleState::Instance());
 	}
 }
 

@@ -15,28 +15,26 @@ private:
 
 	string currentCommand;
 	deque<string> history;
-
-protected:
-	ConsoleState()
-		: ofxGameState(
-			true, // updateTransparent
-			true, // drawTransparent
-			"ConsoleState"
-		) {}
-public:
-	void keyPressed(int key);
-	void keyReleased(int key);
-
-	void setup();
-	void update(ofxGameEngine* game);
-	void draw(ofxGameEngine* game);
-
-	void submitCommand(string& command);
-	void clearHistory();
-	void cullHistory(unsigned int limit);
-
 	int lastHistoryMarker = 0;
 	int maxHistorySize = 11;
+
+protected:
+	ConsoleState();
+public:
+	virtual void keyPressed(int key);
+	virtual void keyReleased(int key);
+	virtual void setup();
+	virtual void update(ofxGameEngine* game);
+	virtual void draw(ofxGameEngine* game);
+	virtual void exit();
+
+	/* Adds the current command to the deque and updates the length
+	of the history if required.*/
+	void submitCommand(string& command);
+	void clearHistory();
+	/* Limits the size of the history deque to length <limit>. Culls
+	the oldest first (cause it's a queue duh). */
+	void cullHistory(unsigned int limit);
 
 	static ConsoleState* Instance() {
 		return &instance;

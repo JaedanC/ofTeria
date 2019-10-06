@@ -4,6 +4,19 @@
 
 ConsoleState ConsoleState::instance;
 
+ConsoleState::ConsoleState() : ofxGameState(
+	false, // updateTransparent
+	true, // drawTransparent
+	"ConsoleState"
+), width(285), height(200)
+{
+
+	// TODO: Remove these three lines for testing
+	history.push_back("Hello world");
+	history.push_back("Second command");
+	registerAliasBlock("jump", INPUT_BLOCK);
+}
+
 void ConsoleState::keyPressed(int key)
 {
 	/*
@@ -21,7 +34,7 @@ void ConsoleState::keyPressed(int key)
 	8: &  0  :  D  N  X  b  l   v
 	9: '  1  ;  E  O  Y  c  m   w
 	*/
-	if (key >= ' ' && key <= '~') {
+	if (key >= ' ' && key <= '~' && key != '`') {
 		currentCommand += key;
 	}
 
@@ -60,33 +73,20 @@ void ConsoleState::keyReleased(int key)
 
 void ConsoleState::setup()
 {
-	KeyboardInput::Instance()->registerPressedCallback(this);
 	screenPos = { ofGetWidth() - 300.0f, 15.0f };
-	width = 285;
-	height = 200;
-
-	// TODO: Remove these three lines for testing
-	history.push_back("Hello world");
-	history.push_back("Second command");
-	registerAliasBlock("jump", INPUT_BLOCK);
+	KeyboardInput::Instance()->registerKeyPressedCallback(this);
 }
 
 void ConsoleState::update(ofxGameEngine* game)
 {
-	// TODO: Remove these checks for Alias'
-	/*
-	if (KeyboardInput::Instance()->queryAliasPressed("jump")) {
-		cout << "Alias for jump pressed!\n";
-	}
-	if (KeyboardInput::Instance()->queryAliasDown("jump")) {
-		cout << "Alias for jump down!\n";
-	}
-	if (KeyboardInput::Instance()->queryAliasReleased("jump")) {
-		cout << "Alias for jump released!\n";
-	}
-	*/
-	if (queryAliasPressed(string("jump"))) {
+	// TODO: Remove
+	if (queryAliasPressed("jump")) {
 		cout << "New query triggered for jump\n";
+	}
+
+	if (queryAliasPressed("toggleConsole")) {
+		cout << "Popping Console State\n";
+		ofxGameEngine::Instance()->PopState();
 	}
 }
 
@@ -116,15 +116,17 @@ void ConsoleState::draw(ofxGameEngine* game)
 	//ofDrawLine(screenPos.x + currentCommand.size() * 8 + 7, screenPos.y + 5, screenPos.x + currentCommand.size() * 8 + 7, screenPos.y + 11 + 5);
 }
 
+void ConsoleState::exit()
+{
+	KeyboardInput::Instance()->deregisterKeyPressedCallback(this);
+}
+
 void ConsoleState::submitCommand(string& command)
 {
 	history.push_back(command);
 	cullHistory(maxHistorySize);
 }
 
-/*
-Clears the history queue
-*/
 void ConsoleState::clearHistory()
 {
 	for (unsigned int i = 0; i < history.size(); i++) {
@@ -132,9 +134,6 @@ void ConsoleState::clearHistory()
 	}
 }
 
-/*
-Limits the size of the history queue to be 'limit' long
-*/
 void ConsoleState::cullHistory(unsigned int limit)
 {
 	for (unsigned int i = limit; i < history.size(); i++) {

@@ -4,23 +4,34 @@
 
 #include "ofMain.h"
 
+class KeyboardCallbacks;
 class ofxGameState;
 class ofxGameEngine
 {
+private:
+	static ofxGameEngine instance;
+	vector<ofxGameState*> states;
+
+protected:
+	ofxGameEngine() {}
+
 public:
+	// Returns the size of the GameState stack.
+	int StackSize() const;
 
-	inline int StackSize() const {
-		return states.size();
-	}
+	// Returns the GameState on the top of the stack.
+	ofxGameState* getState() const;
 
-	inline ofxGameState* getState() const {
-		return states.back();
-	}
-
+	// Switch the GameState on the top of the stack to something else.
 	void ChangeState(ofxGameState* state);
+
+	// Push a GameState onto the stack
 	void PushState(ofxGameState* state);
+
+	// Pop the GameState at the top of the stack
 	void PopState();
 
+	// These wrap around ofApp.h functions.
 	void setup();
 	void update();
 	void draw();
@@ -28,12 +39,5 @@ public:
 	inline static ofxGameEngine* Instance() {
 		return &instance;
 	}
-
-protected:
-	ofxGameEngine() {}
-
-private:
-	static ofxGameEngine instance;
-	vector<ofxGameState*> states;
 };
 #endif /* OFX_GAME_ENGINE_H */

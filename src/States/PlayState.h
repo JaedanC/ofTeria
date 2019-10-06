@@ -17,9 +17,10 @@ protected:
 			"PlayState"
 		) {}
 public:
-	void setup();
-	void update(ofxGameEngine* game);
-	void draw(ofxGameEngine* game);
+	virtual void setup();
+	virtual void update(ofxGameEngine* game);
+	virtual void draw(ofxGameEngine* game);
+	virtual void exit() {}
 
 	static PlayState* Instance() {
 		return &instance;

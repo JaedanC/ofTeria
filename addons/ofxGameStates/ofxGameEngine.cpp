@@ -1,54 +1,66 @@
 #include "ofxGameEngine.h"
 #include "ofxGameState.h"
+#include "../src/Keyboard/KeyboardInput.h"
 
 ofxGameEngine ofxGameEngine::instance;
 
-namespace ofxGameEngineGlobal {
-	int x = 6;
+int ofxGameEngine::StackSize() const
+{
+	return states.size();
+}
+
+ofxGameState* ofxGameEngine::getState() const
+{
+	return states.back();
 }
 
 void ofxGameEngine::ChangeState(ofxGameState* state)
 {
+	// TODO: Remove
+	cout << "ofxGameEngine: Changing current state to " + state->getStateName() << endl;
+
+	// Call the exit function before removing the GameState from the stack
 	if (!states.empty()) {
-		//states.back()->Cleanup();
+		states.back()->exit();
 		states.pop_back();
 	}
 
-	cout << "ofxGameEngine: Changing current state to " + state->getStateName() << endl;
-
-	// store and init the new state
+	// Push the new state and call setup()
 	states.push_back(state);
 	states.back()->setup();
 }
 
 void ofxGameEngine::PushState(ofxGameState* state)
 {
-	// pause current state
+	cout << "ofxGameEngine: Pushing " + state->getStateName() << endl;
+
+	// Pause current state ??
 	/*
 	if (!states.empty()) {
 		states.back()->Pause();
 	}
 	*/
 
-	// store and init the new state
-	cout << "ofxGameEngine: Pushing " + state->getStateName() << endl;
+	// Push the new state and call setup()
 	states.push_back(state);
 	states.back()->setup();
 }
 
 void ofxGameEngine::PopState()
 {
+	// Can't push the last state
 	if (states.size() == 1) {
 		cout << "Can't pop the last GameState! Or close game? \n";
 		return;
 	}
-	// cleanup the current state
+
+	// Call the exit function before removing the GameState from the stack
 	if (!states.empty()) {
-		//states.back()->Cleanup();
+		states.back()->exit();
 		states.pop_back();
 	}
 
-	// resume previous state
+	// Resume previous state ??
 	/*
 	if (!states.empty()) {
 		states.back()->Resume();
@@ -62,7 +74,15 @@ void ofxGameEngine::setup()
 
 void ofxGameEngine::update()
 {
-	// Input Blocking between states
+	/* This section hansles how states recieve inputs passed down from other states. Firstly States all
+	stores two unordered_maps:
+		1: Stores which Aliases this GameState will let through
+		2: Stores which Aliases are not blocked passed down through the Stack
+	This code Retrieves these three maps. This is a three step process:
+		1: Copy the previousGameState's passMap to our own.
+		2: Apply the previousGameState's registeredBlockMap to our passMap.
+		3: Perform steps 1 and 2 for every GameState in the Stack starting as the top.
+	The State at the top is assumed to recieve all inputs (none are blocked). */
 	for (vector<ofxGameState*>::reverse_iterator i = states.rbegin(); i != states.rend() - 1; ++i) {
 		ofxGameState* thisState = *i;
 		ofxGameState* nextState = *(i + 1);
@@ -74,23 +94,25 @@ void ofxGameEngine::update()
 		nextPassesMap->insert(thisPassesMap->begin(), thisPassesMap->end());
 
 		for (auto& entry : (*thisRegisteredBlocksMap)) {
-			// pair<string, bool>
-			// pair<alias, passes>
-			if (!entry.second) {
-				(*nextPassesMap)[entry.first] = entry.second;
+			// pair<string, KeyboardInputBlockingType>
+			// pair<alias, passType>
+			if (entry.second == INPUT_BLOCK) {
+				(*nextPassesMap)[entry.first] = false;
+			} else {
+				(*nextPassesMap)[entry.first] = true;
 			}
 		}
-
-		//nextBlockingMap.insert(thisBlockingMap.begin(), thisBlockingMap.end());
 	}
 
-	// Update
+	// Close program if the stack is empty
+	// TODO: Change this behaviour?
 	if (states.empty()) {
 		cout << "ofxGameEngine states is empty. Can't update(). Closing program.\n";
 		assert(false);
 	}
 	
-	/* See ofxGameEngine::draw(). */
+	/* See ofxGameEngine::draw(). Essentially draws them in reverse order with drawTransparency
+	taken into consideration. Many reverse iterators are needed here. */
 	vector<ofxGameState*> toUpdate;
 	toUpdate.reserve(states.size());
 
@@ -110,7 +132,8 @@ void ofxGameEngine::update()
 
 void ofxGameEngine::draw()
 {
-	// Check if states is empty
+	// Close program if the stack is empty
+	// TODO: Change this behaviour?
 	if (states.empty()) {
 		cout << "ofxGameEngine states is empty. Can't draw(). Closing program.\n";
 		assert(false);

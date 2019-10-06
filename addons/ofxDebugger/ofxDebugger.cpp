@@ -8,8 +8,8 @@ void ofxDebugger::push(const string& message)
 }
 
 void ofxDebugger::draw() {
-  for (unsigned int i = 0; i < debugStrings.size(); i++) {
-    ofDrawBitmapString(debugStrings[i], 5, (i + 1) * 15);
-  }
-  debugStrings.clear();
+	for (unsigned int i = 0; i < debugStrings.size(); i++) {
+	ofDrawBitmapString(debugStrings[i], 5, (i + 1) * 15);
+	}
+	debugStrings.clear();
 }
