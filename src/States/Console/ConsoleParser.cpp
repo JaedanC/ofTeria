@@ -8,34 +8,38 @@ ConsoleParser::ConsoleParser(ConsoleState* consoleState)
 	// Add bind command
 	commandMap["bind"] = {
 		"bind",
-		"bind <key> <alias> binds a key to an alias.\n",
+		"bind <key> <alias> binds a key to an alias.",
 		2,
 		bind
 	};
+
+	commandMap["clear"] = {
+		"clear",
+		"clear - clears the screen",
+		0,
+		clear
+	};
 }
 
-void ConsoleParser::run(vector<string>& command)
+bool ConsoleParser::run(vector<string>& command)
 {
 	if (command.size() < 1) {
-		return;
+		return false;
 	}
 	
 	if (commandMap.count(command[0]) == 0) {
-		// TODO: Make sure this outputs to the console not cout
-		consoleState->addText("No such command '" + ofToString(command[0]) + "' exists.\n");
-		//cout << "No such command '" << command[0] << "' exists.\n";
-		return;
+		consoleState->addText("No such command '" + ofToString(command[0]) + "' exists.\n", colorFailed);
+		return false;
 	}
 
 	Command& c = commandMap[command[0]];
 	if (c.parameters > (int)command.size() - 1 || c.parameters == -1) {
-		// TODO: Make sure this outputs to the console not cout
-		consoleState->addText(ofToString(c.command) + ": Incorrect parameter amount. Expected " + ofToString(c.parameters) + ". Provided " + ofToString(command.size() - 1) + "\n");
-		consoleState->addText("Usage: " + ofToString(c.commandHelp));
-		//cout << c.command << ": Incorrect parameter amount. Expected " << c.parameters << ". Provided " << command.size() - 1 << endl;
-		//cout << "Usage: " << c.commandHelp;
-		return;
+		consoleState->addText(ofToString(c.command) + ": Incorrect parameter amount. Expected " + ofToString(c.parameters) + ". Provided " + ofToString(command.size() - 1) + "\n", colorFailed);
+		consoleState->addText("Usage: " + ofToString(c.commandHelp), colorFailed);
+		return false;
 	}
 	command.erase(command.begin());
 	c.function(command);
+
+	return true;
 }

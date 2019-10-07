@@ -14,12 +14,14 @@ struct Command {
 
 class ConsoleParser {
 private:
+	ofColor colorFailed = ofColor(255, 100, 100);
+
 	ConsoleState* consoleState;
 	unordered_map<string, Command> commandMap;
 public:
 	explicit ConsoleParser(ConsoleState* consoleState);
 
-	void run(vector<string>& command);
+	bool run(vector<string>& command);
 };
 
 #endif /* CONSOLE_PARSER_H */

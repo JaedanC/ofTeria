@@ -10,9 +10,10 @@ ConsoleState::ConsoleState() : ofxGameState(
 	false, // updateTransparent
 	true, // drawTransparent
 	"ConsoleState"
-), width(285), height(200), consoleParser(this)
+), consoleParser(this)
 {
 	// TODO: Remove these three lines for testing
+	ofxGameEngine::Instance()->getKeyboardInput()->registerAlias("clearConsole", 'l' - 96); // See -96 is the CTRL modifier
 	submitCommand(string("Hello world"));
 	submitCommand(string("Second command"));
 	registerAliasBlock("jump", INPUT_BLOCK);
@@ -20,28 +21,12 @@ ConsoleState::ConsoleState() : ofxGameState(
 
 void ConsoleState::keyPressed(int key)
 {
-	/*
-	~man ascii
-		30 40 50 60 70 80 90 100 110 120
-		---------------------------------
-	0:    (  2  <  F  P  Z  d   n   x
-	1:    )  3  =  G  Q  [  e   o   y
-	2:    *  4  >  H  R  \  f   p   z
-	3: !  +  5  ?  I  S  ]  g   q   {
-	4: "  ,  6  @  J  T  ^  h   r   |
-	5: #  -  7  A  K  U  _  i   s   }
-	6: $  .  8  B  L  V  `  j   t   ~
-	7: %  /  9  C  M  W  a  k   u  DEL
-	8: &  0  :  D  N  X  b  l   v
-	9: '  1  ;  E  O  Y  c  m   w
-	*/
+	/* man ascii */
 	if (key >= ' ' && key <= '~' && key != '`') {
 		currentCommand += key;
 	}
 
-	/*
-	Controlling the cursor. Enter, Backspace and arrow keys.
-	*/
+	/* Controlling the cursor. Enter, Backspace, arrow keys, PGUP and PGDOWN. */
 	switch (key) {
 	case OF_KEY_RETURN:
 		submitCommand(currentCommand);
@@ -67,6 +52,8 @@ void ConsoleState::keyPressed(int key)
 		consoleHistoryMarker = ofClamp(++consoleHistoryMarker, 0, consoleHistory.size());
 		break;
 	}
+
+	cout << key << endl;
 }
 
 void ConsoleState::keyReleased(int key)
@@ -77,7 +64,6 @@ void ConsoleState::keyReleased(int key)
 
 void ConsoleState::setup()
 {
-	screenPos = { ofGetWidth() - 300.0f, 15.0f };
 	ofxGameEngine::Instance()->getKeyboardInput()->registerKeyPressedCallback(this);
 }
 
@@ -96,6 +82,10 @@ void ConsoleState::update(ofxGameEngine* game)
 		cout << "Popping Console State\n";
 		ofxGameEngine::Instance()->PopState();
 	}
+
+	if (queryAliasPressed("clearConsole") && queryDown(OF_KEY_CONTROL)) {
+		submitCommand(string("clear"));
+	}
 }
 
 void ConsoleState::draw(ofxGameEngine* game)
@@ -103,6 +93,7 @@ void ConsoleState::draw(ofxGameEngine* game)
 	debugPush("State: ConsoleState");
 	debugPush("HistoryMarker: " + ofToString(commandHistoryMarker));
 
+	screenPos = { (float)ofGetWidth() - width - screenGap, (float)screenGap };
 
 	// Draw the console history
 	ofSetColor(ofColor::black);
@@ -128,6 +119,7 @@ endloop:
 
 	// Draw a typing marker
 	// (Width : 8pt , Height : 11pt ) each character.
+	ofSetColor(ofColor::white);
 	ofSetLineWidth(1.0f);
 	ofDrawLine(
 		screenPos + ofVec2f{currentCommand.size() * 8 + 7.0f, 5.0f},
@@ -146,11 +138,11 @@ void ConsoleState::submitCommand(string& command)
 	vector<string> parameters;
 	pystring::split(command, parameters);
 
-	consoleParser.run(parameters);
+	bool result = consoleParser.run(parameters);
 	commandHistory.push_back(command);
 
 	vector<string> commandVector = { command };
-	consoleHistory.emplace_back(commandVector, ofColor(255, 255, 255));
+	consoleHistory.emplace_back(commandVector, result ? colorPass : colorCommand);
 
 	cullHistory();
 }
@@ -174,6 +166,7 @@ void ConsoleState::addText(string& entry, ofColor colour)
 
 void ConsoleState::clearHistory()
 {
+	currentCommand.clear();
 	commandHistory.clear();
 	consoleHistory.clear();
 }

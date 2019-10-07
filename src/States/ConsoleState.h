@@ -20,16 +20,22 @@ class ConsoleState : public ofxGameState, public KeyboardCallbacks
 {
 private:
 	ofVec2f screenPos;
-	int width, height;
+	int width = 330;
+	int height = 250;
+	int screenGap = 15;
 
 	string currentCommand;
 	deque<ConsoleEntry> consoleHistory;
 	deque<string> commandHistory;
+
 	int commandHistoryMarker = 0;
 	int commandHistoryMaxSize = 5;
-	int showHistoryLines = 11;
+	int showHistoryLines = 15;
 	int consoleHistoryMarker = 0;
 	int consoleHistoryMaxSize = 20;
+	ofColor colorCommand = ofColor(255, 255, 50);
+	ofColor colorPass = ofColor(50, 255, 50);
+
 	ConsoleParser consoleParser;
 
 	static ConsoleState instance;
@@ -50,6 +56,7 @@ public:
 	void addText(ConsoleEntry& entry);
 	void addText(vector<string>& entries, ofColor colour = ofColor(255, 255, 255));
 	void addText(string& entry, ofColor colour = ofColor(255, 255, 255));
+
 	void clearHistory();
 
 	/* Limits the size of the history deque to length <limit>. Culls
