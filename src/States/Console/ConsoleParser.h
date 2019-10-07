@@ -3,6 +3,7 @@
 #define CONSOLE_PARSER_H
 
 #include "ofMain.h"
+class ConsoleState;
 
 struct Command {
 	string command;
@@ -13,13 +14,10 @@ struct Command {
 
 class ConsoleParser {
 private:
+	ConsoleState* consoleState;
 	unordered_map<string, Command> commandMap;
-
-	static ConsoleParser instance;
-protected:
-	ConsoleParser();
 public:
-	static ConsoleParser* Instance() { return &instance; }
+	explicit ConsoleParser(ConsoleState* consoleState);
 
 	void run(vector<string>& command);
 };

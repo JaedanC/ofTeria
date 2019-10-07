@@ -1,7 +1,5 @@
 #include "KeyboardInput.h"
 
-KeyboardInput KeyboardInput::instance;
-
 void KeyboardInput::keyPressed(int key)
 {
 	// Update keyPressed Maps

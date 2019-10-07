@@ -3,21 +3,24 @@
 #define OFX_GAME_ENGINE_H
 
 #include "ofMain.h"
+#include "../src/Keyboard/KeyboardInput.h"
 
 class KeyboardCallbacks;
 class ofxGameState;
 class ofxGameEngine
 {
 private:
-	static ofxGameEngine instance;
 	vector<ofxGameState*> states;
+	KeyboardInput keyboardInput;
 
 protected:
 	ofxGameEngine() {}
 
 public:
+	inline KeyboardInput* getKeyboardInput() { return &keyboardInput; }
+
 	// Returns the size of the GameState stack.
-	int StackSize() const;
+	unsigned int StackSize() const;
 
 	// Returns the GameState on the top of the stack.
 	ofxGameState* getState() const;
@@ -37,6 +40,7 @@ public:
 	void draw();
 
 	inline static ofxGameEngine* Instance() {
+		static ofxGameEngine instance;
 		return &instance;
 	}
 };

@@ -1,7 +1,7 @@
 #pragma once
 #include "ofMain.h"
-#include "../../Keyboard/KeyboardInput.h" 
+#include "ofxGameStates/ofxGameEngine.h"
 void bind(vector<string> parameters) {
 	int c = parameters[0][0];
-	KeyboardInput::Instance()->registerAlias(parameters[1], c);
+	ofxGameEngine::Instance()->getKeyboardInput()->registerAlias(parameters[1], c);
 }

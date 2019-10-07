@@ -8,7 +8,7 @@
 class MenuState : public ofxGameState
 {
 private:
-	static MenuState instance;
+	int x;
 protected:
 	MenuState()
 		: ofxGameState(
@@ -23,6 +23,7 @@ public:
 	virtual void exit() {}
 
 	static MenuState* Instance() {
+		static MenuState instance;
 		return &instance;
 	}
 };

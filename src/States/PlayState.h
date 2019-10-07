@@ -8,7 +8,6 @@
 class PlayState : public ofxGameState
 {
 private:
-	static PlayState instance;
 protected:
 	PlayState()
 		: ofxGameState(
@@ -23,6 +22,7 @@ public:
 	virtual void exit() {}
 
 	static PlayState* Instance() {
+		static PlayState instance;
 		return &instance;
 	}
 };

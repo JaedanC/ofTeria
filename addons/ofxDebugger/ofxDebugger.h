@@ -19,14 +19,12 @@ public:
 	// Draws all the debugStrings to the screen neatly
 	void draw();
 
-	inline static ofxDebugger* Instance() {
+	static ofxDebugger* Instance() {
+		static ofxDebugger instance;
 		return &instance;
 	}
 
 protected:
 	ofxDebugger() {}
-
-private:
-	static ofxDebugger instance;
 };
 #endif /* OFX_DEBUGGER_H */

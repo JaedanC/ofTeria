@@ -3,7 +3,6 @@
 #define KEYBOARD_INPUT_H
 
 #include "ofMain.h"
-#include "ofxGameStates/ofxGameEngine.h"
 
 /* Classes that wish to be notified about exact key presses (which could be a text field)
 should inherit from this Callback interface. Currently you must implement both functions.
@@ -33,9 +32,8 @@ public:
 	virtual void keyReleased(int key) = 0;
 };
 
-
 class KeyboardInput {
-	friend ofxGameState;
+	//friend ofxGameState;
 public:
 	/*
 	These functions directly wrap around OpenFrameworks existing callback functions in the ofApp.h
@@ -67,14 +65,7 @@ public:
 	for every each loop. They are reassigned by keyPressed() and keyReleased() whenever they are called. */
 	void resetPollingMaps();
 
-	static KeyboardInput* Instance() {
-		return &instance;
-	}
-protected:
-	KeyboardInput() {}
 private:
-	static KeyboardInput instance;
-
 	set<KeyboardCallbacks*> keyPressedCallbacks;
 	set<KeyboardCallbacks*> keyReleasedCallbacks;
 	unordered_map<int, bool> keyPressedMap;
@@ -82,6 +73,7 @@ private:
 	unordered_map<int, bool> keyReleasedMap;
 	unordered_map<string, vector<int>> aliasMappings;
 
+public:
 	/* Use these functions to query that an alias has been called globally. Not recommended to use unless
 	you have checked the stack to see if this alias is for you to use. ofxGameState::queryAliasPressed(string alias)
 	for general use instead to ensure that your State should gain access to this alias after it has been

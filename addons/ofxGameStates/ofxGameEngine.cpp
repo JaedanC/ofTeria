@@ -2,9 +2,7 @@
 #include "ofxGameState.h"
 #include "../src/Keyboard/KeyboardInput.h"
 
-ofxGameEngine ofxGameEngine::instance;
-
-int ofxGameEngine::StackSize() const
+unsigned int ofxGameEngine::StackSize() const
 {
 	return states.size();
 }
@@ -84,7 +82,7 @@ void ofxGameEngine::update()
 		3: Perform steps 1 and 2 for every GameState in the Stack starting as the top.
 	The State at the top is assumed to recieve all inputs (none are blocked). Everything is done twice as the
 	blocking maps are done for Alias' and just raw keys. */
-	for (vector<ofxGameState*>::reverse_iterator i = states.rbegin(); i != states.rend() - 1; ++i) {
+	for (auto i = states.rbegin(); i != states.rend() - 1; ++i) {
 		ofxGameState* thisState = *i;
 		ofxGameState* nextState = *(i + 1);
 

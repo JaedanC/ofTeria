@@ -1,10 +1,13 @@
 #pragma once
 
 #include "ofMain.h"
+#include "ofxGameStates/ofxGameEngine.h"
 
 class ofApp : public ofBaseApp{
 
 	public:
+		ofxGameEngine* engine;
+
 		void setup();
 		void update();
 		void draw();

@@ -2,13 +2,12 @@
 #include "ofMain.h"
 #include "ofxDebugger/ofxDebugger.h"
 #include "ConsoleState.h"
-
-PlayState PlayState::instance;
+#include "../Keyboard/KeyboardInput.h"
 
 void PlayState::setup()
 {
 	ofxGameEngine::Instance()->PushState(ConsoleState::Instance());
-	KeyboardInput::Instance()->registerAlias("shoot", 'q');
+	ofxGameEngine::Instance()->getKeyboardInput()->registerAlias("shoot", 'q');
 }
 
 void PlayState::update(ofxGameEngine* game)

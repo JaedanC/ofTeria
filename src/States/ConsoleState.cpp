@@ -10,12 +10,11 @@ ConsoleState::ConsoleState() : ofxGameState(
 	false, // updateTransparent
 	true, // drawTransparent
 	"ConsoleState"
-), width(285), height(200)
+), width(285), height(200), consoleParser(this)
 {
-
 	// TODO: Remove these three lines for testing
-	history.push_back("Hello world");
-	history.push_back("Second command");
+	submitCommand(string("Hello world"));
+	submitCommand(string("Second command"));
 	registerAliasBlock("jump", INPUT_BLOCK);
 }
 
@@ -54,12 +53,18 @@ void ConsoleState::keyPressed(int key)
 		}
 		break;
 	case OF_KEY_UP:
-		lastHistoryMarker = ofWrap(--lastHistoryMarker, -1, history.size());
-		currentCommand = (lastHistoryMarker == -1) ? "" : history[lastHistoryMarker];
+		commandHistoryMarker = ofWrap(--commandHistoryMarker, -1, commandHistory.size());
+		currentCommand = (commandHistoryMarker == -1) ? "" : commandHistory[commandHistoryMarker];
 		break;
 	case OF_KEY_DOWN:
-		lastHistoryMarker = ofWrap(++lastHistoryMarker, -1, history.size());
-		currentCommand = (lastHistoryMarker == -1) ? "" : history[lastHistoryMarker];
+		commandHistoryMarker = ofWrap(++commandHistoryMarker, -1, commandHistory.size());
+		currentCommand = (commandHistoryMarker == -1) ? "" : commandHistory[commandHistoryMarker];
+		break;
+	case OF_KEY_PAGE_UP:
+		consoleHistoryMarker = ofClamp(--consoleHistoryMarker, 0, consoleHistory.size());
+		break;
+	case OF_KEY_PAGE_DOWN:
+		consoleHistoryMarker = ofClamp(++consoleHistoryMarker, 0, consoleHistory.size());
 		break;
 	}
 }
@@ -73,7 +78,7 @@ void ConsoleState::keyReleased(int key)
 void ConsoleState::setup()
 {
 	screenPos = { ofGetWidth() - 300.0f, 15.0f };
-	KeyboardInput::Instance()->registerKeyPressedCallback(this);
+	ofxGameEngine::Instance()->getKeyboardInput()->registerKeyPressedCallback(this);
 }
 
 void ConsoleState::update(ofxGameEngine* game)
@@ -96,7 +101,7 @@ void ConsoleState::update(ofxGameEngine* game)
 void ConsoleState::draw(ofxGameEngine* game)
 {
 	debugPush("State: ConsoleState");
-	debugPush("HistoryMarker: " + ofToString(lastHistoryMarker));
+	debugPush("HistoryMarker: " + ofToString(commandHistoryMarker));
 
 
 	// Draw the console history
@@ -104,10 +109,22 @@ void ConsoleState::draw(ofxGameEngine* game)
 	ofDrawRectangle(screenPos, width, height);
 	ofSetColor(ofColor::white);
 	ofDrawBitmapString(currentCommand, screenPos.x + 5, screenPos.y + 15 * 1);
-	for (unsigned int i = 0; i < history.size(); i++) {
-		string& command = history[history.size() - 1 - i];
-		ofDrawBitmapString(command, screenPos.x + 5, screenPos.y + 15 * (i + 2));
+
+	int linesDrawn = 0;
+	for (unsigned int i = consoleHistoryMarker; i < consoleHistory.size(); i++) {
+		ConsoleEntry& entry = consoleHistory[consoleHistory.size() - 1 - i];
+
+		ofSetColor(entry.colour);
+		for (string& line : entry.message) {
+			ofDrawBitmapString(line, screenPos.x + 5, screenPos.y + 15 * (linesDrawn + 2));
+
+			linesDrawn++;
+			if (linesDrawn >= showHistoryLines) {
+				goto endloop;
+			}
+		}
 	}
+endloop:
 
 	// Draw a typing marker
 	// (Width : 8pt , Height : 11pt ) each character.
@@ -121,7 +138,7 @@ void ConsoleState::draw(ofxGameEngine* game)
 
 void ConsoleState::exit()
 {
-	KeyboardInput::Instance()->deregisterKeyPressedCallback(this);
+	ofxGameEngine::Instance()->getKeyboardInput()->deregisterKeyPressedCallback(this);
 }
 
 void ConsoleState::submitCommand(string& command)
@@ -129,22 +146,46 @@ void ConsoleState::submitCommand(string& command)
 	vector<string> parameters;
 	pystring::split(command, parameters);
 
-	ConsoleParser::Instance()->run(parameters);
-	history.push_back(command);
-	cullHistory(maxHistorySize);
+	consoleParser.run(parameters);
+	commandHistory.push_back(command);
+
+	vector<string> commandVector = { command };
+	consoleHistory.emplace_back(commandVector, ofColor(255, 255, 255));
+
+	cullHistory();
+}
+
+void ConsoleState::addText(ConsoleEntry& entry)
+{
+	consoleHistory.push_back(entry);
+}
+
+void ConsoleState::addText(vector<string>& strings, ofColor colour)
+{
+	ConsoleEntry entry = { strings, colour };
+	addText(entry);
+}
+
+void ConsoleState::addText(string& entry, ofColor colour)
+{
+	vector<string> entries = { entry };
+	addText(entries, colour);
 }
 
 void ConsoleState::clearHistory()
 {
-	for (unsigned int i = 0; i < history.size(); i++) {
-		history.pop_front();
-	}
+	commandHistory.clear();
+	consoleHistory.clear();
 }
 
-void ConsoleState::cullHistory(unsigned int limit)
+void ConsoleState::cullHistory()
 {
-	for (unsigned int i = limit; i < history.size(); i++) {
-		history.pop_front();
+	for (unsigned int i = commandHistoryMaxSize; i < commandHistory.size(); i++) {
+		commandHistory.pop_front();
+	}
+
+	for (unsigned int i = consoleHistoryMaxSize; i < consoleHistory.size(); i++) {
+		consoleHistory.pop_front();
 	}
 }
 

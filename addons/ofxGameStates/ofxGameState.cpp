@@ -26,7 +26,7 @@ bool ofxGameState::queryAliasPressed(string alias)
 	if (ofxGameEngine::Instance()->getState() == this ||
 	   (aliasPass.count(alias) != 0 && aliasPass[alias]))
 	{
-		return KeyboardInput::Instance()->queryAliasPressed(alias);
+		return ofxGameEngine::Instance()->getKeyboardInput()->queryAliasPressed(alias);
 	}
 
 	return false;
@@ -51,7 +51,7 @@ bool ofxGameState::queryAliasDown(string alias)
 	if (ofxGameEngine::Instance()->getState() == this ||
 		(aliasPass.count(alias) != 0 && aliasPass[alias]))
 	{
-		return KeyboardInput::Instance()->queryAliasDown(alias);
+		return ofxGameEngine::Instance()->getKeyboardInput()->queryAliasDown(alias);
 	}
 
 	return false;
@@ -76,7 +76,7 @@ bool ofxGameState::queryAliasReleased(string alias)
 	if (ofxGameEngine::Instance()->getState() == this ||
 		(aliasPass.count(alias) != 0 && aliasPass[alias]))
 	{
-		return KeyboardInput::Instance()->queryAliasReleased(alias);
+		return ofxGameEngine::Instance()->getKeyboardInput()->queryAliasReleased(alias);
 	}
 
 	return false;
@@ -101,7 +101,7 @@ bool ofxGameState::queryPressed(int key)
 	if (ofxGameEngine::Instance()->getState() == this ||
 		(keyPass.count(key) != 0 && keyPass[key]))
 	{
-		return KeyboardInput::Instance()->queryPressed(key);
+		return ofxGameEngine::Instance()->getKeyboardInput()->queryPressed(key);
 	}
 
 	return false;
@@ -126,7 +126,7 @@ bool ofxGameState::queryDown(int key)
 	if (ofxGameEngine::Instance()->getState() == this ||
 		(keyPass.count(key) != 0 && keyPass[key]))
 	{
-		return KeyboardInput::Instance()->queryDown(key);
+		return ofxGameEngine::Instance()->getKeyboardInput()->queryDown(key);
 	}
 
 	return false;
@@ -151,7 +151,7 @@ bool ofxGameState::queryReleased(int key)
 	if (ofxGameEngine::Instance()->getState() == this ||
 		(keyPass.count(key) != 0 && keyPass[key]))
 	{
-		return KeyboardInput::Instance()->queryReleased(key);
+		return ofxGameEngine::Instance()->getKeyboardInput()->queryReleased(key);
 	}
 
 	return false;

@@ -5,11 +5,11 @@
 #include "States/MenuState.h"
 #include "Keyboard/KeyboardInput.h"
 
-ofxGameEngine* engine;
-
 //--------------------------------------------------------------
 void ofApp::setup(){
 	ofxIniFile settings("settings.ini");
+	engine = ofxGameEngine::Instance();
+
 
 	// ------------------------------------------------------------------------------------
 	// ------------------------------------------------------------------------------------
@@ -37,15 +37,14 @@ void ofApp::setup(){
 	vector<string> aliases = settings.getAllValues("alias", "alias");
 	for (string& alias : aliases) {
 		string binding = settings.loadSetString("bindings", alias, "");
-		KeyboardInput::Instance()->registerAlias(alias, binding[0]);
+		engine->getKeyboardInput()->registerAlias(alias, binding[0]);
 	}
 
 	// ------------------------------------------------------------------------------------
 	// ------------------------------------------------------------------------------------
-	KeyboardInput::Instance()->registerAlias("jump", 'b');
+	engine->getKeyboardInput()->registerAlias("jump", 'b');
 
 
-	engine = ofxGameEngine::Instance();
 	engine->setup();
 	engine->PushState(MenuState::Instance());
 }
@@ -74,17 +73,17 @@ void ofApp::draw(){
 	debugDraw();
 
 	//Reset inputs
-	KeyboardInput::Instance()->resetPollingMaps();
+	engine->getKeyboardInput()->resetPollingMaps();
 }
 
 //--------------------------------------------------------------
 void ofApp::keyPressed(int key){
-	KeyboardInput::Instance()->keyPressed(key);
+	engine->getKeyboardInput()->keyPressed(key);
 }
 
 //--------------------------------------------------------------
 void ofApp::keyReleased(int key){
-	KeyboardInput::Instance()->keyReleased(key);
+	engine->getKeyboardInput()->keyReleased(key);
 }
 
 //--------------------------------------------------------------
@@ -99,12 +98,12 @@ void ofApp::mouseDragged(int x, int y, int button){
 
 //--------------------------------------------------------------
 void ofApp::mousePressed(int x, int y, int button){
-	KeyboardInput::Instance()->mousePressed(x, y, button);
+	engine->getKeyboardInput()->mousePressed(x, y, button);
 }
 
 //--------------------------------------------------------------
 void ofApp::mouseReleased(int x, int y, int button){
-	KeyboardInput::Instance()->mouseReleased(x, y, button);
+	engine->getKeyboardInput()->mouseReleased(x, y, button);
 }
 
 //--------------------------------------------------------------
