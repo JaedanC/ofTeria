@@ -189,6 +189,7 @@
     <ClCompile Include="addons\pystring\pystring.cpp" />
     <ClCompile Include="src\Keyboard\KeyboardInput.cpp" />
     <ClCompile Include="src\States\ConsoleState.cpp" />
+    <ClCompile Include="src\States\Console\ConsoleParser.cpp" />
     <ClCompile Include="src\States\MenuState.cpp" />
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\ofApp.cpp" />
@@ -205,6 +206,8 @@
     <ClInclude Include="addons\pystring\pystring.h" />
     <ClInclude Include="src\Keyboard\KeyboardInput.h" />
     <ClInclude Include="src\States\ConsoleState.h" />
+    <ClInclude Include="src\States\Console\Commands.h" />
+    <ClInclude Include="src\States\Console\ConsoleParser.h" />
     <ClInclude Include="src\States\MenuState.h" />
     <ClInclude Include="src\ofApp.h" />
     <ClInclude Include="src\States\PlayState.h" />

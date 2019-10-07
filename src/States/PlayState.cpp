@@ -8,6 +8,7 @@ PlayState PlayState::instance;
 void PlayState::setup()
 {
 	ofxGameEngine::Instance()->PushState(ConsoleState::Instance());
+	KeyboardInput::Instance()->registerAlias("shoot", 'q');
 }
 
 void PlayState::update(ofxGameEngine* game)
@@ -17,6 +18,9 @@ void PlayState::update(ofxGameEngine* game)
 	}
 	if (queryAliasPressed("toggleConsole")) {
 		ofxGameEngine::Instance()->PushState(ConsoleState::Instance());
+	}
+	if (queryAliasPressed("shoot") && queryDown(OF_KEY_ALT)) {
+		cout << "Playstate shooting + Alt\n";
 	}
 }
 

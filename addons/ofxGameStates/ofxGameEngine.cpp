@@ -82,24 +82,44 @@ void ofxGameEngine::update()
 		1: Copy the previousGameState's passMap to our own.
 		2: Apply the previousGameState's registeredBlockMap to our passMap.
 		3: Perform steps 1 and 2 for every GameState in the Stack starting as the top.
-	The State at the top is assumed to recieve all inputs (none are blocked). */
+	The State at the top is assumed to recieve all inputs (none are blocked). Everything is done twice as the
+	blocking maps are done for Alias' and just raw keys. */
 	for (vector<ofxGameState*>::reverse_iterator i = states.rbegin(); i != states.rend() - 1; ++i) {
 		ofxGameState* thisState = *i;
 		ofxGameState* nextState = *(i + 1);
 
-		unordered_map<string, bool>* thisPassesMap = thisState->getAliasPasses();
-		unordered_map<string, KeyboardInputBlockingType>* thisRegisteredBlocksMap = thisState->getRegisteredAliasBlocks();
-		unordered_map<string, bool>* nextPassesMap = nextState->getAliasPasses();
+		/* Retrieve maps*/
+		unordered_map<string, bool>* thisAliasPassesMap = thisState->getAliasPasses();
+		unordered_map<string, bool>* nextAliasPassesMap = nextState->getAliasPasses();
+		unordered_map<string, KeyboardInputBlockingType>* thisRegisteredAliasBlocksMap = thisState->getRegisteredAliasBlocks();
+		
+		unordered_map<int, KeyboardInputBlockingType>* thisRegisteredKeyBlocksMap = thisState->getRegisteredKeyBlocks();
+		unordered_map<int, bool>* thisKeyPassesMap = thisState->getKeyPasses();
+		unordered_map<int, bool>* nextKeyPassesMap = nextState->getKeyPasses();
 
-		nextPassesMap->insert(thisPassesMap->begin(), thisPassesMap->end());
+		/* Copy this state to the next. */
+		nextAliasPassesMap->insert(thisAliasPassesMap->begin(), thisAliasPassesMap->end());
+		nextKeyPassesMap->insert(thisKeyPassesMap->begin(), thisKeyPassesMap->end());
 
-		for (auto& entry : (*thisRegisteredBlocksMap)) {
+		/* Update the next state based on the current registered blocks. */
+		for (auto& entry : (*thisRegisteredAliasBlocksMap)) {
 			// pair<string, KeyboardInputBlockingType>
 			// pair<alias, passType>
 			if (entry.second == INPUT_BLOCK) {
-				(*nextPassesMap)[entry.first] = false;
+				(*nextAliasPassesMap)[entry.first] = false;
 			} else {
-				(*nextPassesMap)[entry.first] = true;
+				(*nextAliasPassesMap)[entry.first] = true;
+			}
+		}
+
+		for (auto& entry : (*thisRegisteredKeyBlocksMap)) {
+			// pair<int, KeyboardInputBlockingType>
+			// pair<key, passType>
+			if (entry.second == INPUT_BLOCK) {
+				(*nextKeyPassesMap)[entry.first] = false;
+			}
+			else {
+				(*nextKeyPassesMap)[entry.first] = true;
 			}
 		}
 	}

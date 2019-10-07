@@ -12,9 +12,6 @@ void KeyboardInput::keyPressed(int key)
 	for (auto& callback : keyPressedCallbacks) {
 		callback->keyPressed(key);
 	}
-
-	//TODO: Remove
-	cout << key << endl;
 }
 
 void KeyboardInput::keyReleased(int key)

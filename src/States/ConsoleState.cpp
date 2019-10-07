@@ -1,6 +1,8 @@
 #include "ConsoleState.h"
 #include "ofxDebugger/ofxDebugger.h"
 #include "../Keyboard/KeyboardInput.h"
+#include "Console/ConsoleParser.h"
+#include "../addons/pystring/pystring.h"
 
 ConsoleState ConsoleState::instance;
 
@@ -60,9 +62,6 @@ void ConsoleState::keyPressed(int key)
 		currentCommand = (lastHistoryMarker == -1) ? "" : history[lastHistoryMarker];
 		break;
 	}
-
-	// TODO remove
-	cout << "Key from callback pressed " << key << endl;
 }
 
 void ConsoleState::keyReleased(int key)
@@ -82,6 +81,10 @@ void ConsoleState::update(ofxGameEngine* game)
 	// TODO: Remove
 	if (queryAliasPressed("jump")) {
 		cout << "New query triggered for jump\n";
+	}
+
+	if (queryDown(OF_KEY_CONTROL) && queryAliasPressed("jump")) {
+		cout << "Control jump!\n";
 	}
 
 	if (queryAliasPressed("toggleConsole")) {
@@ -123,6 +126,10 @@ void ConsoleState::exit()
 
 void ConsoleState::submitCommand(string& command)
 {
+	vector<string> parameters;
+	pystring::split(command, parameters);
+
+	ConsoleParser::Instance()->run(parameters);
 	history.push_back(command);
 	cullHistory(maxHistorySize);
 }

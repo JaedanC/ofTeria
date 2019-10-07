@@ -18,6 +18,7 @@
     <ClCompile Include="src\States\ConsoleState.cpp" />
     <ClCompile Include="addons\pystring\pystring.cpp" />
     <ClCompile Include="addons\ofxGameStates\ofxGameState.cpp" />
+    <ClCompile Include="src\States\Console\ConsoleParser.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="src">
@@ -40,6 +41,8 @@
     <ClInclude Include="src\Keyboard\KeyboardInput.h" />
     <ClInclude Include="src\States\ConsoleState.h" />
     <ClInclude Include="addons\pystring\pystring.h" />
+    <ClInclude Include="src\States\Console\ConsoleParser.h" />
+    <ClInclude Include="src\States\Console\Commands.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="icon.rc" />
