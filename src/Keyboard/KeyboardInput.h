@@ -32,6 +32,12 @@ public:
 	virtual void keyReleased(int key) = 0;
 };
 
+enum QueryType {
+	QUERY_PRESSED,
+	QUERY_DOWN,
+	QUERY_RELEASED
+};
+
 class KeyboardInput {
 	//friend ofxGameState;
 public:
@@ -78,6 +84,9 @@ public:
 	you have checked the stack to see if this alias is for you to use. ofxGameState::queryAliasPressed(string alias)
 	for general use instead to ensure that your State should gain access to this alias after it has been
 	passed down the stack. */
+	bool queryInput(const string& alias, QueryType queryType = QUERY_PRESSED);
+	bool queryInput(const int key, QueryType queryType = QUERY_PRESSED);
+
 	bool queryAliasPressed(string alias);
 	bool queryAliasDown(string alias);
 	bool queryAliasReleased(string alias);

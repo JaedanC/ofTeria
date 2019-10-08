@@ -12,13 +12,13 @@ void PlayState::setup()
 
 void PlayState::update(ofxGameEngine* game)
 {
-	if (queryAliasPressed("jump")) {
+	if (queryInput("jump")) {
 		cout << "PlayState is not getting blocked!\n";
 	}
-	if (queryAliasPressed("toggleConsole")) {
+	if (queryInput("toggleConsole")) {
 		ofxGameEngine::Instance()->PushState(ConsoleState::Instance());
 	}
-	if (queryAliasPressed("shoot") && queryDown(OF_KEY_ALT)) {
+	if (queryInput("shoot") && queryInput(OF_KEY_ALT, QUERY_DOWN)) {
 		cout << "Playstate shooting + Alt\n";
 	}
 }

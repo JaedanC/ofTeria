@@ -4,6 +4,7 @@
 
 #include "ofMain.h"
 #include "ofxGameEngine.h"
+#include "../src/Keyboard/KeyboardInput.h"
 
 /* Enum to define Alias' as blocking or passing. Register an alias to PASS
 by calling registerAliasBlock(alias, <This Enum>);*/
@@ -53,19 +54,17 @@ public:
 	void registerAliasBlock(string alias, KeyboardInputBlockingType blockingType);
 	void registerKeyBlock(int key, KeyboardInputBlockingType blockingType);
 
+
+
 	/* If a GameState wants to query an Alias (Which is an string action bound to a key(s) 
 	on the keyboard, this is the function to use. It makes sure the Alias is meant for this
 	state, and if not, it will return false. */
-	bool queryAliasPressed(string alias);
-	bool queryAliasDown(string alias);
-	bool queryAliasReleased(string alias);
+	bool queryInput(const string& alias, QueryType queryType = QUERY_PRESSED);
 
-	/* These can be used to query a key that is being pressed. It will only allow be true if
+	/* This can be used to query a key that is being pressed. It will only allow be true if
 	the key is pressed and the GameState is at the top of the stack. Currently this means that
 	keys like CTRL can't be passed through to the next GameState. */
-	bool queryPressed(int key);
-	bool queryDown(int key);
-	bool queryReleased(int key);
+	bool queryInput(const int key, QueryType queryType = QUERY_PRESSED);
 
 	/* All GameStates must implement these functions. */
 	virtual void setup() = 0;

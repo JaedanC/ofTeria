@@ -71,61 +71,33 @@ void KeyboardInput::registerAlias(string alias, int key)
 	aliasMappings[alias].push_back(key);
 }
 
-bool KeyboardInput::queryAliasPressed(string alias)
+bool KeyboardInput::queryInput(const string& alias, QueryType queryType)
 {
 	// Assume that Alias's that do not exist always return false
 	if (aliasMappings.count(alias) == 0) return false;
 
 	// Return true as soon as one of the keys for the binding have been triggered
 	for (int& key : aliasMappings[alias]) {
-		if (queryPressed(key)) return true;
+		if (queryInput(key, queryType)) return true;
 	}
 	return false;
 }
 
-bool KeyboardInput::queryAliasReleased(string alias)
+bool KeyboardInput::queryInput(const int key, QueryType queryType)
 {
-	// Assume that Alias's that do not exist always return false
-	if (aliasMappings.count(alias) == 0) return false;
-
-	// Return true as soon as one of the keys for the binding have been triggered
-	for (int& key : aliasMappings[alias]) {
-		if (queryReleased(key)) return true;
+	/* If the key has not been pressed return false. Otherwise return
+	what the value is. */
+	switch (queryType) {
+	case QUERY_PRESSED:
+		return (keyPressedMap.count(key) == 0) ? false : keyPressedMap[key];
+	case QUERY_DOWN:
+		return (keyDownMap.count(key) == 0) ? false : keyDownMap[key];
+	case QUERY_RELEASED:
+		return (keyReleasedMap.count(key) == 0) ? false : keyReleasedMap[key];
 	}
+
+	cout << "KeyboardInput::queryInput: queryType not recognised. Returning false\n";
 	return false;
-}
-
-bool KeyboardInput::queryAliasDown(string alias)
-{
-	// Assume that Alias's that do not exist always return false
-	if (aliasMappings.count(alias) == 0) return false;
-
-	// Return true as soon as one of the keys for the binding have been triggered
-	for (int& key : aliasMappings[alias]) {
-		if (queryDown(key)) return true;
-	}
-	return false;
-}
-
-bool KeyboardInput::queryPressed(int key)
-{
-	/* If the key has not been pressed return false. Otherwise return
-	what the value is. */
-	return (keyPressedMap.count(key) == 0) ? false : keyPressedMap[key];
-}
-
-bool KeyboardInput::queryReleased(int key)
-{
-	/* If the key has not been pressed return false. Otherwise return
-	what the value is. */
-	return (keyReleasedMap.count(key) == 0) ? false : keyReleasedMap[key];
-}
-
-bool KeyboardInput::queryDown(int key)
-{
-	/* If the key has not been pressed return false. Otherwise return
-	what the value is. */
-	return (keyDownMap.count(key) == 0) ? false : keyDownMap[key];
 }
 
 void KeyboardInput::resetPollingMaps()

@@ -8,7 +8,7 @@
 class MenuState : public ofxGameState
 {
 private:
-	int x;
+	int x = 0;
 protected:
 	MenuState()
 		: ofxGameState(

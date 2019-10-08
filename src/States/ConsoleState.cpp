@@ -70,20 +70,20 @@ void ConsoleState::setup()
 void ConsoleState::update(ofxGameEngine* game)
 {
 	// TODO: Remove
-	if (queryAliasPressed("jump")) {
+	if (queryInput("jump")) {
 		cout << "New query triggered for jump\n";
 	}
 
-	if (queryDown(OF_KEY_CONTROL) && queryAliasPressed("jump")) {
+	if (queryInput(OF_KEY_CONTROL, QUERY_DOWN) && queryInput("jump")) {
 		cout << "Control jump!\n";
 	}
 
-	if (queryAliasPressed("toggleConsole")) {
+	if (queryInput("toggleConsole")) {
 		cout << "Popping Console State\n";
 		ofxGameEngine::Instance()->PopState();
 	}
 
-	if (queryAliasPressed("clearConsole") && queryDown(OF_KEY_CONTROL)) {
+	if (queryInput("clearConsole") && queryInput(OF_KEY_CONTROL, QUERY_DOWN)) {
 		submitCommand(string("clear"));
 	}
 }
