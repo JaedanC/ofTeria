@@ -94,20 +94,19 @@ void ConsoleState::keyPressed(int key)
 		break;
 	}
 
-	currentCommandCursorMarker = ofClamp(currentCommandCursorMarker, 0, currentCommand.size());
-	shiftAnchorPoint = ofClamp(shiftAnchorPoint, 0, currentCommand.size());
+	cursor.clamp(0, currentCommand.size();
 
 	// Write key to current string buffer
 	if (key >= ' ' && key <= '~' && key != '`') {
-		if (shiftAnchorPoint != currentCommandCursorMarker) {
+		if (cursor.highlighting()) {
 			currentCommand.erase(
-				currentCommand.begin() + MIN(currentCommandCursorMarker, shiftAnchorPoint),
-				currentCommand.begin() + MAX(currentCommandCursorMarker, shiftAnchorPoint)
+				currentCommand.begin() + cursor.left(),
+				currentCommand.begin() + cursor.right()
 			);
-			currentCommandCursorMarker = MIN(currentCommandCursorMarker, shiftAnchorPoint);
+			cursor.set(cursor.left());
 		}
 
-		currentCommand.insert(currentCommand.begin() + currentCommandCursorMarker++, key);
+		currentCommand.insert(currentCommand.begin() + cursor++, key);
 		shiftAnchorPoint = currentCommandCursorMarker;
 	}
 

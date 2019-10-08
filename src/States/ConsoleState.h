@@ -16,6 +16,52 @@ struct ConsoleEntry {
 	{}
 };
 
+class ConsoleCursor {
+private:
+	int cursor;
+	int selectionAnchor;
+public:
+	ConsoleCursor() : cursor(0), selectionAnchor(0) {}
+
+	inline bool highlighting() { return cursor != selectionAnchor; }
+	inline int getCursor() { return cursor;  }
+	
+	inline void set(int num) {
+		cursor = num;
+		reset();
+	}
+
+	inline void operator+(int amount) {
+		cursor += amount;
+		selectionAnchor = cursor;
+	}
+
+	inline void highlight(int amount) {
+		selectionAnchor += amount;
+	}
+
+	inline void reset() {
+		selectionAnchor = cursor;
+	}
+
+	inline void clamp(int min, int max) {
+		cursor = ofClamp(cursor, min, max);
+		selectionAnchor = ofClamp(selectionAnchor, min, max);
+	}
+
+	inline int dist() {
+		return ABS(cursor - selectionAnchor);
+	}
+
+	inline int left() {
+		return MIN(cursor, selectionAnchor);
+	}
+
+	inline int right() {
+		return MAX(cursor, selectionAnchor);
+	}
+};
+
 class ConsoleState : public ofxGameState, public KeyboardCallbacks
 {
 private:
@@ -28,8 +74,7 @@ private:
 	deque<ConsoleEntry> consoleHistory;
 	deque<string> commandHistory;
 
-	int currentCommandCursorMarker = 0;
-	int shiftAnchorPoint = 0;
+	ConsoleCursor cursor;
 	int commandHistoryMarker = 0;
 	int commandHistoryMaxSize = 5;
 	int showHistoryLines = 15;
