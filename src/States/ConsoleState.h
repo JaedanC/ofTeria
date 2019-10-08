@@ -28,6 +28,8 @@ private:
 	deque<ConsoleEntry> consoleHistory;
 	deque<string> commandHistory;
 
+	int currentCommandCursorMarker = 0;
+	int shiftAnchorPoint = 0;
 	int commandHistoryMarker = 0;
 	int commandHistoryMaxSize = 5;
 	int showHistoryLines = 15;
