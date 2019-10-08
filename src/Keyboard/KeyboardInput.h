@@ -7,9 +7,9 @@
 /* Classes that wish to be notified about exact key presses (which could be a text field)
 should inherit from this Callback interface. Currently you must implement both functions.
 To be notified the class should add itself to the Callback list. This is done by calling
-KeyboardInput::Instance()->registerKeyPressedCallback(this);
+GameEngine::Instance()->getKeyboardInput()->registerKeyPressedCallback(this);
 	(and/or)
-KeyboardInput::Instance()->registerKeyReleasedCallback(this);
+GameEngine::Instance()->getKeyboardInput()->registerKeyReleasedCallback(this);
  ___________________________________________________________
 |							|								|
 |  unordered_map<int, bool>	|  unordered_map<string, int>	|
@@ -26,6 +26,9 @@ KeyboardInput::Instance()->registerKeyReleasedCallback(this);
 |			i				|								|
 |___________________________|_______________________________|
 */
+
+#define MOUSE_OFFSET_CONSTANT 256
+
 class KeyboardCallbacks {
 public:
 	virtual void keyPressed(int key) = 0;
@@ -45,6 +48,10 @@ enum CallbackType {
 
 class KeyboardInput {
 public:
+	KeyboardInput();
+	unordered_map<string, int> specialBindings;
+	int KeyboardInput::convertStringToKey(const string& str);
+
 	/*
 	These functions directly wrap around OpenFrameworks existing callback functions in the ofApp.h
 	They allow us to redirect the input as required to the desired states or callback functions
@@ -67,9 +74,12 @@ public:
 	void deregisterKeyCallback(KeyboardCallbacks* callbackInstance, CallbackType callbackType = CALLBACK_PRESSED);
 
 	/* Call this function to bind an alias to a key. Typical Valve usage would be
-	bind a +jump      OR     registerAlias("jump", 'a');
-	It is not recommended to query a key directly as this does not allow for keybindings to exist.*/
-	void registerAlias(string alias, int key);
+	bind a +jump      OR     registerAlias("jump", "a");
+	It is not recommended to query a key directly as this does not allow for keybindings to exist.
+	The offset parameter is if you wish to add an offset to the resulting ascii value. For example
+	holding ctrl changes the keyboard output number for some reason, so to get back to the corresponding
+	letter you have to offset by -96. */
+	void registerAlias(const string& alias, const string& key, int offset=0);
 
 	/* Call this function at the end of call loop to reset the keyPressed and keyReleased unordered_maps
 	for every each loop. They are reassigned by keyPressed() and keyReleased() whenever they are called. */
@@ -81,7 +91,7 @@ private:
 	unordered_map<int, bool> keyPressedMap;
 	unordered_map<int, bool> keyDownMap;
 	unordered_map<int, bool> keyReleasedMap;
-	unordered_map<string, vector<int>> aliasMappings;
+	unordered_map<string, vector<int>> keyAliasMappings;
 
 public:
 	/* Use these functions to query that an alias has been called globally. Not recommended to use unless
@@ -91,7 +101,7 @@ public:
 	bool queryInput(const string& alias, QueryType queryType = QUERY_PRESSED);
 
 	/* Use this function to query that a key has been called globalily. Not recommended for general use.
-	use registerAlias(string alias, int key) to bind a key and then use ofxGameState::queryInput(const string& alias)
+	use registerAlias(const string& alias, const string& key) to bind a key and then use ofxGameState::queryInput(const string& alias)
 	for general use. */
 	bool queryInput(const int key, QueryType queryType = QUERY_PRESSED);
 };

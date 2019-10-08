@@ -9,6 +9,7 @@
 void ofApp::setup(){
 	ofxIniFile settings("settings.ini");
 	engine = ofxGameEngine::Instance();
+	ofSetEscapeQuitsApp(false);
 
 
 	// ------------------------------------------------------------------------------------
@@ -39,7 +40,7 @@ void ofApp::setup(){
 	for (string& alias : aliases) {
 		vector<string> bindings = settings.getAllValues("bindings", alias);
 		for (string& binding : bindings) {
-			engine->getKeyboardInput()->registerAlias(alias, binding[0]);
+			engine->getKeyboardInput()->registerAlias(alias, binding);
 		}
 	}
 

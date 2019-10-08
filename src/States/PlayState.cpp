@@ -7,7 +7,7 @@
 void PlayState::setup()
 {
 	ofxGameEngine::Instance()->PushState(ConsoleState::Instance());
-	ofxGameEngine::Instance()->getKeyboardInput()->registerAlias("shoot", 'q');
+	ofxGameEngine::Instance()->getKeyboardInput()->registerAlias("shoot", "q");
 }
 
 void PlayState::update(ofxGameEngine* game)

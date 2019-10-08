@@ -43,7 +43,7 @@ public:
 	inline bool getUpdateTransparent() const { return updateTransparent; }
 	inline bool getDrawTransparent() const { return drawTransparent; }
 	inline const string& getStateName() const {	return stateName; }
-	inline unordered_map<string, bool> * getAliasPasses() { return &aliasPass; }
+	inline unordered_map<string, bool>* getAliasPasses() { return &aliasPass; }
 	inline unordered_map<int, bool>* getKeyPasses() { return &keyPass; }
 	inline unordered_map<string, KeyboardInputBlockingType> * getRegisteredAliasBlocks() { return &registeredAliasBlocks; }
 	inline unordered_map<int, KeyboardInputBlockingType>* getRegisteredKeyBlocks() { return &registeredKeyBlocks; }
@@ -53,8 +53,6 @@ public:
 	to be BLOCKING, and are not passed onto the next GameState in the stack. */
 	void registerAliasBlock(string alias, KeyboardInputBlockingType blockingType);
 	void registerKeyBlock(int key, KeyboardInputBlockingType blockingType);
-
-
 
 	/* If a GameState wants to query an Alias (Which is an string action bound to a key(s) 
 	on the keyboard, this is the function to use. It makes sure the Alias is meant for this

@@ -13,7 +13,7 @@ ConsoleState::ConsoleState() : ofxGameState(
 ), consoleParser(this)
 {
 	// TODO: Remove these three lines for testing
-	ofxGameEngine::Instance()->getKeyboardInput()->registerAlias("clearConsole", 'l' - 96); // See -96 is the CTRL modifier
+	ofxGameEngine::Instance()->getKeyboardInput()->registerAlias("clearConsole", "l", -96); // See -96 is the CTRL modifier
 	submitCommand("Hello world");
 	submitCommand("Second command");
 	registerAliasBlock("jump", INPUT_PASS);
@@ -35,11 +35,11 @@ void ConsoleState::keyPressed(int key)
 					currentCommand.begin() + cursor.right()
 				);
 				cursor.set(cursor.left());
-				cursor.reset();
 			} else {
 				currentCommand.erase(currentCommand.begin() + cursor.getCursor() - 1);
 				--cursor;
 			}
+			cursor.reset();
 		}
 		break;
 	case OF_KEY_DEL:
@@ -50,10 +50,10 @@ void ConsoleState::keyPressed(int key)
 					currentCommand.begin() + cursor.right()
 				);
 				cursor.set(cursor.left());
-				cursor.reset();
 			} else {
 				currentCommand.erase(currentCommand.begin() + cursor.getCursor());
 			}
+			cursor.reset();
 		}
 		break;
 	case OF_KEY_UP:
