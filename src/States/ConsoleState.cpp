@@ -53,7 +53,7 @@ void ConsoleState::keyPressed(int key)
 		break;
 	}
 
-	cout << key << endl;
+	//cout << key << endl;
 }
 
 void ConsoleState::keyReleased(int key)
@@ -64,7 +64,12 @@ void ConsoleState::keyReleased(int key)
 
 void ConsoleState::setup()
 {
-	ofxGameEngine::Instance()->getKeyboardInput()->registerCallback(this);
+	ofxGameEngine::Instance()->getKeyboardInput()->registerKeyCallback(this);
+}
+
+void ConsoleState::exit()
+{
+	ofxGameEngine::Instance()->getKeyboardInput()->deregisterKeyCallback(this);
 }
 
 void ConsoleState::update(ofxGameEngine* game)
@@ -126,11 +131,6 @@ endloop:
 		screenPos + ofVec2f{currentCommand.size() * 8 + 7.0f, 11 + 5.0f}
 	);
 	//ofDrawLine(screenPos.x + currentCommand.size() * 8 + 7, screenPos.y + 5, screenPos.x + currentCommand.size() * 8 + 7, screenPos.y + 11 + 5);
-}
-
-void ConsoleState::exit()
-{
-	ofxGameEngine::Instance()->getKeyboardInput()->deregisterCallback(this);
 }
 
 void ConsoleState::submitCommand(string& command)

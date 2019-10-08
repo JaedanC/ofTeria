@@ -59,12 +59,12 @@ public:
 	in their keyPressed(int key) function. This won't add an instance twice and it will
 	continue to send callbacks until the deregisterCallback() function has been called. 
 	Specify what callbacks you wish to recieve by using the enum. */
-	void registerCallback(KeyboardCallbacks * callbackInstance, CallbackType callbackType=CALLBACK_PRESSED);
+	void registerKeyCallback(KeyboardCallbacks * callbackInstance, CallbackType callbackType=CALLBACK_PRESSED);
 
 	/* Call this function to tell the KeyboardInput class to no longer send keyPressed callbacks
 	to this instance anymore. This won't error if you specify an instance that does not exist. 
 	Specify what callbacks you wish to deregister by using the enum. */
-	void deregisterCallback(KeyboardCallbacks* callbackInstance, CallbackType callbackType = CALLBACK_PRESSED);
+	void deregisterKeyCallback(KeyboardCallbacks* callbackInstance, CallbackType callbackType = CALLBACK_PRESSED);
 
 	/* Call this function to bind an alias to a key. Typical Valve usage would be
 	bind a +jump      OR     registerAlias("jump", 'a');

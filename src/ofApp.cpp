@@ -42,8 +42,8 @@ void ofApp::setup(){
 
 	// ------------------------------------------------------------------------------------
 	// ------------------------------------------------------------------------------------
+	// TODO remove
 	engine->getKeyboardInput()->registerAlias("jump", 'b');
-
 
 	engine->setup();
 	engine->PushState(MenuState::Instance());

@@ -27,6 +27,7 @@ void KeyboardInput::keyReleased(int key)
 void KeyboardInput::mousePressed(int x, int y, int button)
 {
 	// TODO
+	//cout << "Mouse Input: " << x << ", " << y << ": " << button << endl;
 }
 
 void KeyboardInput::mouseReleased(int x, int y, int button)
@@ -34,7 +35,7 @@ void KeyboardInput::mouseReleased(int x, int y, int button)
 	// TODO
 }
 
-void KeyboardInput::registerCallback(KeyboardCallbacks* callbackInstance, CallbackType callbackType)
+void KeyboardInput::registerKeyCallback(KeyboardCallbacks* callbackInstance, CallbackType callbackType)
 {
 	set<KeyboardCallbacks*> * callbackSet;
 	switch (callbackType) {
@@ -51,7 +52,7 @@ void KeyboardInput::registerCallback(KeyboardCallbacks* callbackInstance, Callba
 	}
 }
 
-void KeyboardInput::deregisterCallback(KeyboardCallbacks* callbackInstance, CallbackType callbackType)
+void KeyboardInput::deregisterKeyCallback(KeyboardCallbacks* callbackInstance, CallbackType callbackType)
 {
 	set<KeyboardCallbacks*>* callbackSet;
 	switch (callbackType) {
