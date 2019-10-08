@@ -38,8 +38,12 @@ enum QueryType {
 	QUERY_RELEASED
 };
 
+enum CallbackType {
+	CALLBACK_PRESSED,
+	CALLBACK_RELEASED
+};
+
 class KeyboardInput {
-	//friend ofxGameState;
 public:
 	/*
 	These functions directly wrap around OpenFrameworks existing callback functions in the ofApp.h
@@ -53,14 +57,14 @@ public:
 
 	/* Call this function to mark a Class as wanting to recieve direct keyPressed Callbacks
 	in their keyPressed(int key) function. This won't add an instance twice and it will
-	continue to send callbacks until the deregisterKeyPressed() function has been called. */
-	void registerKeyPressedCallback(KeyboardCallbacks * callbackInstance);
-	void registerKeyReleasedCallback(KeyboardCallbacks* callbackInstance);
+	continue to send callbacks until the deregisterCallback() function has been called. 
+	Specify what callbacks you wish to recieve by using the enum. */
+	void registerCallback(KeyboardCallbacks * callbackInstance, CallbackType callbackType=CALLBACK_PRESSED);
 
 	/* Call this function to tell the KeyboardInput class to no longer send keyPressed callbacks
-	to this instance anymore. This won't error if you specify an instance that does not exist. */
-	void deregisterKeyPressedCallback(KeyboardCallbacks* callbackInstance);
-	void deregisterKeyReleasedCallback(KeyboardCallbacks* callbackInstance);
+	to this instance anymore. This won't error if you specify an instance that does not exist. 
+	Specify what callbacks you wish to deregister by using the enum. */
+	void deregisterCallback(KeyboardCallbacks* callbackInstance, CallbackType callbackType = CALLBACK_PRESSED);
 
 	/* Call this function to bind an alias to a key. Typical Valve usage would be
 	bind a +jump      OR     registerAlias("jump", 'a');
@@ -81,22 +85,15 @@ private:
 
 public:
 	/* Use these functions to query that an alias has been called globally. Not recommended to use unless
-	you have checked the stack to see if this alias is for you to use. ofxGameState::queryAliasPressed(string alias)
+	you have checked the stack to see if this alias is for you to use. ofxGameState::queryInput(const string& alias)
 	for general use instead to ensure that your State should gain access to this alias after it has been
 	passed down the stack. */
 	bool queryInput(const string& alias, QueryType queryType = QUERY_PRESSED);
-	bool queryInput(const int key, QueryType queryType = QUERY_PRESSED);
 
-	bool queryAliasPressed(string alias);
-	bool queryAliasDown(string alias);
-	bool queryAliasReleased(string alias);
-
-	/* Use these functions to query that a key has been called globalily. Not recommended for general use.
-	use registerAlias(string alias, int key) to bind a key and then use ofxGameState::queryAliasPressed(string alias)
+	/* Use this function to query that a key has been called globalily. Not recommended for general use.
+	use registerAlias(string alias, int key) to bind a key and then use ofxGameState::queryInput(const string& alias)
 	for general use. */
-	bool queryPressed(int key);
-	bool queryDown(int key);
-	bool queryReleased(int key);
+	bool queryInput(const int key, QueryType queryType = QUERY_PRESSED);
 };
 
 #endif /* KEYBOARD_INPUT_H */

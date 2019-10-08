@@ -17,9 +17,9 @@ protected:
 		) {}
 public:
 	virtual void setup();
+	virtual void exit() {}
 	virtual void update(ofxGameEngine* game);
 	virtual void draw(ofxGameEngine* game);
-	virtual void exit() {}
 
 	static PlayState* Instance() {
 		static PlayState instance;

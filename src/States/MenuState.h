@@ -18,9 +18,9 @@ protected:
 		) {}
 public:
 	virtual void setup();
+	virtual void exit() {}
 	virtual void update(ofxGameEngine* game);
 	virtual void draw(ofxGameEngine* game);
-	virtual void exit() {}
 
 	static MenuState* Instance() {
 		static MenuState instance;

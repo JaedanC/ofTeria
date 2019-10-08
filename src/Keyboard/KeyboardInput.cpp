@@ -34,35 +34,37 @@ void KeyboardInput::mouseReleased(int x, int y, int button)
 	// TODO
 }
 
-void KeyboardInput::registerKeyPressedCallback(KeyboardCallbacks* callbackInstance)
+void KeyboardInput::registerCallback(KeyboardCallbacks* callbackInstance, CallbackType callbackType)
 {
-	// Only add if it's not already inside the set
-	if (keyPressedCallbacks.count(callbackInstance) == 0) {
-		keyPressedCallbacks.insert(callbackInstance);
+	set<KeyboardCallbacks*> * callbackSet;
+	switch (callbackType) {
+	case CALLBACK_PRESSED:
+		callbackSet = &keyPressedCallbacks;
+		break;
+	case CALLBACK_RELEASED:
+		callbackSet = &keyReleasedCallbacks;
+		break;
+	}
+
+	if (callbackSet->count(callbackInstance) == 0) {
+		callbackSet->insert(callbackInstance);
 	}
 }
 
-void KeyboardInput::registerKeyReleasedCallback(KeyboardCallbacks* callbackInstance)
+void KeyboardInput::deregisterCallback(KeyboardCallbacks* callbackInstance, CallbackType callbackType)
 {
-	// Only add if it's not already inside the set
-	if (keyReleasedCallbacks.count(callbackInstance) == 0) {
-		keyReleasedCallbacks.insert(callbackInstance);
+	set<KeyboardCallbacks*>* callbackSet;
+	switch (callbackType) {
+	case CALLBACK_PRESSED:
+		callbackSet = &keyPressedCallbacks;
+		break;
+	case CALLBACK_RELEASED:
+		callbackSet = &keyReleasedCallbacks;
+		break;
 	}
-}
 
-void KeyboardInput::deregisterKeyPressedCallback(KeyboardCallbacks* callbackInstance)
-{
-	// Only remove if it's not already inside the set
-	if (keyPressedCallbacks.count(callbackInstance) != 0) {
-		keyPressedCallbacks.erase(callbackInstance);
-	}
-}
-
-void KeyboardInput::deregisterKeyReleasedCallback(KeyboardCallbacks* callbackInstance)
-{
-	// Only remove if it's not already inside the set
-	if (keyReleasedCallbacks.count(callbackInstance) != 0) {
-		keyReleasedCallbacks.erase(callbackInstance);
+	if (callbackSet->count(callbackInstance) != 0) {
+		callbackSet->erase(callbackInstance);
 	}
 }
 

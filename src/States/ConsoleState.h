@@ -46,9 +46,9 @@ public:
 	virtual void keyPressed(int key);
 	virtual void keyReleased(int key);
 	virtual void setup();
+	virtual void exit();
 	virtual void update(ofxGameEngine* game);
 	virtual void draw(ofxGameEngine* game);
-	virtual void exit();
 
 	/* Adds the current command to the deque and updates the length
 	of the history if required.*/

@@ -68,9 +68,9 @@ public:
 
 	/* All GameStates must implement these functions. */
 	virtual void setup() = 0;
+	virtual void exit() = 0;
 	virtual void update(ofxGameEngine* game) = 0;
 	virtual void draw(ofxGameEngine* game) = 0;
-	virtual void exit() = 0;
 	
 	/* Unused
 	void ChangeState(ofxGameEngine* game, ofxGameState* state) {

@@ -64,7 +64,7 @@ void ConsoleState::keyReleased(int key)
 
 void ConsoleState::setup()
 {
-	ofxGameEngine::Instance()->getKeyboardInput()->registerKeyPressedCallback(this);
+	ofxGameEngine::Instance()->getKeyboardInput()->registerCallback(this);
 }
 
 void ConsoleState::update(ofxGameEngine* game)
@@ -130,7 +130,7 @@ endloop:
 
 void ConsoleState::exit()
 {
-	ofxGameEngine::Instance()->getKeyboardInput()->deregisterKeyPressedCallback(this);
+	ofxGameEngine::Instance()->getKeyboardInput()->deregisterCallback(this);
 }
 
 void ConsoleState::submitCommand(string& command)
