@@ -31,9 +31,26 @@ public:
 		reset();
 	}
 
-	inline void operator+(int amount) {
-		cursor += amount;
-		selectionAnchor = cursor;
+	ConsoleCursor& operator++() {
+		++cursor;
+		return *this;
+	}
+
+	ConsoleCursor operator++(int) {
+		ConsoleCursor result(*this);
+		++(*this);
+		return result;
+	}
+
+	ConsoleCursor& operator--() {
+		--cursor;
+		return *this;
+	}
+
+	ConsoleCursor operator--(int) {
+		ConsoleCursor result(*this);
+		--(*this);
+		return result;
 	}
 
 	inline void highlight(int amount) {
@@ -76,10 +93,10 @@ private:
 
 	ConsoleCursor cursor;
 	int commandHistoryMarker = 0;
-	int commandHistoryMaxSize = 5;
+	int commandHistoryMaxSize = 25;
 	int showHistoryLines = 15;
 	int consoleHistoryMarker = 0;
-	int consoleHistoryMaxSize = 20;
+	int consoleHistoryMaxSize = 50;
 	ofColor colorCommand = ofColor(255, 255, 50);
 	ofColor colorPass = ofColor(50, 255, 50);
 
@@ -99,10 +116,10 @@ public:
 
 	/* Adds the current command to the deque and updates the length
 	of the history if required.*/
-	void submitCommand(string& command);
-	void addText(ConsoleEntry& entry);
+	void submitCommand(const string& command);
+	void addText(const ConsoleEntry& entry);
 	void addText(vector<string>& entries, ofColor colour = ofColor(255, 255, 255));
-	void addText(string& entry, ofColor colour = ofColor(255, 255, 255));
+	void addText(const string& entry, ofColor colour = ofColor(255, 255, 255));
 
 	void clearHistory();
 

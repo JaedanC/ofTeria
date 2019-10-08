@@ -60,6 +60,7 @@ void KeyboardInput::deregisterKeyCallback(KeyboardCallbacks* callbackInstance, C
 		callbackSet = &keyPressedCallbacks;
 		break;
 	case CALLBACK_RELEASED:
+	default:
 		callbackSet = &keyReleasedCallbacks;
 		break;
 	}
@@ -71,6 +72,12 @@ void KeyboardInput::deregisterKeyCallback(KeyboardCallbacks* callbackInstance, C
 
 void KeyboardInput::registerAlias(string alias, int key)
 {
+	// Edge case. Remap spacebar to underscore
+	if (key == '_') {
+		aliasMappings[alias].push_back(' ');
+		return;
+	}
+
 	aliasMappings[alias].push_back(key);
 }
 

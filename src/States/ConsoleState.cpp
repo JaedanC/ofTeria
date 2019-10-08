@@ -7,16 +7,16 @@
 ConsoleState ConsoleState::instance;
 
 ConsoleState::ConsoleState() : ofxGameState(
-	false, // updateTransparent
+	true, // updateTransparent
 	true, // drawTransparent
 	"ConsoleState"
 ), consoleParser(this)
 {
 	// TODO: Remove these three lines for testing
 	ofxGameEngine::Instance()->getKeyboardInput()->registerAlias("clearConsole", 'l' - 96); // See -96 is the CTRL modifier
-	submitCommand(string("Hello world"));
-	submitCommand(string("Second command"));
-	registerAliasBlock("jump", INPUT_BLOCK);
+	submitCommand("Hello world");
+	submitCommand("Second command");
+	registerAliasBlock("jump", INPUT_PASS);
 }
 
 void ConsoleState::keyPressed(int key)
@@ -26,64 +26,63 @@ void ConsoleState::keyPressed(int key)
 	switch (key) {
 	case OF_KEY_RETURN:
 		submitCommand(currentCommand);
-		currentCommand.clear();
-		shiftAnchorPoint = currentCommandCursorMarker;
 		break;
 	case OF_KEY_BACKSPACE:
-		if (currentCommand.size() > 0 && currentCommandCursorMarker > 0) {
-			if (shiftAnchorPoint != currentCommandCursorMarker) {
+		if (currentCommand.size() > 0 && cursor.getCursor() > 0) {
+			if (cursor.highlighting()) {
 				currentCommand.erase(
-					currentCommand.begin() + MIN(currentCommandCursorMarker, shiftAnchorPoint),
-					currentCommand.begin() + MAX(currentCommandCursorMarker, shiftAnchorPoint)
+					currentCommand.begin() + cursor.left(),
+					currentCommand.begin() + cursor.right()
 				);
-				currentCommandCursorMarker = MIN(currentCommandCursorMarker, shiftAnchorPoint);
-				shiftAnchorPoint = currentCommandCursorMarker;
+				cursor.set(cursor.left());
+				cursor.reset();
 			} else {
-				currentCommand.erase(currentCommand.begin() + currentCommandCursorMarker-- - 1);
+				currentCommand.erase(currentCommand.begin() + cursor.getCursor() - 1);
+				--cursor;
 			}
 		}
 		break;
 	case OF_KEY_DEL:
-		if (currentCommand.size() > 0 && currentCommandCursorMarker < currentCommand.size()) {
-			if (shiftAnchorPoint != currentCommandCursorMarker) {
+		if (currentCommand.size() > 0 && cursor.getCursor() < (int)currentCommand.size()) {
+			if (cursor.highlighting()) {
 				currentCommand.erase(
-					currentCommand.begin() + MIN(currentCommandCursorMarker, shiftAnchorPoint),
-					currentCommand.begin() + MAX(currentCommandCursorMarker, shiftAnchorPoint)
+					currentCommand.begin() + cursor.left(),
+					currentCommand.begin() + cursor.right()
 				);
-				currentCommandCursorMarker = MIN(currentCommandCursorMarker, shiftAnchorPoint);
-				shiftAnchorPoint = currentCommandCursorMarker;
+				cursor.set(cursor.left());
+				cursor.reset();
 			} else {
-				currentCommand.erase(currentCommand.begin() + currentCommandCursorMarker);
+				currentCommand.erase(currentCommand.begin() + cursor.getCursor());
 			}
 		}
 		break;
 	case OF_KEY_UP:
-		commandHistoryMarker = ofWrap(--commandHistoryMarker, -1, commandHistory.size());
-		currentCommand = (commandHistoryMarker == -1) ? "" : commandHistory[commandHistoryMarker];
-		currentCommandCursorMarker = currentCommand.size();
-		shiftAnchorPoint = currentCommandCursorMarker;
+		commandHistoryMarker = ofClamp(--commandHistoryMarker, 0, commandHistory.size());
+		currentCommand = (commandHistoryMarker == commandHistory.size()) ? "" : commandHistory[commandHistoryMarker];
+		cursor.set(currentCommand.size());
+		cursor.reset();
 		break;
 	case OF_KEY_DOWN:
-		commandHistoryMarker = ofWrap(++commandHistoryMarker, -1, commandHistory.size());
-		currentCommand = (commandHistoryMarker == -1) ? "" : commandHistory[commandHistoryMarker];
-		currentCommandCursorMarker = currentCommand.size();
-		shiftAnchorPoint = currentCommandCursorMarker;
+		commandHistoryMarker = ofClamp(++commandHistoryMarker, 0, commandHistory.size());
+		currentCommand = (commandHistoryMarker == commandHistory.size()) ? "" : commandHistory[commandHistoryMarker];
+		cursor.set(currentCommand.size());
+		cursor.reset();
 		break;
 	case OF_KEY_LEFT:
-		--currentCommandCursorMarker;
+		--cursor;
 		if (queryInput(OF_KEY_SHIFT, QUERY_DOWN)) {
 			break;
 		} else {
-			shiftAnchorPoint = currentCommandCursorMarker;
+			cursor.reset();
 		}
 		break;
 	case OF_KEY_RIGHT:
-		++currentCommandCursorMarker;
+		++cursor;
 		if (queryInput(OF_KEY_SHIFT, QUERY_DOWN)) {
 			break;
 		}
 		else {
-			shiftAnchorPoint = currentCommandCursorMarker;
+			cursor.reset();
 		}
 		break;
 	case OF_KEY_PAGE_UP:
@@ -94,7 +93,7 @@ void ConsoleState::keyPressed(int key)
 		break;
 	}
 
-	cursor.clamp(0, currentCommand.size();
+	cursor.clamp(0, currentCommand.size());
 
 	// Write key to current string buffer
 	if (key >= ' ' && key <= '~' && key != '`') {
@@ -106,19 +105,16 @@ void ConsoleState::keyPressed(int key)
 			cursor.set(cursor.left());
 		}
 
-		currentCommand.insert(currentCommand.begin() + cursor++, key);
-		shiftAnchorPoint = currentCommandCursorMarker;
+		currentCommand.insert(currentCommand.begin() + cursor.getCursor(), key);
+		++cursor;
+		cursor.reset();
 	}
 
 	// TODO: Remove
-	//cout << key << endl;
+	cout << key << endl;
 }
 
-void ConsoleState::keyReleased(int key)
-{
-	// TODO remove
-	cout << "Key from callback released " << key << endl;
-}
+void ConsoleState::keyReleased(int key) {}
 
 void ConsoleState::setup()
 {
@@ -147,7 +143,7 @@ void ConsoleState::update(ofxGameEngine* game)
 	}
 
 	if (queryInput("clearConsole") && queryInput(OF_KEY_CONTROL, QUERY_DOWN)) {
-		submitCommand(string("clear"));
+		submitCommand("clear");
 	}
 }
 
@@ -155,8 +151,7 @@ void ConsoleState::draw(ofxGameEngine* game)
 {
 	debugPush("State: ConsoleState");
 	debugPush("HistoryMarker: " + ofToString(commandHistoryMarker));
-	debugPush("CurrentCommandCursorMarker: " + ofToString(currentCommandCursorMarker));
-	debugPush("ShiftAnchorPoint: " + ofToString(shiftAnchorPoint));
+	debugPush("CurrentCommandCursorMarker: " + ofToString(cursor.getCursor()));
 
 	screenPos = { (float)ofGetWidth() - width - screenGap, (float)screenGap };
 
@@ -167,15 +162,15 @@ void ConsoleState::draw(ofxGameEngine* game)
 
 	// Draw a typing marker
 	// (Width : 8pt , Height : 11pt ) each character.
-	if (shiftAnchorPoint != currentCommandCursorMarker) {
+	if (cursor.highlighting()) {
 		ofSetColor(100, 100, 100);
 	} else {
 		ofSetColor(240, 240, 240);
 	}
 	ofSetLineWidth(1.0f);
 	ofDrawRectangle(
-		screenPos + ofVec2f{ MIN(currentCommandCursorMarker, shiftAnchorPoint) * 8 + 5.0f, 5.0f },
-		ABS(currentCommandCursorMarker - shiftAnchorPoint) * 8.0f + 1.0f,
+		screenPos + ofVec2f{ cursor.left() * 8 + 5.0f, 5.0f },
+		cursor.dist() * 8.0f + 1.0f,
 		11
 	);
 
@@ -200,21 +195,33 @@ endloop:
 	return; // You need this or c++ will complain cause of the goto
 }
 
-void ConsoleState::submitCommand(string& command)
+void ConsoleState::submitCommand(const string& command)
 {
+	if (command == "") {
+		return;
+	}
+
+	// Have to copy since the string is deleted sometimes
+	string commandCpy = command;
+
+	// Split the command into a string vector
 	vector<string> parameters;
-	pystring::split(command, parameters);
+	pystring::split(commandCpy, parameters);
 
 	bool result = consoleParser.run(parameters);
-	commandHistory.push_back(command);
+	commandHistory.push_back(commandCpy);
 
-	vector<string> commandVector = { command };
+	vector<string> commandVector = { commandCpy };
 	consoleHistory.emplace_back(commandVector, result ? colorPass : colorCommand);
 
 	cullHistory();
+	currentCommand.clear();
+	cursor.clamp(0, currentCommand.size());
+	consoleHistoryMarker = 0;
+	commandHistoryMarker = commandHistory.size();
 }
 
-void ConsoleState::addText(ConsoleEntry& entry)
+void ConsoleState::addText(const ConsoleEntry& entry)
 {
 	consoleHistory.push_back(entry);
 }
@@ -225,7 +232,7 @@ void ConsoleState::addText(vector<string>& strings, ofColor colour)
 	addText(entry);
 }
 
-void ConsoleState::addText(string& entry, ofColor colour)
+void ConsoleState::addText(const string& entry, ofColor colour)
 {
 	vector<string> entries = { entry };
 	addText(entries, colour);

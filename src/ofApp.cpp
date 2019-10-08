@@ -34,16 +34,17 @@ void ofApp::setup(){
 	// ------------------------------------------------------------------------------------
 	// ------------------------------------------------------------------------------------
 	
+	// Load bindings
 	vector<string> aliases = settings.getAllValues("alias", "alias");
 	for (string& alias : aliases) {
-		string binding = settings.loadSetString("bindings", alias, "");
-		engine->getKeyboardInput()->registerAlias(alias, binding[0]);
+		vector<string> bindings = settings.getAllValues("bindings", alias);
+		for (string& binding : bindings) {
+			engine->getKeyboardInput()->registerAlias(alias, binding[0]);
+		}
 	}
 
 	// ------------------------------------------------------------------------------------
 	// ------------------------------------------------------------------------------------
-	// TODO remove
-	engine->getKeyboardInput()->registerAlias("jump", 'b');
 
 	engine->setup();
 	engine->PushState(MenuState::Instance());

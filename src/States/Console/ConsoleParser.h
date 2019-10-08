@@ -21,7 +21,7 @@ private:
 public:
 	explicit ConsoleParser(ConsoleState* consoleState);
 
-	bool run(vector<string>& command);
+	bool run(vector<string> command);
 };
 
 #endif /* CONSOLE_PARSER_H */

@@ -302,7 +302,7 @@ string ofxIniFile::loadSetString(string section, string key, string defaultValue
 	string& result = getString(section, key, defaultValue);
 	string toWrite = result;
 	// Wierd case where spaces need to be enclosed
-	if (result == "' '") {
+	if (result == "_") {
 		result = " ";
 	}
 

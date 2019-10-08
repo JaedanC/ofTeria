@@ -21,7 +21,7 @@ ConsoleParser::ConsoleParser(ConsoleState* consoleState)
 	};
 }
 
-bool ConsoleParser::run(vector<string>& command)
+bool ConsoleParser::run(vector<string> command)
 {
 	if (command.size() < 1) {
 		return false;
@@ -38,6 +38,7 @@ bool ConsoleParser::run(vector<string>& command)
 		consoleState->addText("Usage: " + ofToString(c.commandHelp), colorFailed);
 		return false;
 	}
+
 	command.erase(command.begin());
 	c.function(command);
 
