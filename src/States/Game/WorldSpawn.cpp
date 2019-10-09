@@ -1,14 +1,17 @@
 #include "WorldSpawn.h"
 
-ofVec2f convertScreenPosToWorldPos(ofVec2f& cameraWorldPos, ofVec2f& screenPos, int zoom) const {
+ofVec2f const WorldSpawn::convertScreenPosToWorldPos(ofVec2f& cameraWorldPos, ofVec2f& screenPos, int zoom)
+{
 	return cameraWorldPos + screenPos / zoom;
 }
 
 void WorldSpawn::draw()
 {
+	drawBackground();
+
 	pushCamera();
-	drawWorld();
+	drawForeground();
 	popCamera();
 
-	drawScreen();
+	drawOverlay();
 }

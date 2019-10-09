@@ -23,10 +23,12 @@ public:
 	void draw();
 
 private:
-	void drawWorld();
-	void drawScreen();
+	void drawBackground();
+	void drawForeground();
+	void drawOverlay();
+
 	void pushCamera();
-	void popCamera
+	void popCamera();
 };
 
 #endif /* WORLD_SPAWN_H */
