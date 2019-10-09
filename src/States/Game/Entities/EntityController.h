@@ -3,9 +3,9 @@
 #define ENTITY_CONTROLLER_H
 
 #include "ofMain.h"
-#include "../WorldSpawn.h"
 #include "Entity/Player.h"
 
+class WorldSpawn;
 class EntityController {
 private:
 	WorldSpawn* worldSpawn;
@@ -14,8 +14,8 @@ private:
 public:
 	EntityController(WorldSpawn* worldSpawn);
 
-	inline WorldSpawn* getWorldSpawn() { return worldSpawn; }
-	inline Player* getPlayer() { return &player; }
+	inline WorldSpawn* getWorldSpawn();
+	inline Player* getPlayer();
 
 	void update();
 	void draw();

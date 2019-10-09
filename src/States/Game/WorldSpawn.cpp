@@ -26,7 +26,7 @@ void WorldSpawn::draw()
 	drawBackground();
 
 	pushCamera();
-	drawForeground();
+	drawWorld();
 	popCamera();
 
 	drawOverlay();
@@ -34,21 +34,25 @@ void WorldSpawn::draw()
 
 void WorldSpawn::drawBackground()
 {
+	// TODO
 }
 
-void WorldSpawn::drawForeground()
+void WorldSpawn::drawWorld()
 {
 	getEntityController()->draw();
 }
 
 void WorldSpawn::drawOverlay()
 {
+	// TODO
 }
 
 void WorldSpawn::pushCamera()
 {
+	getEntityController()->getPlayer()->getCamera()->pushCameraMatrix();
 }
 
 void WorldSpawn::popCamera()
 {
+	getEntityController()->getPlayer()->getCamera()->popCameraMatrix();
 }

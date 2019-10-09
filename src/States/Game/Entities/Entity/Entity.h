@@ -3,10 +3,10 @@
 #define ENTITY_H
 
 #include "ofMain.h"
-#include "../EntityController.h"
 
+class EntityController;
 class Entity {
-private:
+protected:
 	EntityController* entityController;
 	ofVec2f worldPos;
 
@@ -14,8 +14,8 @@ public:
 	Entity(EntityController* entityController);
 	virtual ~Entity() {}
 
-	inline ofVec2f* getWorldPos() { return &worldPos; }
-	inline EntityController* getEntityController() { return entityController; }
+	inline ofVec2f* getWorldPos();
+	inline EntityController* getEntityController();
 	// TODO: SpriteController
 	// TODO: vector<Hitbox> hitboxes
 

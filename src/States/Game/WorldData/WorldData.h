@@ -3,9 +3,9 @@
 #define WORLD_DATA_H
 #include "ofMain.h"
 #include "Chunk.h"
-#include "../WorldSpawn.h"
 #include "../addons/ofxMemoryMapping/ofxMemoryMapping.h"
 
+class WorldSpawn;
 class WorldData {
 private:
 	WorldSpawn* worldSpawn;
@@ -37,11 +37,12 @@ private:
 public:
 	WorldData(const string& worldName, WorldSpawn* worldSpawn);
 
-	inline ofVec2f convertChunkIdToVec(int id) { return ofVec2f(id % numChunksX, id / numChunksX); }
-	inline int convertChunkVecToId(const ofVec2f& vec) { return (int)(vec.y * numChunksX + vec.x); }
-	inline ofxMemoryMapping* getWorldFile() { return &worldFile; }
-	inline size_t getChunkDataSize() { return sizeof(ChunkSaved) + chunkWidth * chunkHeight * sizeof(Block); }
-	inline WorldSpawn* getWorldSpawn() { return worldSpawn; }
+	inline ofVec2f convertChunkIdToVec(int id);
+	inline int convertChunkVecToId(const ofVec2f& vec);
+	inline ofxMemoryMapping* getWorldFile();
+	inline size_t getChunkDataSize();
+	inline WorldSpawn* getWorldSpawn();
+	inline ofVec2f getBlockDim();
 
 	void updateChunks();
 	void freeChunk(Chunk* chunk);

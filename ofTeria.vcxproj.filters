@@ -24,6 +24,8 @@
     <ClCompile Include="src\States\Game\WorldData\Chunk.cpp" />
     <ClCompile Include="src\States\Game\Entities\EntityController.cpp" />
     <ClCompile Include="src\States\Game\Entities\Entity\Player.cpp" />
+    <ClCompile Include="src\States\Game\Entities\Entity\Entity.cpp" />
+    <ClCompile Include="src\States\Game\Entities\Entity\Camera\Camera.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="src">

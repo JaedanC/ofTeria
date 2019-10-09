@@ -12,8 +12,7 @@ ConsoleState::ConsoleState() : ofxGameState(
 	"ConsoleState"
 ), consoleParser(this)
 {
-	// 
-	: Remove these three lines for testing
+	// Remove these three lines for testing
 	ofxGameEngine::Instance()->getKeyboardInput()->registerAlias("clearConsole", "l", -96); // See -96 is the CTRL modifier
 	submitCommand("Hello world");
 	submitCommand("Second command");

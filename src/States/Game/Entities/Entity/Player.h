@@ -6,13 +6,19 @@
 #include "Entity.h"
 #include "Camera/Camera.h"
 
+class EntityController;
 class Player : public Entity {
 private:
 	Camera camera;
-public:
-	Player();
 
-	inline Camera* getCamera() { return &camera; }
+public:
+	Player(EntityController* entityController);
+
+	inline Camera* getCamera();
+	inline EntityController* getEntityController();
+
+	virtual void update();
+	virtual void draw();
 };
 
 #endif /* PLAYER_H */

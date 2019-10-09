@@ -2,16 +2,46 @@
 #include "Chunk.h"
 #include "../WorldSpawn.h"
 
-WorldData::WorldData(const string& worldName, WorldSpawn * worldSpawn)
+WorldData::WorldData(const string& worldName, WorldSpawn* worldSpawn)
 	: worldName(worldName), worldFile(worldName), worldSpawn(worldSpawn)
 {
 
 }
 
+inline ofVec2f WorldData::convertChunkIdToVec(int id)
+{
+	return ofVec2f(id % numChunksX, id / numChunksX);
+}
+
+inline int WorldData::convertChunkVecToId(const ofVec2f& vec)
+{
+	return (int)(vec.y * numChunksX + vec.x);
+}
+
+inline ofxMemoryMapping* WorldData::getWorldFile()
+{
+	return &worldFile;
+}
+
+inline size_t WorldData::getChunkDataSize()
+{
+	return sizeof(ChunkSaved) + chunkWidth * chunkHeight * sizeof(Block);
+}
+
+inline WorldSpawn* WorldData::getWorldSpawn()
+{
+	return worldSpawn;
+}
+
+inline ofVec2f WorldData::getBlockDim()
+{
+	return ofVec2f(blockWidth, blockHeight);
+}
+
 void WorldData::updateChunks()
 {
 	// TODO: Implement this function
-	ofVec2f * playerPos = getWorldSpawn()->getEntityController()->getPlayer()->getWorldPos();
+	ofVec2f* playerPos = getWorldSpawn()->getEntityController()->getPlayer()->getWorldPos();
 	ofVec2f copy = *(playerPos);
 
 	copy.x = copy.x / blockWidth;
@@ -29,7 +59,7 @@ void WorldData::updateChunks()
 
 void WorldData::freeChunk(Chunk* chunk)
 {
-	ofVec2f &chunkPos = chunk->getSaveDataPtr()->chunkPos;
+	ofVec2f& chunkPos = chunk->getSaveDataPtr()->chunkPos;
 	freeChunk(chunkPos);
 }
 
@@ -40,8 +70,9 @@ void WorldData::freeChunk(const ofVec2f& chunkPos)
 		return;
 	}
 
-	delete[] loadedChunks[chunkPos];
+	Chunk* chunk = loadedChunks[chunkPos];
 	loadedChunks.erase(chunkPos);
+	delete[] chunk;
 }
 
 Chunk* WorldData::loadChunk(const ofVec2f& chunkPos)
@@ -63,10 +94,10 @@ Block* WorldData::getBlock(const ofVec2f& worldPos)
 		worldPos.y / chunkHeight
 	};
 
-	ofVec2f chunkRelativePos = {
-		(int)worldPos.x % chunkWidth,
-		(int)worldPos.y % chunkHeight
-	};
+	int a = static_cast<int>(worldPos.x) % chunkWidth;
+	int b = static_cast<int>(worldPos.y) % chunkHeight;
+
+	ofVec2f chunkRelativePos = { (float)a, (float)b };
 
 	return getBlock(chunkPos, chunkRelativePos);
 }

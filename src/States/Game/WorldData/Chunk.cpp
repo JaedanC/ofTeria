@@ -1,4 +1,5 @@
 #include "Chunk.h"
+#include "WorldData.h"
 
 Chunk::Chunk(ofVec2f chunkPos, int chunkWidth, int chunkHeight, WorldData* worldData)
 	: save(chunkPos, chunkWidth, chunkHeight)
@@ -29,4 +30,9 @@ Block* Chunk::getBlock(const ofVec2f& chunkRelativePos)
 Block* Chunk::getBlock(int chunkIndex)
 {
 	return &blocks[chunkIndex];
+}
+
+inline ChunkSaved* Chunk::getSaveDataPtr()
+{
+	return &save;
 }

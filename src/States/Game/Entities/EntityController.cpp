@@ -5,3 +5,23 @@ EntityController::EntityController(WorldSpawn* worldSpawn)
 {
 
 }
+
+inline WorldSpawn* EntityController::getWorldSpawn()
+{
+	return worldSpawn;
+}
+
+inline Player* EntityController::getPlayer()
+{
+	return &player;
+}
+
+void EntityController::update()
+{
+	getPlayer()->update();
+}
+
+void EntityController::draw()
+{
+	getPlayer()->draw();
+}

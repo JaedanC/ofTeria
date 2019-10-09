@@ -3,7 +3,6 @@
 #ifndef CHUNK_H
 #define CHUNK_H
 #include "ofMain.h"
-#include "WorldData.h"
 #include "../addons/ofxMemoryMapping/ofxMemoryMapping.h"
 
 struct Block {
@@ -24,6 +23,7 @@ struct ChunkSaved {
 	int numBlocks;
 };
 
+class WorldData;
 class Chunk {
 private:
 	WorldData* worldData;
@@ -35,8 +35,7 @@ public:
 	void saveChunk();
 	Block* getBlock(const ofVec2f& chunkRelativePos);
 	Block* getBlock(int chunkIndex);
-	inline ChunkSaved* getSaveDataPtr() { return &save; }
+	inline ChunkSaved* getSaveDataPtr();
 };
-
 
 #endif /* CHUNK_H */

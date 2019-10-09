@@ -25,7 +25,7 @@ public:
 
 private:
 	void drawBackground();
-	void drawForeground();
+	void drawWorld();
 	void drawOverlay();
 
 	void pushCamera();
