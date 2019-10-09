@@ -19,6 +19,11 @@
     <ClCompile Include="addons\pystring\pystring.cpp" />
     <ClCompile Include="addons\ofxGameStates\ofxGameState.cpp" />
     <ClCompile Include="src\States\Console\ConsoleParser.cpp" />
+    <ClCompile Include="src\States\Game\WorldSpawn.cpp" />
+    <ClCompile Include="src\States\Game\WorldData\WorldData.cpp" />
+    <ClCompile Include="src\States\Game\WorldData\Chunk.cpp" />
+    <ClCompile Include="src\States\Game\Entities\EntityController.cpp" />
+    <ClCompile Include="src\States\Game\Entities\Entity\Player.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="src">
@@ -44,6 +49,12 @@
     <ClInclude Include="src\States\Console\ConsoleParser.h" />
     <ClInclude Include="src\States\Console\Commands.h" />
     <ClInclude Include="src\States\Game\WorldSpawn.h" />
+    <ClInclude Include="src\States\Game\WorldData\Chunk.h" />
+    <ClInclude Include="src\States\Game\WorldData\WorldData.h" />
+    <ClInclude Include="src\States\Game\Entities\EntityController.h" />
+    <ClInclude Include="src\States\Game\Entities\Entity\Entity.h" />
+    <ClInclude Include="src\States\Game\Entities\Entity\Player.h" />
+    <ClInclude Include="src\States\Game\Entities\Entity\Camera\Camera.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="icon.rc" />

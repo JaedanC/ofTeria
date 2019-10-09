@@ -11,7 +11,7 @@ void Chunk::saveChunk()
 	ofxMemoryMapping* worldFile = worldData->getWorldFile();
 
 	// This is the offset where to save in the file.
-	int offset = worldData->convertChunkVecToId(save.chunkPos) * sizeToSave();
+	int offset = worldData->convertChunkVecToId(save.chunkPos) * worldData->getChunkDataSize();
 	
 	// Save the Chunk MetaData first.
 	worldFile->write(&save, offset, sizeof(ChunkSaved));
@@ -21,7 +21,12 @@ void Chunk::saveChunk()
 	worldFile->write(blocks, offset, save.numBlocks * sizeof(Block));
 }
 
-size_t Chunk::sizeToSave()
+Block* Chunk::getBlock(const ofVec2f& chunkRelativePos)
 {
-	return sizeof(save) + save.numBlocks * sizeof(Block);
+	return getBlock(worldData->convertChunkVecToId(chunkRelativePos));
+}
+
+Block* Chunk::getBlock(int chunkIndex)
+{
+	return &blocks[chunkIndex];
 }

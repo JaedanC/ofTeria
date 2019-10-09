@@ -18,12 +18,11 @@ void PlayState::update(ofxGameEngine* game)
 	if (queryInput("toggleConsole")) {
 		ofxGameEngine::Instance()->PushState(ConsoleState::Instance());
 	}
-	if (queryInput("shoot") && queryInput(OF_KEY_ALT, QUERY_DOWN)) {
-		cout << "Playstate shooting + Alt\n";
-	}
+
+	worldSpawn->update();
 }
 
 void PlayState::draw(ofxGameEngine* game)
 {
-	debugPush("State: PlayState");
+	worldSpawn->draw();
 }

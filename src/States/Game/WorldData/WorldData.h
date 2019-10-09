@@ -3,10 +3,16 @@
 #define WORLD_DATA_H
 #include "ofMain.h"
 #include "Chunk.h"
+#include "../WorldSpawn.h"
 #include "../addons/ofxMemoryMapping/ofxMemoryMapping.h"
 
 class WorldData {
 private:
+	WorldSpawn* worldSpawn;
+
+	int blockWidth = 32;
+	int blockHeight = 32;
+
 	int chunkWidth = 128;
 	int chunkHeight = 128;
 
@@ -28,20 +34,23 @@ private:
 	/* Stores a cache of the loaded chunks in a map. Retrievable by the chunkPos. */
 	unordered_map<ofVec2f, Chunk*> loadedChunks;
 
-
 public:
-	WorldData(const string& worldName);
+	WorldData(const string& worldName, WorldSpawn* worldSpawn);
 
 	inline ofVec2f convertChunkIdToVec(int id) { return ofVec2f(id % numChunksX, id / numChunksX); }
 	inline int convertChunkVecToId(const ofVec2f& vec) { return (int)(vec.y * numChunksX + vec.x); }
 	inline ofxMemoryMapping* getWorldFile() { return &worldFile; }
+	inline size_t getChunkDataSize() { return sizeof(ChunkSaved) + chunkWidth * chunkHeight * sizeof(Block); }
+	inline WorldSpawn* getWorldSpawn() { return worldSpawn; }
 
 	void updateChunks();
-	void freeChunk(ofVec2f& chunkPos);
-	void loadChunk(ofVec2f& chunkPos);
+	void freeChunk(Chunk* chunk);
+	void freeChunk(const ofVec2f& chunkPos);
+	Chunk* loadChunk(const ofVec2f& chunkPos);
 
-	Block* getBlock(ofVec2f worldPos);
-	Block* getBlock(ofVec2f& chunkPos, ofVec2f& chunkRelativePos);
+	Block* getBlock(const ofVec2f& worldPos);
+	Block* getBlock(const ofVec2f& chunkPos, const ofVec2f& chunkRelativePos);
+	Chunk* getChunk(const ofVec2f& chunkPos);
 };
 
 

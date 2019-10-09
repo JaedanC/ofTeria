@@ -448,7 +448,7 @@ typedef int Py_ssize_t;
     {
         int result = _string_tailmatch(str, suffix,
                                        (Py_ssize_t) start, (Py_ssize_t) end, +1);
-        //if (result == -1) // TODO: Error condition
+        //if (result == -1) // TOD.O: Error condition
         
         return static_cast<bool>(result);
     }
@@ -458,7 +458,7 @@ typedef int Py_ssize_t;
     {
         int result = _string_tailmatch(str, prefix,
                                        (Py_ssize_t) start, (Py_ssize_t) end, -1);
-        //if (result == -1) // TODO: Error condition
+        //if (result == -1) // TOD.O: Error condition
         
         return static_cast<bool>(result);
     }
@@ -726,7 +726,7 @@ typedef int Py_ssize_t;
 
         if ( table.size() != 256 )
         {
-            // TODO : raise exception instead
+            // TOD.O : raise exception instead
             return str;
         }
 

@@ -190,6 +190,11 @@
     <ClCompile Include="src\Keyboard\KeyboardInput.cpp" />
     <ClCompile Include="src\States\ConsoleState.cpp" />
     <ClCompile Include="src\States\Console\ConsoleParser.cpp" />
+    <ClCompile Include="src\States\Game\Entities\EntityController.cpp" />
+    <ClCompile Include="src\States\Game\Entities\Entity\Player.cpp" />
+    <ClCompile Include="src\States\Game\WorldData\Chunk.cpp" />
+    <ClCompile Include="src\States\Game\WorldData\WorldData.cpp" />
+    <ClCompile Include="src\States\Game\WorldSpawn.cpp" />
     <ClCompile Include="src\States\MenuState.cpp" />
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\ofApp.cpp" />
@@ -204,6 +209,12 @@
     <ClInclude Include="addons\ofxIni\SimpleIni.h" />
     <ClInclude Include="addons\ofxMemoryMapping\ofxMemoryMapping.h" />
     <ClInclude Include="addons\pystring\pystring.h" />
+    <ClInclude Include="src\States\Game\Entities\EntityController.h" />
+    <ClInclude Include="src\States\Game\Entities\Entity\Camera\Camera.h" />
+    <ClInclude Include="src\States\Game\Entities\Entity\Entity.h" />
+    <ClInclude Include="src\States\Game\Entities\Entity\Player.h" />
+    <ClInclude Include="src\States\Game\WorldData\Chunk.h" />
+    <ClInclude Include="src\States\Game\WorldData\WorldData.h" />
     <ClInclude Include="src\States\Game\WorldSpawn.h" />
     <ClInclude Include="src\Keyboard\KeyboardInput.h" />
     <ClInclude Include="src\States\ConsoleState.h" />

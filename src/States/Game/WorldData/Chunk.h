@@ -25,14 +25,17 @@ struct ChunkSaved {
 };
 
 class Chunk {
+private:
 	WorldData* worldData;
 	Block* blocks;
-
 	ChunkSaved save;
-	Chunk(ofVec2f chunkPos, int chunkWidth, int chunkHeight, WorldData* worldData);
 
+public:
+	Chunk(ofVec2f chunkPos, int chunkWidth, int chunkHeight, WorldData* worldData);
 	void saveChunk();
-	inline size_t sizeToSave();
+	Block* getBlock(const ofVec2f& chunkRelativePos);
+	Block* getBlock(int chunkIndex);
+	inline ChunkSaved* getSaveDataPtr() { return &save; }
 };
 
 

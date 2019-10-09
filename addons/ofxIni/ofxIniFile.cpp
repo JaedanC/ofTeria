@@ -191,7 +191,7 @@ float ofxIniFile::getFloat(
 				,float fDefaultValue 
 ) 
 {
-	// TODO how to make this cleaner?
+	// TOD.O how to make this cleaner?
 	istringstream iss;
 	ostringstream oss;
 	oss << fDefaultValue; 
