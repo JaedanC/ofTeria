@@ -4,19 +4,17 @@
 
 #include "ofMain.h"
 #include "Entity.h"
-#include "Camera/Camera.h"
 
+class Camera;
 class EntityController;
 class Player : public Entity {
 private:
-	Camera camera;
+	shared_ptr<Camera> camera;
 
 public:
-	Player(EntityController* entityController);
+	Player(weak_ptr<EntityController> entityController);
 
-	inline Camera* getCamera();
-	inline EntityController* getEntityController();
-
+	inline weak_ptr<Camera> getCamera();
 	virtual void update();
 	virtual void draw();
 };

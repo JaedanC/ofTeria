@@ -1,9 +1,8 @@
 #pragma once
-#pragma once
 #ifndef CHUNK_H
 #define CHUNK_H
+
 #include "ofMain.h"
-#include "../addons/ofxMemoryMapping/ofxMemoryMapping.h"
 
 struct Block {
 	short id;
@@ -26,12 +25,12 @@ struct ChunkSaved {
 class WorldData;
 class Chunk {
 private:
-	WorldData* worldData;
+	weak_ptr<WorldData> worldData;
 	Block* blocks;
 	ChunkSaved save;
 
 public:
-	Chunk(ofVec2f chunkPos, int chunkWidth, int chunkHeight, WorldData* worldData);
+	Chunk(ofVec2f chunkPos, int chunkWidth, int chunkHeight, weak_ptr<WorldData> worldData);
 	void saveChunk();
 	Block* getBlock(const ofVec2f& chunkRelativePos);
 	Block* getBlock(int chunkIndex);

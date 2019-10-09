@@ -2,20 +2,21 @@
 #include "../Player.h"
 #include "../../EntityController.h"
 #include "../../../WorldSpawn.h"
+#include "../../../WorldData/WorldData.h"
 
-Camera::Camera(Player* player)
+Camera::Camera(weak_ptr<Player> player)
 	: player(player)
 {
 }
 
-inline Player* Camera::getPlayer()
+inline weak_ptr<Player> Camera::getPlayer()
 {
 	return player;
 }
 
 inline ofVec2f* Camera::getWorldPos()
 {
-	return getPlayer()->getWorldPos();
+	return getPlayer().lock()->getWorldPos();
 }
 
 inline void Camera::setZoom(float zoom_)
@@ -25,7 +26,7 @@ inline void Camera::setZoom(float zoom_)
 
 void Camera::pushCameraMatrix()
 {
-	ofVec2f& blockDim = getPlayer()->getEntityController()->getWorldSpawn()->getWorldData()->getBlockDim();
+	ofVec2f& blockDim = getPlayer().lock()->getEntityController().lock()->getWorldSpawn().lock()->getWorldData().lock()->getBlockDim();
 	ofPushMatrix();
 	ofScale(zoom / blockDim.x, zoom / blockDim.y);
 	ofTranslate(-(*getWorldPos()));

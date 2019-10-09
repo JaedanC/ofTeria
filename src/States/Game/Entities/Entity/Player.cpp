@@ -1,19 +1,15 @@
 #include "Player.h"
 #include "../addons/ofxDebugger/ofxDebugger.h"
+#include "Camera/Camera.h"
 
-Player::Player(EntityController* entityController)
-	: Entity(entityController), camera(this)
+Player::Player(weak_ptr<EntityController> entityController)
+	: Entity(entityController), camera(make_shared<Camera>(this))
 {
 }
 
-inline Camera* Player::getCamera()
+inline weak_ptr<Camera> Player::getCamera()
 {
-	return &camera;
-}
-
-inline EntityController* Player::getEntityController()
-{
-	return entityController;
+	return camera;
 }
 
 void Player::update()

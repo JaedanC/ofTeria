@@ -3,18 +3,17 @@
 #define CAMERA_H
 
 #include "ofMain.h"
-//#include "../Player.h"
 
 class Player;
 class Camera {
 private:
-	Player* player;
+	weak_ptr<Player> player;
 	ofVec2f offsetPos;
 	float zoom = 1;
 
 public:
-	Camera(Player* player);
-	inline Player* getPlayer();
+	Camera(weak_ptr<Player> player);
+	inline weak_ptr<Player> getPlayer();
 	inline ofVec2f* getWorldPos();
 	inline void setZoom(float zoom);
 

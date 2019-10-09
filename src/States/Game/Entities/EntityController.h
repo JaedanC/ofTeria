@@ -3,19 +3,19 @@
 #define ENTITY_CONTROLLER_H
 
 #include "ofMain.h"
-#include "Entity/Player.h"
 
 class WorldSpawn;
+class Player;
 class EntityController {
 private:
-	WorldSpawn* worldSpawn;
-	Player player;
+	weak_ptr<WorldSpawn> worldSpawn;
+	shared_ptr<Player> player;
 
 public:
-	EntityController(WorldSpawn* worldSpawn);
+	EntityController(weak_ptr<WorldSpawn> worldSpawn);
 
-	inline WorldSpawn* getWorldSpawn();
-	inline Player* getPlayer();
+	inline weak_ptr<WorldSpawn> getWorldSpawn();
+	inline weak_ptr<Player> getPlayer();
 
 	void update();
 	void draw();

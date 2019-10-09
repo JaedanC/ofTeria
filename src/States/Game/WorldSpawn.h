@@ -1,23 +1,24 @@
 #pragma once
 #ifndef WORLD_SPAWN_H
 #define WORLD_SPAWN_H
-#include "ofMain.h"
-#include "WorldData/WorldData.h"
-#include "Entities/EntityController.h"
 
+#include "ofMain.h"
+
+class WorldData;
+class EntityController;
 class WorldSpawn {
 private:
 	string worldName;
-	WorldData worldData;
-	EntityController entityController;
+	shared_ptr<WorldData> worldData;
+	shared_ptr<EntityController> entityController;
 
 public:
 	WorldSpawn(const string& worldName);
 	ofVec2f const convertScreenPosToWorldPos(ofVec2f& cameraWorldPos, ofVec2f& screenPos, int zoom=1);
 
-	inline string& getWorldName() { return worldName; }
-	inline WorldData* getWorldData() { return &worldData; }
-	inline EntityController* getEntityController() { return &entityController; }
+	inline string& getWorldName();
+	inline weak_ptr<WorldData> getWorldData();
+	inline weak_ptr<EntityController> getEntityController();
 
 	void setup(const string& newWorldName);
 	void update();

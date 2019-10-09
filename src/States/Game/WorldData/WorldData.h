@@ -1,14 +1,17 @@
 #pragma once
 #ifndef WORLD_DATA_H
 #define WORLD_DATA_H
+
 #include "ofMain.h"
 #include "Chunk.h"
-#include "../addons/ofxMemoryMapping/ofxMemoryMapping.h"
 
 class WorldSpawn;
+class ofxMemoryMapping;
 class WorldData {
 private:
-	WorldSpawn* worldSpawn;
+	string worldName;
+	weak_ptr<WorldSpawn> worldSpawn;
+	shared_ptr<ofxMemoryMapping> worldFile;
 
 	int blockWidth = 32;
 	int blockHeight = 32;
@@ -28,20 +31,18 @@ private:
 	int numChunksY = ceil((float)worldHeight / chunkHeight);
 	int numChunks = numChunks * numChunksY;
 
-	string worldName;
-	ofxMemoryMapping worldFile;
-
 	/* Stores a cache of the loaded chunks in a map. Retrievable by the chunkPos. */
-	unordered_map<ofVec2f, Chunk*> loadedChunks;
+	//unordered_map<ofVec2f, Chunk*> loadedChunks;
 
 public:
-	WorldData(const string& worldName, WorldSpawn* worldSpawn);
+	WorldData(const string& worldName, weak_ptr<WorldSpawn> worldSpawn);
+
+	inline weak_ptr<ofxMemoryMapping> getWorldFile();
+	inline weak_ptr<WorldSpawn> getWorldSpawn();
 
 	inline ofVec2f convertChunkIdToVec(int id);
 	inline int convertChunkVecToId(const ofVec2f& vec);
-	inline ofxMemoryMapping* getWorldFile();
 	inline size_t getChunkDataSize();
-	inline WorldSpawn* getWorldSpawn();
 	inline ofVec2f getBlockDim();
 
 	void updateChunks();

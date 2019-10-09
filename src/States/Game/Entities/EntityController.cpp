@@ -1,27 +1,28 @@
 #include "EntityController.h"
+#include "Entity/Player.h"
 
-EntityController::EntityController(WorldSpawn* worldSpawn)
-	: worldSpawn(worldSpawn), player(this)
+EntityController::EntityController(weak_ptr<WorldSpawn> worldSpawn)
+	: worldSpawn(worldSpawn), player(make_shared<Player>(this))
 {
 
 }
 
-inline WorldSpawn* EntityController::getWorldSpawn()
+inline weak_ptr<WorldSpawn> EntityController::getWorldSpawn()
 {
 	return worldSpawn;
 }
 
-inline Player* EntityController::getPlayer()
+inline weak_ptr<Player> EntityController::getPlayer()
 {
-	return &player;
+	return player;
 }
 
 void EntityController::update()
 {
-	getPlayer()->update();
+	getPlayer().lock()->update();
 }
 
 void EntityController::draw()
 {
-	getPlayer()->draw();
+	getPlayer().lock()->draw();
 }
