@@ -38,6 +38,7 @@ protected:
 	/* Any Variables for each State should be added as a protected member and initialised in the
 	constructor. */
 	ofxGameState(const bool& updateTransparent, const bool& drawTransparent, const string& stateName); 
+	virtual ~ofxGameState() {};
 
 public:
 	inline bool getUpdateTransparent() const { return updateTransparent; }

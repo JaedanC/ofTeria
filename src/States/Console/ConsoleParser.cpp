@@ -5,20 +5,10 @@
 ConsoleParser::ConsoleParser(ConsoleState* consoleState)
 	: consoleState(consoleState)
 {
-	// Add bind command
-	commandMap["bind"] = {
-		"bind",
-		"bind <key> <alias> binds a key to an alias.",
-		2,
-		bind
-	};
-
-	commandMap["clear"] = {
-		"clear",
-		"clear - clears the screen",
-		0,
-		clear
-	};
+	// Add Commands
+	addCommand("bind", "bind <key> <alias> - Binds a key to an alias", 2, bind);
+	addCommand("clear", "clear - (the console)", 0, clear);
+	addCommand("help", "help - (show this info)", 0, help);
 }
 
 bool ConsoleParser::run(vector<string> command)
@@ -34,7 +24,6 @@ bool ConsoleParser::run(vector<string> command)
 
 	Command& c = commandMap[command[0]];
 	if (c.parameters > (int)command.size() - 1 || c.parameters == -1) {
-		consoleState->addText(ofToString(c.command) + ": Incorrect parameter amount. Expected " + ofToString(c.parameters) + ". Provided " + ofToString(command.size() - 1) + "\n", colorFailed);
 		consoleState->addText("Usage: " + ofToString(c.commandHelp), colorFailed);
 		return false;
 	}
@@ -43,4 +32,9 @@ bool ConsoleParser::run(vector<string> command)
 	c.function(command);
 
 	return true;
+}
+
+void ConsoleParser::addCommand(const string& name, const string& help, int parameters, void(*functionToCall)(vector<string>))
+{
+	commandMap[name] = { name, help, parameters, functionToCall };
 }

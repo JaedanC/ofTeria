@@ -204,6 +204,7 @@
     <ClInclude Include="addons\ofxIni\SimpleIni.h" />
     <ClInclude Include="addons\ofxMemoryMapping\ofxMemoryMapping.h" />
     <ClInclude Include="addons\pystring\pystring.h" />
+    <ClInclude Include="src\States\Game\WorldSpawn.h" />
     <ClInclude Include="src\Keyboard\KeyboardInput.h" />
     <ClInclude Include="src\States\ConsoleState.h" />
     <ClInclude Include="src\States\Console\Commands.h" />
