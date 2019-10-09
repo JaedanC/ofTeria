@@ -83,7 +83,7 @@ class ConsoleState : public ofxGameState, public KeyboardCallbacks
 {
 private:
 	ofVec2f screenPos;
-	int width = 330;
+	int width = 370;
 	int height = 250;
 	int screenGap = 15;
 
@@ -130,6 +130,8 @@ public:
 	static ConsoleState* Instance() {
 		return &instance;
 	}
+
+	inline ConsoleParser& getConsoleParser() { return consoleParser; }
 };
 
 

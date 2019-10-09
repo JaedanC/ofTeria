@@ -10,3 +10,11 @@ void bind(vector<string> parameters) {
 void clear(vector<string> parameters) {
 	ConsoleState::Instance()->clearHistory();
 }
+
+void help(vector<string> parameters) {
+	auto& commands = ConsoleState::Instance()->getConsoleParser().getCommands();
+	for (auto& pair : commands) {
+		Command& c = pair.second;
+		ConsoleState::Instance()->addText(c.commandHelp);
+	}
+}

@@ -2,7 +2,7 @@
 
 KeyboardInput::KeyboardInput()
 {
-	specialBindings.reserve(41);
+	specialBindings.reserve(42);
 
 	specialBindings["lmouse"] = OF_MOUSE_BUTTON_LEFT + MOUSE_OFFSET_CONSTANT;
 	specialBindings["rmouse"] = OF_MOUSE_BUTTON_RIGHT + MOUSE_OFFSET_CONSTANT;
@@ -17,7 +17,8 @@ KeyboardInput::KeyboardInput()
 	specialBindings["mouse7"] = OF_MOUSE_BUTTON_7 + MOUSE_OFFSET_CONSTANT;
 	specialBindings["mouse8"] = OF_MOUSE_BUTTON_8 + MOUSE_OFFSET_CONSTANT;
 
-	specialBindings["' '"] = ' ';
+	specialBindings["space"] = ' ';
+	specialBindings["' '"] = specialBindings["space"];
 	specialBindings["ctrl"] = OF_KEY_CONTROL;
 	specialBindings["shift"] = OF_KEY_SHIFT;
 	specialBindings["alt"] = OF_KEY_ALT;

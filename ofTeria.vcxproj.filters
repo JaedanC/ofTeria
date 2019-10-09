@@ -43,6 +43,7 @@
     <ClInclude Include="addons\pystring\pystring.h" />
     <ClInclude Include="src\States\Console\ConsoleParser.h" />
     <ClInclude Include="src\States\Console\Commands.h" />
+    <ClInclude Include="src\States\Game\WorldSpawn.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="icon.rc" />

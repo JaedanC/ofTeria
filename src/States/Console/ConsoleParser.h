@@ -21,7 +21,9 @@ private:
 public:
 	explicit ConsoleParser(ConsoleState* consoleState);
 
+	inline unordered_map<string, Command>& getCommands() { return commandMap; }
 	bool run(vector<string> command);
+	void addCommand(const string& name, const string& help, int parameters, void(*functionToCall)(vector<string>));
 };
 
 #endif /* CONSOLE_PARSER_H */
