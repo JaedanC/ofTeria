@@ -3,16 +3,15 @@
 #define WORLD_DATA_H
 
 #include "ofMain.h"
+#include "../addons/ofxMemoryMapping/ofxMemoryMapping.h"
+#include "Chunk.h"
 
-//class WorldSpawn;
-//class ofxMemoryMapping;
-//class Chunk;
-//struct Block;
-class WorldData {
+class WorldSpawn;
+class WorldData : public enable_shared_from_this<WorldData> {
 private:
 	string worldName;
-	/*weak_ptr<WorldSpawn> worldSpawn;
-	shared_ptr<ofxMemoryMapping> worldFile;*/
+	weak_ptr<WorldSpawn> worldSpawn;
+	shared_ptr<ofxMemoryMapping> worldFile;
 
 	int blockWidth = 32;
 	int blockHeight = 32;
@@ -36,7 +35,7 @@ private:
 	//unordered_map<ofVec2f, Chunk*> loadedChunks;
 
 public:
-	WorldData(const string& worldName/*, WorldSpawn * worldSpawn*/);
+	WorldData(WorldSpawn* worldSpawn, const string& worldName);
 
 	/*inline weak_ptr<ofxMemoryMapping> getWorldFile();
 	inline weak_ptr<WorldSpawn> getWorldSpawn();*/
@@ -47,13 +46,13 @@ public:
 	inline ofVec2f getBlockDim();
 
 	void updateChunks();
-	/*void freeChunk(Chunk* chunk);
+	void freeChunk(Chunk* chunk);
 	void freeChunk(const ofVec2f& chunkPos);
 	Chunk* loadChunk(const ofVec2f& chunkPos);
 
 	Block* getBlock(const ofVec2f& worldPos);
 	Block* getBlock(const ofVec2f& chunkPos, const ofVec2f& chunkRelativePos);
-	Chunk* getChunk(const ofVec2f& chunkPos);*/
+	Chunk* getChunk(const ofVec2f& chunkPos);
 };
 
 

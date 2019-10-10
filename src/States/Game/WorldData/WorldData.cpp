@@ -1,7 +1,10 @@
 #include "WorldData.h"
+#include "../WorldSpawn.h"
 
-WorldData::WorldData(const string& worldName)
+WorldData::WorldData(WorldSpawn* worldSpawn, const string& worldName)
+	: worldSpawn(worldSpawn->weak_from_this())
 {
+	cout << "Making WorldData\n";
 }
 
 inline ofVec2f WorldData::convertChunkIdToVec(int id)
@@ -26,4 +29,32 @@ inline ofVec2f WorldData::getBlockDim()
 
 void WorldData::updateChunks()
 {
+}
+
+void WorldData::freeChunk(Chunk* chunk)
+{
+}
+
+void WorldData::freeChunk(const ofVec2f& chunkPos)
+{
+}
+
+Chunk* WorldData::loadChunk(const ofVec2f& chunkPos)
+{
+	return nullptr;
+}
+
+Block* WorldData::getBlock(const ofVec2f& worldPos)
+{
+	return nullptr;
+}
+
+Block* WorldData::getBlock(const ofVec2f& chunkPos, const ofVec2f& chunkRelativePos)
+{
+	return nullptr;
+}
+
+Chunk* WorldData::getChunk(const ofVec2f& chunkPos)
+{
+	return nullptr;
 }

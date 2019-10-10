@@ -3,19 +3,19 @@
 #define WORLD_SPAWN_H
 
 #include "ofMain.h"
+#include "Entities/EntityController.h"
+#include "WorldData/WorldData.h"
 
-//class WorldData;
-//class EntityController;
-class WorldSpawn {
+class WorldSpawn : public enable_shared_from_this<WorldSpawn> {
 private:
 	string worldName;
-	/*shared_ptr<WorldData> worldData;
-	shared_ptr<EntityController> entityController;*/
+	shared_ptr<EntityController> entityController;
+	shared_ptr<WorldData> worldData;
 
 public:
 	WorldSpawn(const string& worldName);
-	ofVec2f const convertScreenPosToWorldPos(ofVec2f& cameraWorldPos, ofVec2f& screenPos, int zoom=1);
 
+	ofVec2f const convertScreenPosToWorldPos(ofVec2f& cameraWorldPos, ofVec2f& screenPos, int zoom=1);
 	inline string& getWorldName();
 	/*inline weak_ptr<WorldData> getWorldData();
 	inline weak_ptr<EntityController> getEntityController();*/

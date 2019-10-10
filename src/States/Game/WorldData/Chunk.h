@@ -4,6 +4,7 @@
 
 #include "ofMain.h"
 
+
 struct Block {
 	short id;
 	float debug;
@@ -25,16 +26,16 @@ struct ChunkSaved {
 class WorldData;
 class Chunk {
 private:
-	/*weak_ptr<WorldData> worldData;
+	weak_ptr<WorldData> worldData;
 	Block* blocks;
-	ChunkSaved save;*/
+	ChunkSaved save;
 
 public:
-	Chunk(ofVec2f chunkPos, int chunkWidth, int chunkHeight/*, weak_ptr<WorldData> worldData*/);
+	Chunk(ofVec2f chunkPos, int chunkWidth, int chunkHeight, WorldData* worldData);
 	void saveChunk();
-	/*Block* getBlock(const ofVec2f& chunkRelativePos);
+	Block* getBlock(const ofVec2f& chunkRelativePos);
 	Block* getBlock(int chunkIndex);
-	inline ChunkSaved* getSaveDataPtr();*/
+	inline ChunkSaved* getSaveDataPtr();
 };
 
 #endif /* CHUNK_H */

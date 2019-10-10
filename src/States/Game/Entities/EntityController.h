@@ -3,16 +3,16 @@
 #define ENTITY_CONTROLLER_H
 
 #include "ofMain.h"
+#include "Entity/Player.h"
 
-//class WorldSpawn;
-//class Player;
-class EntityController/* : public enable_shared_from_this<EntityController>*/ {
+class WorldSpawn;
+class EntityController : public enable_shared_from_this<EntityController> {
 private:
-	/*weak_ptr<WorldSpawn> worldSpawn;
-	shared_ptr<Player> player;*/
+	weak_ptr<WorldSpawn> worldSpawn;
+	shared_ptr<Player> player;
 
 public:
-	EntityController(/*WorldSpawn* worldSpawn*/);
+	EntityController(WorldSpawn* worldSpawn);
 
 	/*inline weak_ptr<WorldSpawn> getWorldSpawn();
 	inline weak_ptr<Player> getPlayer();*/

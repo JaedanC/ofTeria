@@ -4,15 +4,15 @@
 
 #include "ofMain.h"
 #include "Entity.h"
+#include "Camera/Camera.h"
 
-//class Camera;
-//class EntityController;
-class Player : public Entity/*, public enable_shared_from_this<Player>*/ {
+class EntityController;
+class Player : public Entity, public enable_shared_from_this<Player> {
 private:
-	/*shared_ptr<Camera> camera;*/
+	shared_ptr<Camera> camera;
 
 public:
-	Player(/*EntityController* entityController*/);
+	Player(EntityController* entityController);
 
 	/*inline weak_ptr<Camera> getCamera();*/
 	virtual void update();

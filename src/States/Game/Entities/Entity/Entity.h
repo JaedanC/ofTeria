@@ -4,14 +4,14 @@
 
 #include "ofMain.h"
 
-//class EntityController;
+class EntityController;
 class Entity {
 protected:
-	/*weak_ptr<EntityController> entityController;*/
+	weak_ptr<EntityController> entityController;
 	ofVec2f worldPos;
 
 public:
-	Entity(/*EntityController* entityController*/);
+	Entity(EntityController* entityController);
 	virtual ~Entity() {}
 
 	inline ofVec2f* getWorldPos();
