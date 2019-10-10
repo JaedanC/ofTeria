@@ -1,10 +1,8 @@
 #include "WorldSpawn.h"
 
 WorldSpawn::WorldSpawn(const string& worldName)
+	: worldData(make_shared<WorldData>(this, worldName)), entityController(make_shared<EntityController>(this))
 {
-	cout << "Making WorldSpawn\n";
-	entityController = make_shared<EntityController>(this);
-	worldData = make_shared<WorldData>(this, worldName);
 }
 
 ofVec2f const WorldSpawn::convertScreenPosToWorldPos(ofVec2f& cameraWorldPos, ofVec2f& screenPos, int zoom)

@@ -35,7 +35,7 @@ public:
 	void saveChunk();
 	Block* getBlock(const ofVec2f& chunkRelativePos);
 	Block* getBlock(int chunkIndex);
-	inline ChunkSaved* getSaveDataPtr();
+	inline ChunkSaved* getSaveDataPtr() { return nullptr; }
 };
 
 #endif /* CHUNK_H */

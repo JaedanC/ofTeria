@@ -14,8 +14,8 @@ public:
 	Entity(EntityController* entityController);
 	virtual ~Entity() {}
 
-	inline ofVec2f* getWorldPos();
-	/*inline weak_ptr<EntityController> getEntityController();*/
+	inline ofVec2f* getWorldPos() { return &worldPos; }
+	inline weak_ptr<EntityController> getEntityController() { return entityController; }
 	// TODO: SpriteController
 	// TODO: vector<Hitbox> hitboxes
 

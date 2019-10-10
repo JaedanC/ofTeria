@@ -6,7 +6,6 @@ Chunk::Chunk(ofVec2f chunkPos, int chunkWidth, int chunkHeight, WorldData * worl
 		chunkPos, chunkWidth, chunkHeight
 	)
 {
-	cout << "Making Chunk\n";
 }
 
 void Chunk::saveChunk()
@@ -19,11 +18,6 @@ Block* Chunk::getBlock(const ofVec2f& chunkRelativePos)
 }
 
 Block* Chunk::getBlock(int chunkIndex)
-{
-	return nullptr;
-}
-
-inline ChunkSaved* Chunk::getSaveDataPtr()
 {
 	return nullptr;
 }

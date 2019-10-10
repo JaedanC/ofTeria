@@ -13,9 +13,9 @@ private:
 
 public:
 	Camera(Player* player);
-	//inline weak_ptr<Player> getPlayer();
+	inline weak_ptr<Player> getPlayer() { return player; }
 	inline ofVec2f* getWorldPos();
-	inline void setZoom(float zoom);
+	inline void setZoom(float zoom_) { zoom = zoom_; }
 
 	void pushCameraMatrix();
 	void popCameraMatrix();

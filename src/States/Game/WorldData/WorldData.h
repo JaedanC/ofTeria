@@ -37,14 +37,15 @@ private:
 public:
 	WorldData(WorldSpawn* worldSpawn, const string& worldName);
 
-	/*inline weak_ptr<ofxMemoryMapping> getWorldFile();
-	inline weak_ptr<WorldSpawn> getWorldSpawn();*/
+	inline weak_ptr<ofxMemoryMapping> getWorldFile() { return worldFile; }
+	inline weak_ptr<WorldSpawn> getWorldSpawn() { return worldSpawn; }
 
-	inline ofVec2f convertChunkIdToVec(int id);
-	inline int convertChunkVecToId(const ofVec2f& vec);
-	inline size_t getChunkDataSize();
-	inline ofVec2f getBlockDim();
+	inline ofVec2f convertChunkIdToVec(int id) { return ofVec2f(id % numChunksX, id / numChunksX); }
+	inline int convertChunkVecToId(const ofVec2f& vec) { return (int)(vec.y * numChunksX + vec.x); }
+	inline ofVec2f getBlockDim() { return ofVec2f(blockWidth, blockHeight); }
 
+	size_t getChunkDataSize();
+	
 	void updateChunks();
 	void freeChunk(Chunk* chunk);
 	void freeChunk(const ofVec2f& chunkPos);

@@ -14,8 +14,8 @@ private:
 public:
 	EntityController(WorldSpawn* worldSpawn);
 
-	/*inline weak_ptr<WorldSpawn> getWorldSpawn();
-	inline weak_ptr<Player> getPlayer();*/
+	inline weak_ptr<WorldSpawn> getWorldSpawn() { return worldSpawn; }
+	inline weak_ptr<Player> getPlayer() { return player; }
 
 	void update();
 	void draw();

@@ -14,7 +14,7 @@ private:
 public:
 	Player(EntityController* entityController);
 
-	/*inline weak_ptr<Camera> getCamera();*/
+	inline weak_ptr<Camera> getCamera() { return camera; }
 	virtual void update();
 	virtual void draw();
 };
