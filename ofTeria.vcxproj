@@ -104,6 +104,7 @@
       <CompileAs>CompileAsCpp</CompileAs>
       <ObjectFileName>$(IntDir)</ObjectFileName>
       <LanguageStandard>Default</LanguageStandard>
+      <ShowIncludes>false</ShowIncludes>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -125,6 +126,7 @@
       <CompileAs>CompileAsCpp</CompileAs>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <ObjectFileName>$(IntDir)</ObjectFileName>
+      <ShowIncludes>false</ShowIncludes>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -146,6 +148,7 @@
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <ObjectFileName>$(IntDir)</ObjectFileName>
       <LanguageStandard>Default</LanguageStandard>
+      <ShowIncludes>false</ShowIncludes>
     </ClCompile>
     <Link>
       <IgnoreAllDefaultLibraries>false</IgnoreAllDefaultLibraries>
@@ -168,6 +171,7 @@
       <AdditionalIncludeDirectories>$(SolutionDir)addons;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <CompileAs>CompileAsCpp</CompileAs>
       <ObjectFileName>$(IntDir)</ObjectFileName>
+      <ShowIncludes>false</ShowIncludes>
     </ClCompile>
     <Link>
       <IgnoreAllDefaultLibraries>false</IgnoreAllDefaultLibraries>
@@ -190,6 +194,8 @@
     <ClCompile Include="addons\ofxMemoryMapping\ofxMemoryMapping.cpp" />
     <ClCompile Include="addons\pystring\pystring.cpp" />
     <ClCompile Include="src\Keyboard\KeyboardInput.cpp" />
+    <ClCompile Include="src\main.cpp" />
+    <ClCompile Include="src\ofApp.cpp" />
     <ClCompile Include="src\States\ConsoleState.cpp" />
     <ClCompile Include="src\States\Console\ConsoleParser.cpp" />
     <ClCompile Include="src\States\Game\Entities\EntityController.cpp" />
@@ -200,8 +206,6 @@
     <ClCompile Include="src\States\Game\WorldData\WorldData.cpp" />
     <ClCompile Include="src\States\Game\WorldSpawn.cpp" />
     <ClCompile Include="src\States\MenuState.cpp" />
-    <ClCompile Include="src\main.cpp" />
-    <ClCompile Include="src\ofApp.cpp" />
     <ClCompile Include="src\States\PlayState.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -213,6 +217,11 @@
     <ClInclude Include="addons\ofxIni\SimpleIni.h" />
     <ClInclude Include="addons\ofxMemoryMapping\ofxMemoryMapping.h" />
     <ClInclude Include="addons\pystring\pystring.h" />
+    <ClInclude Include="src\Keyboard\KeyboardInput.h" />
+    <ClInclude Include="src\ofApp.h" />
+    <ClInclude Include="src\States\ConsoleState.h" />
+    <ClInclude Include="src\States\Console\Commands.h" />
+    <ClInclude Include="src\States\Console\ConsoleParser.h" />
     <ClInclude Include="src\States\Game\Entities\EntityController.h" />
     <ClInclude Include="src\States\Game\Entities\Entity\Camera\Camera.h" />
     <ClInclude Include="src\States\Game\Entities\Entity\Entity.h" />
@@ -220,12 +229,7 @@
     <ClInclude Include="src\States\Game\WorldData\Chunk.h" />
     <ClInclude Include="src\States\Game\WorldData\WorldData.h" />
     <ClInclude Include="src\States\Game\WorldSpawn.h" />
-    <ClInclude Include="src\Keyboard\KeyboardInput.h" />
-    <ClInclude Include="src\States\ConsoleState.h" />
-    <ClInclude Include="src\States\Console\Commands.h" />
-    <ClInclude Include="src\States\Console\ConsoleParser.h" />
     <ClInclude Include="src\States\MenuState.h" />
-    <ClInclude Include="src\ofApp.h" />
     <ClInclude Include="src\States\PlayState.h" />
   </ItemGroup>
   <ItemGroup>

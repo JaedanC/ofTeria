@@ -19,10 +19,10 @@ void PlayState::update(ofxGameEngine* game)
 		ofxGameEngine::Instance()->PushState(ConsoleState::Instance());
 	}
 
-	getWorldSpawn()->update();
+	getWorldSpawn().lock()->update();
 }
 
 void PlayState::draw(ofxGameEngine* game)
 {
-	getWorldSpawn()->draw();
+	getWorldSpawn().lock()->draw();
 }

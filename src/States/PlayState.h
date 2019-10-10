@@ -1,7 +1,9 @@
 #pragma once
 #ifndef PLAY_STATE_H
 #define PLAY_STATE_H
+
 #include "ofMain.h"
+
 #include "ofxGameStates/ofxGameState.h"
 #include "ofxGameStates/ofxGameEngine.h"
 #include "Game/WorldSpawn.h"
@@ -9,19 +11,17 @@
 class PlayState : public ofxGameState
 {
 private:
-	unique_ptr<WorldSpawn> worldSpawn;
+	shared_ptr<WorldSpawn> worldSpawn;
 protected:
 	PlayState()
 		: ofxGameState(
 			false, // updateTransparent
 			false, // drawTransparent
 			"PlayState"
-		)
-	{
-		worldSpawn = make_unique<WorldSpawn>("worldname");
-	}
+		), worldSpawn(make_shared<WorldSpawn>("worldname"))
+	{}
 public:
-	inline unique_ptr<WorldSpawn>& getWorldSpawn() { return worldSpawn; }
+	inline weak_ptr<WorldSpawn> getWorldSpawn() { return worldSpawn; }
 
 	virtual void setup();
 	virtual void exit() {}

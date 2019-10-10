@@ -4,16 +4,16 @@
 
 #include "ofMain.h"
 
-class Player;
+//class Player;
 class Camera {
 private:
-	weak_ptr<Player> player;
+	/*weak_ptr<Player> player;*/
 	ofVec2f offsetPos;
 	float zoom = 1;
 
 public:
-	Camera(weak_ptr<Player> player);
-	inline weak_ptr<Player> getPlayer();
+	/*Camera(Player* player);
+	inline weak_ptr<Player> getPlayer();*/
 	inline ofVec2f* getWorldPos();
 	inline void setZoom(float zoom);
 
