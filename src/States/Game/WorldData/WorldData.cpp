@@ -3,6 +3,9 @@
 #include "ofVec2f.h"
 #include "Chunk.h"
 #include "../WorldSpawn.h"
+#include "../Entities/EntityController.h"
+#include "../Entities/Entity/Entity.h"
+#include "../Entities/Entity/Player.h"
 
 
 WorldData::WorldData(WorldSpawn* worldSpawn, const string& worldName)

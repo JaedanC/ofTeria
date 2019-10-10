@@ -32,10 +32,11 @@ private:
 
 public:
 	Chunk(ofVec2f chunkPos, int chunkWidth, int chunkHeight, WorldData* worldData);
+	inline ChunkSaved* getSaveDataPtr() { return nullptr; }
+
 	void saveChunk();
 	Block* getBlock(const ofVec2f& chunkRelativePos);
 	Block* getBlock(int chunkIndex);
-	inline ChunkSaved* getSaveDataPtr() { return nullptr; }
 };
 
 #endif /* CHUNK_H */

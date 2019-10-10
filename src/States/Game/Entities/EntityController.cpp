@@ -4,13 +4,14 @@
 EntityController::EntityController(WorldSpawn* worldSpawn)
 	: worldSpawn(worldSpawn->weak_from_this()), player(make_shared<Player>(this))
 {
-	cout << "Making EntityController\n";
 }
 
 void EntityController::update()
 {
+	getPlayer().lock()->update();
 }
 
 void EntityController::draw()
 {
+	getPlayer().lock()->draw();
 }

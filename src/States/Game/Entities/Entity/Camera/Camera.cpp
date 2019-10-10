@@ -11,9 +11,9 @@ Camera::Camera(Player* player)
 {
 }
 
-inline ofVec2f* Camera::getWorldPos()
+ofVec2f* Camera::getPlayerPos()
 {
-	return nullptr;//getPlayer().lock()->getWorldPos();
+	return getPlayer().lock()->getWorldPos();
 }
 
 void Camera::pushCameraMatrix()
@@ -21,8 +21,8 @@ void Camera::pushCameraMatrix()
 
 	ofVec2f& blockDim = getPlayer().lock()->getEntityController().lock()->getWorldSpawn().lock()->getWorldData().lock()->getBlockDim();
 	ofPushMatrix();
-	//ofScale(zoom / blockDim.x, zoom / blockDim.y);
-	ofTranslate(-(*getWorldPos()));
+	ofScale(zoom / blockDim.x, zoom / blockDim.y);
+	ofTranslate(-(*getPlayerPos()));
 }
 
 void Camera::popCameraMatrix()
