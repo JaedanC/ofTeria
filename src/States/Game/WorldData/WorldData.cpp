@@ -10,8 +10,8 @@
 #include "../addons/ofxDebugger/ofxDebugger.h"
 
 
-WorldData::WorldData(WorldSpawn* worldSpawn, const string& worldName)
-	: worldSpawn(worldSpawn), worldFile(make_shared<ofxMemoryMapping>("worldsave.wld"))
+WorldData::WorldData(WorldSpawn* worldSpawn)
+	: worldSpawn(worldSpawn), worldFile(make_shared<ofxMemoryMapping>(worldSpawn->getWorldName()))
 {
 	cout << "Constructing WorldData\n";
 
@@ -91,6 +91,12 @@ void WorldData::freeChunk(const ofVec2f& chunkPos)
 Chunk* WorldData::loadChunk(const ofVec2f& chunkPos)
 {
 	int chunkId = convertChunkVecToId(chunkPos);
+
+	if (loadedChunks.count(chunkId) != 0) {
+		cout << "WorldData::loadChunk: Chunk already loaded at " << chunkPos << endl;
+		return loadedChunks[chunkId];
+	}
+
 	int dataSize = getChunkDataSize();
 	int offset = chunkId * dataSize;
 

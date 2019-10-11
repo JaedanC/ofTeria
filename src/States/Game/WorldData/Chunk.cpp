@@ -26,7 +26,7 @@ void Chunk::freeData()
 void Chunk::loadChunk(int chunkId)
 {
 	int offset = chunkId * getWorldData()->getChunkDataSize();
-	getWorldData()->getWorldFile().lock()->read(&save, offset, sizeof(ChunkSaved));
+	getWorldData()->getWorldFile().lock()->read(getSaveDataPtr(), offset, sizeof(ChunkSaved));
 	offset += sizeof(ChunkSaved);
 	blocks = new Block[save.chunkWidth * save.chunkHeight];
 	getWorldData()->getWorldFile().lock()->read(blocks, offset, sizeof(Block) * save.numBlocks);
@@ -60,7 +60,7 @@ Block* Chunk::getBlock(const ofVec2f& chunkRelativePos)
 	return getBlock(getWorldData()->convertChunkVecToId(chunkRelativePos));
 }
 
-Block* Chunk::getBlock(int chunkIndex)
+Block* Chunk::getBlock(int blockIndex)
 {
-	return &blocks[chunkIndex];
+	return &blocks[blockIndex];
 }
