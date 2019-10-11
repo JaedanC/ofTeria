@@ -17,6 +17,9 @@ private:
 public:
 	/* Takes in a pointer to the WorldSpawn instance that owns us. */
 	EntityController(WorldSpawn* worldSpawn);
+	~EntityController() {
+		cout << "Destroying EntityController\n";
+	}
 
 	/* Returns a pointer to the WorldSpawn instance that owns us. */
 	inline WorldSpawn* getWorldSpawn() { return worldSpawn; }

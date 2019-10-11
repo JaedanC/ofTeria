@@ -65,8 +65,8 @@ void ofApp::draw(){
 	ofSetColor(ofColor::white);
 	debugPush("FrameRate: " + ofToString(ofGetFrameRate()));
 	debugPush("FrameRate: " + ofToString(ofGetFrameRate()));
-	debugPush("WindowPosition: " + ofToString(ofVec2f(ofGetWindowPositionX(), ofGetWindowPositionY())));
-	debugPush("WindowSize: " + ofToString(ofGetWindowSize()));
+	//debugPush("WindowPosition: " + ofToString(ofVec2f(ofGetWindowPositionX(), ofGetWindowPositionY())));
+	//debugPush("WindowSize: " + ofToString(ofGetWindowSize()));
 
 	// GameState draw
 	engine->draw();

@@ -5,6 +5,7 @@
 #include "../../EntityController.h"
 #include "../../../WorldSpawn.h"
 #include "../../../WorldData/WorldData.h"
+#include "../addons/ofxDebugger/ofxDebugger.h"
 
 Camera::Camera(Player* player)
 	: player(player)
@@ -19,14 +20,22 @@ ofVec2f* Camera::getPlayerPos()
 
 void Camera::pushCameraMatrix()
 {
-
+	debugPush("Zoom Level: " + ofToString(zoom));
 	ofVec2f& blockDim = getPlayer()->getEntityController()->getWorldSpawn()->getWorldData().lock()->getBlockDim();
 	ofPushMatrix();
-	ofScale(zoom / blockDim.x, zoom / blockDim.y);
-	ofTranslate(-(*getPlayerPos()));
+	ofScale(1 / zoom);
+
+	offsetPos = zoom * ofVec2f(ofGetWidth(), ofGetHeight()) / 2.0;
+
+	ofTranslate(-(*getPlayerPos() - offsetPos));
 }
 
 void Camera::popCameraMatrix()
 {
 	ofPopMatrix();
+}
+
+void Camera::update()
+{
+
 }

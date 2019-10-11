@@ -45,7 +45,7 @@ public:
 	inline WorldData* getWorldData() { return worldData; }
 
 	/* Returns a pointer to the chunk Metadata struct. */
-	inline ChunkSaved* getSaveDataPtr() { return &save; }
+	inline ChunkSaved* getChunkMetaData() { return &save; }
 
 	/* Allocate blocks on the heap and fills it with data. It's not actually random, but it's not useful data
 	either. Just for testing purposes. */

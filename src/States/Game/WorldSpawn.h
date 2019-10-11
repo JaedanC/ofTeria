@@ -22,6 +22,9 @@ private:
 
 public:
 	WorldSpawn(const string& worldName);
+	~WorldSpawn() {
+		cout << "Destroying WorldSpawn\n";
+	};
 
 	/* This function takes in a position on the screen and converts it to world coordinates. Things should be
 	kept in WorldPos format if they wish to be drawn otherwise you will never see them on the screen. See draw().

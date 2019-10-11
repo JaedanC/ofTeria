@@ -214,8 +214,8 @@ void ofxMemoryMapping::load(const string& filename)
 
 void ofxMemoryMapping::write(const void* data, const size_t& offset, const size_t& bytes)
 {
-	cout << "ofxMemoryMapping: Writing " << bytes << " bytes @ offset " << offset << " to " << filename <<endl;
-	cout << "ofxMemoryMapping: CurrentFileSize " << fileSize << endl;
+	//cout << "ofxMemoryMapping: Writing " << bytes << " bytes @ offset " << offset << " to " << filename <<endl;
+	//cout << "ofxMemoryMapping: CurrentFileSize " << fileSize << endl;
 	//info("write");
 	unsigned int newSize = offset + bytes;
 	if (newSize > fileSize) {

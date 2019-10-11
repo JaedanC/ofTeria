@@ -6,6 +6,7 @@
 #include "../Entities/EntityController.h"
 #include "../Entities/Entity/Entity.h"
 #include "../Entities/Entity/Player.h"
+#include "../Entities/Entity/Camera/Camera.h"
 #include "../addons/ofxMemoryMapping/ofxMemoryMapping.h"
 #include "../addons/ofxDebugger/ofxDebugger.h"
 
@@ -20,6 +21,49 @@ WorldData::WorldData(WorldSpawn* worldSpawn)
 	numChunks = numChunksX * numChunksY;
 
 	temporaryCreateWorld();
+}
+
+void WorldData::draw()
+{
+	/* Room for optimisation? */
+
+	for (auto& pair : loadedChunks) {
+		Chunk* chunk = pair.second;
+		ofVec2f& chunkPos = chunk->getChunkMetaData()->chunkPos;
+		int chunkOffsetX = chunkPos.x * chunkWidth * blockWidth;
+		int chunkOffsetY = chunkPos.y * chunkHeight * blockHeight;
+		int chunkWidth = chunk->getChunkMetaData()->chunkWidth;
+		int chunkHeight = chunk->getChunkMetaData()->chunkHeight;
+
+		ofColor c;
+
+		for (int i = 0; i < chunk->getChunkMetaData()->numBlocks; i++) {
+			int x, y;
+			x = blockWidth * (i % chunkWidth) + chunkOffsetX;
+			y = blockHeight * (i / chunkHeight) + chunkOffsetY;
+			ofSetColor(abs(200 - (x / blockWidth) / 2 - (y / blockHeight) / 2) % 255 + 1, (x / blockWidth) * 4, (y / blockHeight) * 4);
+			//ofSetColor(c);
+			ofDrawRectangle(x, y, blockWidth, blockHeight);
+		}
+
+
+		c.setHsb((int)((chunkPos.x + chunkPos.y) * 100 + 200) % 255, 255, 255, 20);
+		ofSetColor(c);
+		ofDrawRectangle(chunkOffsetX, chunkOffsetY, chunkWidth * blockWidth, chunkHeight * blockHeight);
+	}
+
+	/* Draw the chunk loading rectangle. */
+	ofVec2f* playerPos = getWorldSpawn()->getEntityController().lock()->getPlayer().lock()->getWorldPos();
+	float& zoom = getWorldSpawn()->getEntityController().lock()->getPlayer().lock()->getCamera().lock()->getZoom();
+	int playerLeftChunkBorder	= (playerPos->x) - (screenChunkLoadWidth / 2) * zoom;
+	int playerRightChunkBorder	= (playerPos->x) + (screenChunkLoadWidth / 2) * zoom;
+	int playerUpChunkBorder		= (playerPos->y) - (screenChunkLoadHeight / 2) * zoom;
+	int playerDownChunkBorder	= (playerPos->y) + (screenChunkLoadHeight / 2) * zoom;
+
+	ofSetColor(ofColor::black, 255);
+	ofNoFill();
+	ofDrawRectangle(playerLeftChunkBorder, playerUpChunkBorder, playerRightChunkBorder - playerLeftChunkBorder, playerDownChunkBorder - playerUpChunkBorder);
+	ofFill();
 }
 
 size_t WorldData::getChunkDataSize()
@@ -45,17 +89,58 @@ void WorldData::temporaryCreateWorld()
 
 void WorldData::updateChunks()
 {
-	debugPush("WorldData::updateChunks()");
 	// TODO: Implement this function
 	ofVec2f* playerPos = getWorldSpawn()->getEntityController().lock()->getPlayer().lock()->getWorldPos();
-	ofVec2f copy = *(playerPos);
+	float& zoom = getWorldSpawn()->getEntityController().lock()->getPlayer().lock()->getCamera().lock()->getZoom();
 
-	copy.x = copy.x / blockWidth;
-	copy.y = copy.y / blockHeight;
+	int playerLeftChunkBorder	= (playerPos->x) - (screenChunkLoadWidth / 2) * zoom;
+	int playerRightChunkBorder	= (playerPos->x) + (screenChunkLoadWidth / 2) * zoom;
+	int playerUpChunkBorder		= (playerPos->y) - (screenChunkLoadHeight / 2) * zoom;
+	int playerDownChunkBorder	= (playerPos->y) + (screenChunkLoadHeight / 2) * zoom;
+
+	int chunkPixelWidth = chunkWidth * blockWidth;
+	int chunkPixelHeight = chunkHeight * blockHeight;
+
+	/*for (int i = 0; i < numChunks; i++) {
+		loadChunk(convertChunkIdToVec(i));
+	}*/
+
+	vector<int> toDelete;
+	for (auto& pair : loadedChunks) {
+		Chunk* chunk = pair.second;
+		ofVec2f& chunkPos = chunk->getChunkMetaData()->chunkPos;
+
+		int chunkLeftBorder = chunkPos.x * chunkPixelWidth;
+		int chunkRightBorder = chunkPos.x * chunkPixelWidth + chunkPixelWidth;
+		int chunkTopBorder = chunkPos.y * chunkPixelHeight;
+		int chunkDownBorder = chunkPos.y * chunkPixelHeight + chunkPixelHeight;
+
+		if (chunkLeftBorder > playerRightChunkBorder ||
+			chunkRightBorder < playerLeftChunkBorder ||
+			chunkTopBorder > playerDownChunkBorder ||
+			chunkDownBorder < playerUpChunkBorder) {
+			toDelete.push_back(pair.first);
+		}
+	}
+
+	for (auto& chunkId : toDelete) {
+		freeChunk(loadedChunks[chunkId]);
+		loadedChunks.erase(chunkId);
+	}
+
+	for (int i = playerLeftChunkBorder / chunkPixelWidth; i < playerRightChunkBorder / chunkPixelWidth + 1; i++) {
+		for (int j = playerUpChunkBorder / chunkPixelHeight; j < playerDownChunkBorder / chunkPixelHeight + 1; j++) {
+			loadChunk({ (float)i, (float)j});
+		}
+	}
+
+	debugPush("LoadedChunks: " + ofToString(loadedChunks.size()));
 
 	// TODO: Incorporate with zoom.
 
 	// TODO: This is not correct
+
+	/*
 	vector<int> toDelete;
 	for (auto& chunkPair : loadedChunks) {
 		freeChunk(chunkPair.second);
@@ -67,11 +152,12 @@ void WorldData::updateChunks()
 	}
 
 	auto* block = getBlock(copy);
+	*/
 }
 
 void WorldData::freeChunk(Chunk* chunk)
 {
-	ofVec2f& chunkPos = chunk->getSaveDataPtr()->chunkPos;
+	ofVec2f& chunkPos = chunk->getChunkMetaData()->chunkPos;
 	freeChunk(chunkPos);
 }
 
@@ -90,10 +176,14 @@ void WorldData::freeChunk(const ofVec2f& chunkPos)
 
 Chunk* WorldData::loadChunk(const ofVec2f& chunkPos)
 {
+	if (chunkPos.x >= numChunksX || chunkPos.y >= numChunksY ||
+		chunkPos.x < 0 || chunkPos.y < 0) {
+		return nullptr;
+	}
 	int chunkId = convertChunkVecToId(chunkPos);
 
 	if (loadedChunks.count(chunkId) != 0) {
-		cout << "WorldData::loadChunk: Chunk already loaded at " << chunkPos << endl;
+		//cout << "WorldData::loadChunk: Chunk already loaded at " << chunkPos << endl;
 		return loadedChunks[chunkId];
 	}
 

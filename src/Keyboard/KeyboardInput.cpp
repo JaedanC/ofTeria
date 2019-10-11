@@ -34,7 +34,7 @@ KeyboardInput::KeyboardInput()
 	specialBindings["del"] = OF_KEY_DEL;
 	specialBindings["insert"] = OF_KEY_INSERT;
 
-	specialBindings["up"] = OF_KEY_LEFT;
+	specialBindings["up"] = OF_KEY_UP;
 	specialBindings["down"] = OF_KEY_DOWN;
 	specialBindings["left"] = OF_KEY_LEFT;
 	specialBindings["right"] = OF_KEY_RIGHT;

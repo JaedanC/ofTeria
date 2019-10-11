@@ -10,12 +10,10 @@ EntityController::EntityController(WorldSpawn* worldSpawn)
 
 void EntityController::update()
 {
-	debugPush("EntityController::update()");
 	getPlayer().lock()->update();
 }
 
 void EntityController::draw()
 {
-	debugPush("EntityController::draw()");
 	getPlayer().lock()->draw();
 }

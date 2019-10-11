@@ -18,7 +18,9 @@ public:
 	Entity(EntityController* entityController);
 
 	/* Virtual destructor allows safe destroying of classed that inherit from this base class. */
-	virtual ~Entity() {}
+	virtual ~Entity() {
+		cout << "Destroying Entity\n";
+	}
 
 	/* Returns the worldPos of this Entity. */
 	inline ofVec2f* getWorldPos() { return &worldPos; }

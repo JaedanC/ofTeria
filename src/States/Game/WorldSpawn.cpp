@@ -7,7 +7,7 @@
 #include "../addons/ofxDebugger/ofxDebugger.h"
 
 WorldSpawn::WorldSpawn(const string& worldName)
-	: worldData(make_shared<WorldData>(this, worldName)), entityController(make_shared<EntityController>(this))
+	: worldData(make_shared<WorldData>(this)), entityController(make_shared<EntityController>(this))
 {
 	cout << "Constructing WorldSpawn\n";
 }
@@ -25,14 +25,12 @@ void WorldSpawn::setup(const string& newWorldName)
 
 void WorldSpawn::update()
 {
-	debugPush("WorldSpawn::update()");
 	getEntityController().lock()->update();
 	getWorldData().lock()->updateChunks();
 }
 
 void WorldSpawn::draw()
 {
-	debugPush("WorldSpawn::draw()");
 	drawBackground();
 
 	pushCamera();
@@ -48,10 +46,14 @@ void WorldSpawn::drawBackground()
 
 void WorldSpawn::drawWorld()
 {
+	worldData->draw();
+	entityController->draw();
 }
 
 void WorldSpawn::drawOverlay()
 {
+	ofSetColor(ofColor::yellow);
+	ofDrawRectangle(500, 50, 50, 50);
 }
 
 void WorldSpawn::pushCamera()

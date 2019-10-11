@@ -15,6 +15,9 @@ private:
 public:
 	/* Takes in a pointer to the EntityController instance that owns us. */
 	Player(EntityController* entityController);
+	~Player() {
+		cout << "Destroying Player\n";
+	}
 
 	/* Returns a weakptr to the Camera instance that we own. */
 	inline weak_ptr<Camera> getCamera() { return camera; }

@@ -26,7 +26,7 @@ void Chunk::freeData()
 void Chunk::loadChunk(int chunkId)
 {
 	int offset = chunkId * getWorldData()->getChunkDataSize();
-	getWorldData()->getWorldFile().lock()->read(getSaveDataPtr(), offset, sizeof(ChunkSaved));
+	getWorldData()->getWorldFile().lock()->read(getChunkMetaData(), offset, sizeof(ChunkSaved));
 	offset += sizeof(ChunkSaved);
 	blocks = new Block[save.chunkWidth * save.chunkHeight];
 	getWorldData()->getWorldFile().lock()->read(blocks, offset, sizeof(Block) * save.numBlocks);
@@ -46,12 +46,12 @@ void Chunk::saveChunk()
 	cout << "Chunk::saveChunk() offset: " << offset << endl;*/
 
 	// Save the Chunk MetaData first.
-	cout << "Chunk::saveChunk() Writing Chunk MetaData\n";
+	//cout << "Chunk::saveChunk() Writing Chunk MetaData\n";
 	worldFile->write(&save, offset, sizeof(ChunkSaved));
 	offset += sizeof(ChunkSaved);
 
 	// Next save the block heap data.
-	cout << "Chunk::saveChunk() Writing BlockData\n";
+	//cout << "Chunk::saveChunk() Writing BlockData\n";
 	worldFile->write(blocks, offset, save.numBlocks * sizeof(Block));
 }
 

@@ -22,11 +22,14 @@ private:
 	int blockWidth = 32;
 	int blockHeight = 32;
 
-	int chunkWidth = 4;
-	int chunkHeight = 4;
+	int chunkWidth = 16;
+	int chunkHeight = 16;
 
-	int worldWidth = 16;
-	int worldHeight = 16;
+	int worldWidth = 1024;
+	int worldHeight = 1024;
+
+	int screenChunkLoadWidth = 500;
+	int screenChunkLoadHeight = 500;
 
 	/* These are initialised in the constructor. */
 	int numChunksX;
@@ -40,6 +43,11 @@ private:
 public:
 	/* Takes in a pointer the WorldSpawn instance that owns us. */
 	WorldData(WorldSpawn* worldSpawn);
+	~WorldData() {
+		cout << "Destroying WorldData\n";
+	};
+
+	void draw();
 
 	/* Returns a weak pointer to the ofxMemoryMapping instance that we own. */
 	inline weak_ptr<ofxMemoryMapping> getWorldFile() { return worldFile; }
