@@ -2,6 +2,7 @@
 #include "../EntityController.h"
 
 Entity::Entity(EntityController* entityController)
-	: entityController(entityController->weak_from_this())
+	: entityController(entityController)
 {
+	cout << "Constructing Entity\n";
 }

@@ -7,7 +7,7 @@
 class EntityController;
 class Entity {
 protected:
-	weak_ptr<EntityController> entityController;
+	EntityController* entityController;
 	ofVec2f worldPos;
 
 public:
@@ -15,7 +15,7 @@ public:
 	virtual ~Entity() {}
 
 	inline ofVec2f* getWorldPos() { return &worldPos; }
-	inline weak_ptr<EntityController> getEntityController() { return entityController; }
+	inline EntityController* getEntityController() { return entityController; }
 	// TODO: SpriteController
 	// TODO: vector<Hitbox> hitboxes
 

@@ -8,13 +8,13 @@
 class WorldSpawn;
 class EntityController : public enable_shared_from_this<EntityController> {
 private:
-	weak_ptr<WorldSpawn> worldSpawn;
+	WorldSpawn* worldSpawn;
 	shared_ptr<Player> player;
 
 public:
 	EntityController(WorldSpawn* worldSpawn);
 
-	inline weak_ptr<WorldSpawn> getWorldSpawn() { return worldSpawn; }
+	inline WorldSpawn* getWorldSpawn() { return worldSpawn; }
 	inline weak_ptr<Player> getPlayer() { return player; }
 
 	void update();

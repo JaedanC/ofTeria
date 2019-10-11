@@ -10,35 +10,36 @@ class WorldSpawn;
 class WorldData : public enable_shared_from_this<WorldData> {
 private:
 	string worldName;
-	weak_ptr<WorldSpawn> worldSpawn;
+	WorldSpawn * worldSpawn;
 	shared_ptr<ofxMemoryMapping> worldFile;
 
 	int blockWidth = 32;
 	int blockHeight = 32;
 
-	int chunkWidth = 128;
-	int chunkHeight = 128;
+	int chunkWidth = 4;
+	int chunkHeight = 4;
 
 	/*
 	https://terraria.fandom.com/wiki/World_Size
 	Large - 8400 blocks wide and 2400 blocks high, sky limit about 800-900 blocks
 	above underground level. A Large world has 20,160,000 blocks, exactly 1.75x the 
 	size of a Medium world and 4x the size of a Small world. */
-	int worldWidth = 8400;
-	int worldHeight = 2400;
+	int worldWidth = 16;
+	int worldHeight = 16;
 
-	int numChunksX = ceil((float)worldWidth / chunkWidth);
-	int numChunksY = ceil((float)worldHeight / chunkHeight);
-	int numChunks = numChunks * numChunksY;
+	int numChunksX;
+	int numChunksY;
+	int numChunks;
 
 	/* Stores a cache of the loaded chunks in a map. Retrievable by the chunkPos. */
-	//unordered_map<ofVec2f, Chunk*> loadedChunks;
+	//            chunkId, Chunk* heap allocated
+	unordered_map<int, Chunk*> loadedChunks;
 
 public:
 	WorldData(WorldSpawn* worldSpawn, const string& worldName);
 
 	inline weak_ptr<ofxMemoryMapping> getWorldFile() { return worldFile; }
-	inline weak_ptr<WorldSpawn> getWorldSpawn() { return worldSpawn; }
+	inline WorldSpawn* getWorldSpawn() { return worldSpawn; }
 
 	inline ofVec2f convertChunkIdToVec(int id) { return ofVec2f(id % numChunksX, id / numChunksX); }
 	inline int convertChunkVecToId(const ofVec2f& vec) { return (int)(vec.y * numChunksX + vec.x); }
@@ -46,6 +47,8 @@ public:
 
 	size_t getChunkDataSize();
 	
+	void temporaryCreateWorld();
+
 	void updateChunks();
 	void freeChunk(Chunk* chunk);
 	void freeChunk(const ofVec2f& chunkPos);

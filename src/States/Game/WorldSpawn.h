@@ -16,7 +16,7 @@ public:
 	WorldSpawn(const string& worldName);
 
 	ofVec2f const convertScreenPosToWorldPos(ofVec2f& cameraWorldPos, ofVec2f& screenPos, int zoom=1);
-	inline string& getWorldName();
+	inline string& getWorldName() { return worldName; }
 	inline weak_ptr<WorldData> getWorldData() { return worldData; }
 	inline weak_ptr<EntityController> getEntityController() { return entityController; }
 

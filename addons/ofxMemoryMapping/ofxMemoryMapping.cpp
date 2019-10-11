@@ -196,9 +196,12 @@ void ofxMemoryMapping::windowsCreateFileView()
 		0
 	);
 	
+	/*
+	https://docs.microsoft.com/en-us/windows/win32/debug/system-error-codes
+	*/
 	if (!windowsFileView) {
-		cout << "Failed creating view pointer for " + filename << endl;
-		cout << GetLastError() << endl;
+		cout << "ofxMemoryMapping: Failed creating view pointer for " + filename << endl;
+		cout << "ofxMemoryMapping: Last Error Code: " << GetLastError() << endl;
 		assert(false);
 		return;
 	}
@@ -211,9 +214,12 @@ void ofxMemoryMapping::load(const string& filename)
 
 void ofxMemoryMapping::write(const void* data, const size_t& offset, const size_t& bytes)
 {
+	cout << "ofxMemoryMapping: Writing " << bytes << " bytes @ offset " << offset << " to " << filename <<endl;
+	cout << "ofxMemoryMapping: CurrentFileSize " << fileSize << endl;
+	//info("write");
 	unsigned int newSize = offset + bytes;
 	if (newSize > fileSize) {
-		resize(newSize * 1.25);
+		resize(newSize/* * 1.25*/);
 	}
 	memcpy((char*)windowsFileView + offset, data, bytes);
 }
@@ -225,7 +231,7 @@ void ofxMemoryMapping::read(void* dataResult, const size_t& offset, const size_t
 
 void ofxMemoryMapping::resize(const size_t& newSize)
 {
-	printf("ofxMemoryMapping: Resizing '%s' to: %d bytes.\n", filename.c_str(), newSize);
+	//printf("ofxMemoryMapping: Resizing '%s' to: %d bytes.\n", filename.c_str(), newSize);
 
 	windowsCloseFileMappingHandle();
 	windowsCloseFileView();

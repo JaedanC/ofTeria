@@ -149,11 +149,9 @@ void ConsoleState::update(ofxGameEngine* game)
 
 void ConsoleState::draw(ofxGameEngine* game)
 {
-#ifdef _DEBUG
 	debugPush("State: ConsoleState");
-	debugPush("HistoryMarker: " + ofToString(commandHistoryMarker));
-	debugPush("CurrentCommandCursorMarker: " + ofToString(cursor.getCursor()));
-#endif
+	//debugPush("HistoryMarker: " + ofToString(commandHistoryMarker));
+	//debugPush("CurrentCommandCursorMarker: " + ofToString(cursor.getCursor()));
 
 	screenPos = { (float)ofGetWidth() - width - screenGap, (float)screenGap };
 

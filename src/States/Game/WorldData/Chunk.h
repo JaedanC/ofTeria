@@ -26,14 +26,19 @@ struct ChunkSaved {
 class WorldData;
 class Chunk {
 private:
-	weak_ptr<WorldData> worldData;
+	WorldData* worldData;
 	Block* blocks;
 	ChunkSaved save;
 
 public:
 	Chunk(ofVec2f chunkPos, int chunkWidth, int chunkHeight, WorldData* worldData);
-	inline ChunkSaved* getSaveDataPtr() { return nullptr; }
+	inline ChunkSaved* getSaveDataPtr() { return &save; }
+	inline WorldData* getWorldData() { return worldData; }
 
+	void createRandomData();
+	void freeData();
+
+	void loadChunk(int chunkId);
 	void saveChunk();
 	Block* getBlock(const ofVec2f& chunkRelativePos);
 	Block* getBlock(int chunkIndex);

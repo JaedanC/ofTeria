@@ -7,19 +7,20 @@
 #include "../../../WorldData/WorldData.h"
 
 Camera::Camera(Player* player)
-	: player(player->weak_from_this())
+	: player(player)
 {
+	cout << "Constructing Camera\n";
 }
 
 ofVec2f* Camera::getPlayerPos()
 {
-	return getPlayer().lock()->getWorldPos();
+	return getPlayer()->getWorldPos();
 }
 
 void Camera::pushCameraMatrix()
 {
 
-	ofVec2f& blockDim = getPlayer().lock()->getEntityController().lock()->getWorldSpawn().lock()->getWorldData().lock()->getBlockDim();
+	ofVec2f& blockDim = getPlayer()->getEntityController()->getWorldSpawn()->getWorldData().lock()->getBlockDim();
 	ofPushMatrix();
 	ofScale(zoom / blockDim.x, zoom / blockDim.y);
 	ofTranslate(-(*getPlayerPos()));
