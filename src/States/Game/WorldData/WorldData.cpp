@@ -25,7 +25,21 @@ WorldData::WorldData(WorldSpawn* worldSpawn)
 
 void WorldData::draw()
 {
-	/* Room for optimisation? */
+	/* Room for optimisation? 
+	Release @ 256 loaded chunks getting roughly 65fps
+
+	int blockWidth = 32;
+	int blockHeight = 32;
+
+	int chunkWidth = 16;
+	int chunkHeight = 16;
+
+	int worldWidth = 1024;
+	int worldHeight = 1024;
+
+	int screenChunkLoadWidth = 500;
+	int screenChunkLoadHeight = 500;
+	*/
 
 	for (auto& pair : loadedChunks) {
 		Chunk* chunk = pair.second;
@@ -41,19 +55,19 @@ void WorldData::draw()
 			int x, y;
 			x = blockWidth * (i % chunkWidth) + chunkOffsetX;
 			y = blockHeight * (i / chunkHeight) + chunkOffsetY;
-			ofSetColor(abs(200 - (x / blockWidth) / 2 - (y / blockHeight) / 2) % 255 + 1, (x / blockWidth) * 4, (y / blockHeight) * 4);
+			ofSetColor(abs(200 - (x / blockWidth) / 2 - (y / blockHeight) / 2) % 255 + 1, ((x / blockWidth) * 4 % 255), ((y / blockHeight) * 4 % 255));
 			//ofSetColor(c);
 			ofDrawRectangle(x, y, blockWidth, blockHeight);
 		}
 
 
-		c.setHsb((int)((chunkPos.x + chunkPos.y) * 100 + 200) % 255, 255, 255, 20);
+		/*c.setHsb((int)((chunkPos.x + chunkPos.y) * 100 + 200) % 255, 255, 255, 20);
 		ofSetColor(c);
-		ofDrawRectangle(chunkOffsetX, chunkOffsetY, chunkWidth * blockWidth, chunkHeight * blockHeight);
+		ofDrawRectangle(chunkOffsetX, chunkOffsetY, chunkWidth * blockWidth, chunkHeight * blockHeight);*/
 	}
 
 	/* Draw the chunk loading rectangle. */
-	ofVec2f* playerPos = getWorldSpawn()->getEntityController().lock()->getPlayer().lock()->getWorldPos();
+	/*ofVec2f* playerPos = getWorldSpawn()->getEntityController().lock()->getPlayer().lock()->getWorldPos();
 	float& zoom = getWorldSpawn()->getEntityController().lock()->getPlayer().lock()->getCamera().lock()->getZoom();
 	int playerLeftChunkBorder	= (playerPos->x) - (screenChunkLoadWidth / 2) * zoom;
 	int playerRightChunkBorder	= (playerPos->x) + (screenChunkLoadWidth / 2) * zoom;
@@ -63,7 +77,7 @@ void WorldData::draw()
 	ofSetColor(ofColor::black, 255);
 	ofNoFill();
 	ofDrawRectangle(playerLeftChunkBorder, playerUpChunkBorder, playerRightChunkBorder - playerLeftChunkBorder, playerDownChunkBorder - playerUpChunkBorder);
-	ofFill();
+	ofFill();*/
 }
 
 size_t WorldData::getChunkDataSize()
