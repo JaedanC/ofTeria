@@ -40,6 +40,8 @@ private:
 	exist or that more should be added every frame. Then these chunks are all drawn to the screen in draw(). */
 	unordered_map<int, Chunk*> loadedChunks;
 
+	void threadUpdateChunkWorker(int offset, int toCompute, vector<int>& toDelete);
+
 public:
 	/* Takes in a pointer the WorldSpawn instance that owns us. */
 	WorldData(WorldSpawn* worldSpawn);

@@ -11,6 +11,7 @@
 #include "../addons/ofxDebugger/ofxDebugger.h"
 
 
+
 WorldData::WorldData(WorldSpawn* worldSpawn)
 	: worldSpawn(worldSpawn), worldFile(make_shared<ofxMemoryMapping>(worldSpawn->getWorldName()))
 {
@@ -101,16 +102,61 @@ void WorldData::temporaryCreateWorld()
 	}
 }
 
+void WorldData::threadUpdateChunkWorker(int mapOffset, int toCompute, vector<int>& toDelete)
+{
+	// TODO: Implement this function
+	ofVec2f* playerPos = getWorldSpawn()->getEntityController().lock()->getPlayer().lock()->getWorldPos();
+	float& zoom = getWorldSpawn()->getEntityController().lock()->getPlayer().lock()->getCamera().lock()->getZoom();
+
+	int playerLeftChunkBorder = (playerPos->x) - (screenChunkLoadWidth / 2) * zoom;
+	int playerRightChunkBorder = (playerPos->x) + (screenChunkLoadWidth / 2) * zoom;
+	int playerUpChunkBorder = (playerPos->y) - (screenChunkLoadHeight / 2) * zoom;
+	int playerDownChunkBorder = (playerPos->y) + (screenChunkLoadHeight / 2) * zoom;
+
+	ofRectangle playerChunkBorder(playerLeftChunkBorder, playerUpChunkBorder, playerRightChunkBorder - playerLeftChunkBorder, playerDownChunkBorder - playerUpChunkBorder);
+
+	int chunkPixelWidth = chunkWidth * blockWidth;
+	int chunkPixelHeight = chunkHeight * blockHeight;
+
+	auto& iter = loadedChunks.begin();
+	advance(iter, mapOffset);
+	for (int i = mapOffset; i < mapOffset + toCompute; i++) {
+		int chunkId = iter->first;
+		Chunk* chunk = iter->second;
+
+		ofVec2f& chunkPos = chunk->getChunkMetaData()->chunkPos;
+		int chunkLeftBorder = chunkPos.x * chunkPixelWidth;
+		int chunkRightBorder = chunkPos.x * chunkPixelWidth + chunkPixelWidth;
+		int chunkTopBorder = chunkPos.y * chunkPixelHeight;
+		int chunkDownBorder = chunkPos.y * chunkPixelHeight + chunkPixelHeight;
+
+		ofRectangle chunkBorder(chunkLeftBorder, chunkTopBorder, chunkRightBorder - chunkLeftBorder, chunkDownBorder - chunkTopBorder);
+		if (!playerChunkBorder.inside(chunkBorder)) {
+			toDelete.push_back(chunkId);
+		}
+
+		iter++;
+	}
+
+	for (auto chunkId : toDelete) {
+		freeChunk(loadedChunks[chunkId]);
+		//loadedChunks.erase(chunkId);
+	}
+}
+
 void WorldData::updateChunks()
 {
 	// TODO: Implement this function
 	ofVec2f* playerPos = getWorldSpawn()->getEntityController().lock()->getPlayer().lock()->getWorldPos();
 	float& zoom = getWorldSpawn()->getEntityController().lock()->getPlayer().lock()->getCamera().lock()->getZoom();
 
+
 	int playerLeftChunkBorder	= (playerPos->x) - (screenChunkLoadWidth / 2) * zoom;
 	int playerRightChunkBorder	= (playerPos->x) + (screenChunkLoadWidth / 2) * zoom;
 	int playerUpChunkBorder		= (playerPos->y) - (screenChunkLoadHeight / 2) * zoom;
 	int playerDownChunkBorder	= (playerPos->y) + (screenChunkLoadHeight / 2) * zoom;
+
+	ofRectangle playerChunkBorder(playerLeftChunkBorder, playerUpChunkBorder, playerRightChunkBorder - playerLeftChunkBorder, playerDownChunkBorder - playerUpChunkBorder);
 
 	int chunkPixelWidth = chunkWidth * blockWidth;
 	int chunkPixelHeight = chunkHeight * blockHeight;
@@ -119,28 +165,29 @@ void WorldData::updateChunks()
 		loadChunk(convertChunkIdToVec(i));
 	}*/
 
-	vector<int> toDelete;
-	for (auto& pair : loadedChunks) {
-		Chunk* chunk = pair.second;
-		ofVec2f& chunkPos = chunk->getChunkMetaData()->chunkPos;
+	//Use 8 threads to do work.
+	int workPerCore = 32;
+	int threads = loadedChunks.size() / workPerCore;
+	threads = ofClamp(threads, 0, 8);
 
-		int chunkLeftBorder = chunkPos.x * chunkPixelWidth;
-		int chunkRightBorder = chunkPos.x * chunkPixelWidth + chunkPixelWidth;
-		int chunkTopBorder = chunkPos.y * chunkPixelHeight;
-		int chunkDownBorder = chunkPos.y * chunkPixelHeight + chunkPixelHeight;
+	vector<thread> myThreads;
+	vector<vector<int> > toDelete;
 
-		if (chunkLeftBorder > playerRightChunkBorder ||
-			chunkRightBorder < playerLeftChunkBorder ||
-			chunkTopBorder > playerDownChunkBorder ||
-			chunkDownBorder < playerUpChunkBorder) {
-			toDelete.push_back(pair.first);
+	for (int i = 0; i < threads - 1; i += workPerCore) {
+		myThreads.emplace_back(&WorldData::threadUpdateChunkWorker, this, i, workPerCore, ref(toDelete[i]));
+	}
+	myThreads.emplace_back(&WorldData::threadUpdateChunkWorker, this, threads - 1, threads % workPerCore, ref(toDelete[threads - 1]));
+
+	for (auto& t : myThreads) {
+		t.join();
+	}
+	for (int i = 0; i < threads; i++) {
+		auto& nowDelete = toDelete[i];
+		for (auto& chunkId : nowDelete) {
+			loadedChunks.erase(chunkId);
 		}
 	}
 
-	for (auto& chunkId : toDelete) {
-		freeChunk(loadedChunks[chunkId]);
-		loadedChunks.erase(chunkId);
-	}
 
 	for (int i = playerLeftChunkBorder / chunkPixelWidth; i < playerRightChunkBorder / chunkPixelWidth + 1; i++) {
 		for (int j = playerUpChunkBorder / chunkPixelHeight; j < playerDownChunkBorder / chunkPixelHeight + 1; j++) {
