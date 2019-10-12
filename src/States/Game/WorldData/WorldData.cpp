@@ -12,6 +12,7 @@
 #include "ofxMemoryMapping/ofxMemoryMapping.h"
 #include "ofxTimer/ofxTimer.h"
 
+
 WorldData::WorldData(WorldSpawn* worldSpawn)
 	: worldSpawn(worldSpawn), worldFile(make_shared<ofxMemoryMapping>(worldSpawn->getWorldName()))
 {
@@ -145,23 +146,6 @@ void WorldData::updateChunks()
 
 		debugPush("LoadedChunks: " + ofToString(loadedChunks.size()));
 
-		// TODO: Incorporate with zoom.
-
-		// TODO: This is not correct
-
-		/*
-		vector<int> toDelete;
-		for (auto& chunkPair : loadedChunks) {
-			freeChunk(chunkPair.second);
-			toDelete.push_back(chunkPair.first);
-		}
-
-		for (auto& chunkId : toDelete) {
-			loadedChunks.erase(chunkId);
-		}
-
-		auto* block = getBlock(copy);
-		*/
 	}
 }
 
