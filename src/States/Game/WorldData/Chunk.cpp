@@ -62,6 +62,11 @@ void Chunk::saveChunk()
 	worldFile->write(blocks, offset, save.numBlocks * sizeof(Block));
 }
 
+void Chunk::freeData()
+{
+	delete[] blocks;
+}
+
 Block* Chunk::getBlock(const ofVec2f& chunkRelativePos)
 {
 	return getBlock(getWorldData()->convertChunkVecToId(chunkRelativePos));

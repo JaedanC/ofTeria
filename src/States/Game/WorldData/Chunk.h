@@ -59,6 +59,8 @@ public:
 	/* Saves this chunkBack to memory. */
 	void saveChunk();
 
+	void freeData();
+
 	/* Returns a pointer to the Block at the chunkRelativePosition of the block relative to the chunkPos in
 	the world. */
 	Block* getBlock(const ofVec2f& chunkRelativePos);
