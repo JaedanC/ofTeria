@@ -19,17 +19,17 @@ private:
 	Large - 8400 blocks wide and 2400 blocks high, sky limit about 800-900 blocks
 	above underground level. A Large world has 20,160,000 blocks, exactly 1.75x the 
 	size of a Medium world and 4x the size of a Small world. */
-	int blockWidth = 32;
-	int blockHeight = 32;
+	int blockWidth = 16;
+	int blockHeight = 16;
 
-	int chunkWidth = 16;
-	int chunkHeight = 16;
+	int chunkWidth = 4;
+	int chunkHeight = 4;
 
 	int worldWidth = 1024;
 	int worldHeight = 1024;
 
-	int screenChunkLoadWidth = 500;
-	int screenChunkLoadHeight = 500;
+	int screenChunkLoadWidth = 1920;
+	int screenChunkLoadHeight = 1080;
 
 	/* These are initialised in the constructor. */
 	int numChunksX;
