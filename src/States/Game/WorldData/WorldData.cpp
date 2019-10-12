@@ -49,35 +49,18 @@ void WorldData::draw()
 		ofVec2f& chunkPos = chunk->getChunkMetaData()->chunkPos;
 		int chunkOffsetX = chunkPos.x * chunkWidth * blockWidth;
 		int chunkOffsetY = chunkPos.y * chunkHeight * blockHeight;
+
+
 		int chunkWidth = chunk->getChunkMetaData()->chunkWidth;
 		int chunkHeight = chunk->getChunkMetaData()->chunkHeight;
 		int x, y;
 
-		glm::vec2 * chunkData = new glm::vec2[chunk->getChunkMetaData()->numBlocks * 4];
 		for (int i = 0; i < chunk->getChunkMetaData()->numBlocks; i++) {
-
-			glm::vec2* blockData = &chunkData[i * 4];
-
 			x = blockWidth * (i % chunkWidth) + chunkOffsetX;
 			y = blockHeight * (i / chunkHeight) + chunkOffsetY;
-
-			blockData[0] = { x,y };
-			blockData[1] = { x + blockWidth/2, y };
-			blockData[2] = { x + blockWidth / 2, y + blockHeight/2 };
-			blockData[3] = { x, y + blockHeight / 2 };
-
 			ofSetColor(abs(200 - (x / blockWidth) / 2 - (y / blockHeight) / 2) % 255 + 1, ((x / blockWidth) * 4 % 255), ((y / blockHeight) * 4 % 255));
-
-			//ofDrawRectangle(x, y, blockWidth, blockHeight);
-
-
+			ofDrawRectangle(x, y, blockWidth, blockHeight);
 		}
-
-		glEnableClientState(GL_VERTEX_ARRAY);
-		glVertexPointer(2, GL_FLOAT, sizeof(glm::vec2), chunkData);
-		glDrawArrays(GL_TRIANGLE_FAN, 0, chunk->getChunkMetaData()->numBlocks * 4);
-
-		delete[] chunkData;
 
 		/*c.setHsb((int)((chunkPos.x + chunkPos.y) * 100 + 200) % 255, 255, 255, 20);
 		ofSetColor(c);

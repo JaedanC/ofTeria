@@ -15,6 +15,11 @@ private:
 	/* Is the file that we are writing the world to. */
 	shared_ptr<ofxMemoryMapping> worldFile;
 
+	/* Stores a cache of the loaded chunks on the screen. Each of these chunks are checked to see if they should still
+	exist or that more should be added every frame. Then these chunks are all drawn to the screen in draw(). */
+	unordered_map<int, Chunk*> loadedChunks;
+
+public:
 	/* https://terraria.fandom.com/wiki/World_Size
 	Large - 8400 blocks wide and 2400 blocks high, sky limit about 800-900 blocks
 	above underground level. A Large world has 20,160,000 blocks, exactly 1.75x the 
@@ -36,11 +41,6 @@ private:
 	int numChunksY;
 	int numChunks;
 
-	/* Stores a cache of the loaded chunks on the screen. Each of these chunks are checked to see if they should still
-	exist or that more should be added every frame. Then these chunks are all drawn to the screen in draw(). */
-	unordered_map<int, Chunk*> loadedChunks;
-
-public:
 	/* Takes in a pointer the WorldSpawn instance that owns us. */
 	WorldData(WorldSpawn* worldSpawn);
 	~WorldData() {
