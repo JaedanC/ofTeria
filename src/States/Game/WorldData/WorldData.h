@@ -38,9 +38,24 @@ private:
 
 	/* Stores a cache of the loaded chunks on the screen. Each of these chunks are checked to see if they should still
 	exist or that more should be added every frame. Then these chunks are all drawn to the screen in draw(). */
-	unordered_map<int, Chunk*> loadedChunks;
 
-	void threadUpdateChunkWorker(int offset, int toCompute, vector<int>& toDelete);
+	struct ThreadHelperConstants {
+		ThreadHelperConstants() {}
+		WorldData* instance;
+		ofRectangle& playerChunkBorder;
+		int chunkPixelWidth;
+		int chunkPixelHeight;
+		vector<int>& chunkIdToDelete;
+	};
+
+	struct ThreadHelperIndividual {
+		int offset;
+		int workForThisCore;
+	};
+
+	unordered_map<int, Chunk*> loadedChunks;
+	mutex toDeleteMutex;
+	static void threadUpdateChunkWorker(threadHelperConstants& group, threadHelperIndividual mine);
 
 public:
 	/* Takes in a pointer the WorldSpawn instance that owns us. */

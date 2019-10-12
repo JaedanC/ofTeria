@@ -102,25 +102,26 @@ void WorldData::temporaryCreateWorld()
 	}
 }
 
-void WorldData::threadUpdateChunkWorker(int mapOffset, int toCompute, vector<int>& toDelete)
+void WorldData::threadUpdateChunkWorker(WorldData* instance, int offset, int toCompute, vector<int>& toDelete)
 {
 	// TODO: Implement this function
-	ofVec2f* playerPos = getWorldSpawn()->getEntityController().lock()->getPlayer().lock()->getWorldPos();
-	float& zoom = getWorldSpawn()->getEntityController().lock()->getPlayer().lock()->getCamera().lock()->getZoom();
+	ofVec2f* playerPos = instance->getWorldSpawn()->getEntityController().lock()->getPlayer().lock()->getWorldPos();
+	float& zoom = instance->getWorldSpawn()->getEntityController().lock()->getPlayer().lock()->getCamera().lock()->getZoom();
 
-	int playerLeftChunkBorder = (playerPos->x) - (screenChunkLoadWidth / 2) * zoom;
-	int playerRightChunkBorder = (playerPos->x) + (screenChunkLoadWidth / 2) * zoom;
-	int playerUpChunkBorder = (playerPos->y) - (screenChunkLoadHeight / 2) * zoom;
-	int playerDownChunkBorder = (playerPos->y) + (screenChunkLoadHeight / 2) * zoom;
+	int playerLeftChunkBorder = (playerPos->x) - (instance->screenChunkLoadWidth / 2) * zoom;
+	int playerRightChunkBorder = (playerPos->x) + (instance->screenChunkLoadWidth / 2) * zoom;
+	int playerUpChunkBorder = (playerPos->y) - (instance->screenChunkLoadHeight / 2) * zoom;
+	int playerDownChunkBorder = (playerPos->y) + (instance->screenChunkLoadHeight / 2) * zoom;
 
 	ofRectangle playerChunkBorder(playerLeftChunkBorder, playerUpChunkBorder, playerRightChunkBorder - playerLeftChunkBorder, playerDownChunkBorder - playerUpChunkBorder);
 
-	int chunkPixelWidth = chunkWidth * blockWidth;
-	int chunkPixelHeight = chunkHeight * blockHeight;
+	int chunkPixelWidth = instance->chunkWidth * instance->blockWidth;
+	int chunkPixelHeight = instance->chunkHeight * instance->blockHeight;
 
-	auto& iter = loadedChunks.begin();
-	advance(iter, mapOffset);
-	for (int i = mapOffset; i < mapOffset + toCompute; i++) {
+	vector<int> localDelete;
+	auto& iter = instance->loadedChunks.begin();
+	advance(iter, offset);
+	for (int i = offset; i < offset + toCompute; i++) {
 		int chunkId = iter->first;
 		Chunk* chunk = iter->second;
 
@@ -132,14 +133,17 @@ void WorldData::threadUpdateChunkWorker(int mapOffset, int toCompute, vector<int
 
 		ofRectangle chunkBorder(chunkLeftBorder, chunkTopBorder, chunkRightBorder - chunkLeftBorder, chunkDownBorder - chunkTopBorder);
 		if (!playerChunkBorder.inside(chunkBorder)) {
+			localDelete.push_back(chunkId);
+			instance->toDeleteMutex.lock();
 			toDelete.push_back(chunkId);
+			instance->toDeleteMutex.unlock();
 		}
 
 		iter++;
 	}
 
-	for (auto chunkId : toDelete) {
-		freeChunk(loadedChunks[chunkId]);
+	for (auto chunkId : localDelete) {
+		instance->freeChunk(instance->loadedChunks[chunkId]);
 		//loadedChunks.erase(chunkId);
 	}
 }
@@ -161,31 +165,36 @@ void WorldData::updateChunks()
 	int chunkPixelWidth = chunkWidth * blockWidth;
 	int chunkPixelHeight = chunkHeight * blockHeight;
 
-	/*for (int i = 0; i < numChunks; i++) {
-		loadChunk(convertChunkIdToVec(i));
-	}*/
+	vector<int> chunkIdToDelete;
+
+	ThreadHelperConstants group;
+	group.instance = this;
+	group.playerChunkBorder = playerChunkBorder;
+	group.chunkPixelWidth = chunkPixelWidth;
+	group.chunkPixelHeight = chunkPixelHeight;
+	group.chunkIdToDelete = chunkIdToDelete;
 
 	//Use 8 threads to do work.
-	int workPerCore = 32;
+	int workPerCore = 8;
 	int threads = loadedChunks.size() / workPerCore;
-	threads = ofClamp(threads, 0, 8);
+	threads = ofClamp(threads, 1, 8);
 
 	vector<thread> myThreads;
-	vector<vector<int> > toDelete;
 
-	for (int i = 0; i < threads - 1; i += workPerCore) {
-		myThreads.emplace_back(&WorldData::threadUpdateChunkWorker, this, i, workPerCore, ref(toDelete[i]));
+	for (int i = 0; i < threads - 1; i++) {
+		myThreads.emplace_back(&WorldData::threadUpdateChunkWorker, this, i * workPerCore, workPerCore, ref(chunkIdToDelete));
 	}
-	myThreads.emplace_back(&WorldData::threadUpdateChunkWorker, this, threads - 1, threads % workPerCore, ref(toDelete[threads - 1]));
+
+	int offset = (threads - 1) * workPerCore;
+	int workForThread = loadedChunks.size() % workPerCore;
+	myThreads.emplace_back(&WorldData::threadUpdateChunkWorker, this, offset, workForThread, ref(chunkIdToDelete));
 
 	for (auto& t : myThreads) {
 		t.join();
 	}
-	for (int i = 0; i < threads; i++) {
-		auto& nowDelete = toDelete[i];
-		for (auto& chunkId : nowDelete) {
-			loadedChunks.erase(chunkId);
-		}
+
+	for (auto& chunkId : chunkIdToDelete) {
+		loadedChunks.erase(chunkId);
 	}
 
 
