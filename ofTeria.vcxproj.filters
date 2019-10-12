@@ -51,6 +51,7 @@
     <ClInclude Include="src\States\MenuState.h" />
     <ClInclude Include="src\States\PlayState.h" />
     <ClInclude Include="src\ofApp.h" />
+    <ClInclude Include="addons\ofxTimer\ofxTimer.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="icon.rc" />

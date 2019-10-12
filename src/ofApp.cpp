@@ -4,6 +4,7 @@
 #include "ofxGameStates/ofxGameEngine.h"
 #include "States/MenuState.h"
 #include "Keyboard/KeyboardInput.h"
+#include "ofxTimer/ofxTimer.h"
 
 //--------------------------------------------------------------
 void ofApp::setup(){
@@ -53,11 +54,13 @@ void ofApp::setup(){
 
 //--------------------------------------------------------------
 void ofApp::update(){
+	ofxTimer timer("ofApp::update()");
 	engine->update();
 }
 
 //--------------------------------------------------------------
 void ofApp::draw(){
+	ofxTimer timer("ofApp::draw()");
 	// Background
 	ofBackground(ofColor::dimGrey);
 
