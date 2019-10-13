@@ -19,22 +19,21 @@ private:
 	exist or that more should be added every frame. Then these chunks are all drawn to the screen in draw(). */
 	unordered_map<int, Chunk*> loadedChunks;
 
+	/* These two are used to stop stuttering from loaded too many chunks from disk in the same frame. */
+	int maxRenderedChunksPerFrame = 1;
+	int renderedChunksInThisFrame = 0;
 public:
+
 	/* https://terraria.fandom.com/wiki/World_Size
 	Large - 8400 blocks wide and 2400 blocks high, sky limit about 800-900 blocks
 	above underground level. A Large world has 20,160,000 blocks, exactly 1.75x the 
 	size of a Medium world and 4x the size of a Small world. */
-	int blockWidth = 16;
-	int blockHeight = 16;
-
-	int chunkWidth = 16;
-	int chunkHeight = 16;
-
-	int worldWidth = 1024;
+	int worldWidth = 1024; // In blocks
 	int worldHeight = 1024;
-
-	int screenChunkLoadWidth = 1920;
-	int screenChunkLoadHeight = 1080;
+	int chunkWidth = 64; // In blocks
+	int chunkHeight = 64;
+	int blockWidth = 16; // In pixels @ zoom == 1
+	int blockHeight = 16;
 
 	/* These are initialised in the constructor. */
 	int numChunksX;
@@ -47,6 +46,7 @@ public:
 		cout << "Destroying WorldData\n";
 	};
 
+	/* Draws the chunks that are loaded onto the screen. */
 	void draw();
 
 	/* Returns a weak pointer to the ofxMemoryMapping instance that we own. */
@@ -54,6 +54,16 @@ public:
 
 	/* Returns a pointer to the WorldSpawn instance that owns us. */
 	inline WorldSpawn* getWorldSpawn() { return worldSpawn; }
+
+	/* Returns how many chunks were loaded from disk in this frame. */
+	inline int getRenderedChunksInThisFrame() { return renderedChunksInThisFrame; }
+	inline void incrementRenderedChunksInThisFrame() { ++renderedChunksInThisFrame; }
+	inline void resetRenderedChunksInThisFrame() { renderedChunksInThisFrame = 0; }
+	inline bool canRenderAnotherChunkInThisFrame() { return renderedChunksInThisFrame < maxRenderedChunksPerFrame; }
+
+	/* Returns the maximum about of chunks that are allowed to be loaded from disk perframe. This is stop
+	stuttering that occurs from having too many chunks loading at once.*/
+	inline int getMaxRenderedChunksPerFrame() { return maxRenderedChunksPerFrame; }
 
 	/* Converts a chunkId to a ofVec2f containing the x, y position of the chunkId. 
 	

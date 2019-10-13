@@ -21,19 +21,17 @@ void Chunk::createRandomData()
 	}
 }
 
-void Chunk::freeData()
-{
-	delete[] blocks;
-}
-
 void Chunk::loadChunk(int chunkId)
 {
+	/* Reads the chunk from disk and loads the data into their corresponding buffers. */
 	int offset = chunkId * getWorldData()->getChunkDataSize();
 	getWorldData()->getWorldFile().lock()->read(getChunkMetaData(), offset, sizeof(ChunkSaved));
 	offset += sizeof(ChunkSaved);
 	blocks = new Block[save.chunkWidth * save.chunkHeight];
 	getWorldData()->getWorldFile().lock()->read(blocks, offset, sizeof(Block) * save.numBlocks);
 
+	/* When a chunk is loaded from memory a framebuffer for the chunk is immediately drawn. This saves
+	GPU draws calls to per chunk not per block. Causes stuttering if too many chunks are loaded per frame. */
 	frameBuffer.begin();
 	int x, y;
 	int blockWidth = getWorldData()->blockWidth;
@@ -56,17 +54,11 @@ void Chunk::saveChunk()
 	int chunkSize = getWorldData()->getChunkDataSize();
 	int offset = chunkId * chunkSize;
 
-	/*cout << "Chunk::saveChunk() chunkId: " << chunkId << endl;
-	cout << "Chunk::saveChunk() chunkSize: " << chunkSize << endl;
-	cout << "Chunk::saveChunk() offset: " << offset << endl;*/
-
 	// Save the Chunk MetaData first.
-	//cout << "Chunk::saveChunk() Writing Chunk MetaData\n";
 	worldFile->write(&save, offset, sizeof(ChunkSaved));
 	offset += sizeof(ChunkSaved);
 
 	// Next save the block heap data.
-	//cout << "Chunk::saveChunk() Writing BlockData\n";
 	worldFile->write(blocks, offset, save.numBlocks * sizeof(Block));
 }
 

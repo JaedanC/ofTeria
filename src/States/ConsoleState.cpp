@@ -21,7 +21,7 @@ ConsoleState::ConsoleState() : ofxGameState(
 
 void ConsoleState::keyPressed(int key)
 {
-	/* Controlling the cursor. Enter, Backspace, Delete, Arrow keys, PGUP and PGDOWN. */
+	/* Controlling the cursor. Enter, Backspace, Delete, Arrow keys, PGUP and PGDOWN, Shift. */
 
 	switch (key) {
 	case OF_KEY_RETURN:
@@ -155,7 +155,6 @@ void ConsoleState::draw(ofxGameEngine* game)
 
 	screenPos = { (float)ofGetWidth() - width - screenGap, (float)screenGap };
 
-
 	// Draw the console background
 	ofSetColor(ofColor::black);
 	ofDrawRectangle(screenPos, width, height);
@@ -185,8 +184,7 @@ void ConsoleState::draw(ofxGameEngine* game)
 		for (string& line : entry.message) {
 			ofDrawBitmapString(line, screenPos.x + 5, screenPos.y + 15 * (linesDrawn + 2));
 
-			linesDrawn++;
-			if (linesDrawn >= showHistoryLines) {
+			if (++linesDrawn >= showHistoryLines) {
 				goto endloop;
 			}
 		}

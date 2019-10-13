@@ -34,8 +34,3 @@ void Camera::popCameraMatrix()
 {
 	ofPopMatrix();
 }
-
-void Camera::update()
-{
-
-}

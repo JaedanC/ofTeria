@@ -7,7 +7,7 @@
 #include "../addons/ofxDebugger/ofxDebugger.h"
 
 WorldSpawn::WorldSpawn(const string& worldName)
-	: worldData(make_shared<WorldData>(this)), entityController(make_shared<EntityController>(this))
+	: worldData(make_shared<WorldData>(this)), entityController(make_shared<EntityController>(this)), worldName(worldName)
 {
 	cout << "Constructing WorldSpawn\n";
 }

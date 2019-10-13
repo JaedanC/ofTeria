@@ -53,9 +53,6 @@ public:
 	either. Just for testing purposes. */
 	void createRandomData();
 
-	/* Deallocates the blocks allocation. */
-	void freeData();
-
 	/* Reads from memory and fills the Chunk with the data inside the disk at the chunkId. */
 	void loadChunk(int chunkId);
 

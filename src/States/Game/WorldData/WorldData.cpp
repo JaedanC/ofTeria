@@ -28,23 +28,7 @@ WorldData::WorldData(WorldSpawn* worldSpawn)
 void WorldData::draw()
 {
 	ofxTimer timer("WorldData::draw()");
-	/* Room for optimisation? 
-	Release @ 256 loaded chunks getting roughly 65fps
 
-	int blockWidth = 32;
-	int blockHeight = 32;
-
-	int chunkWidth = 16;
-	int chunkHeight = 16;
-
-	int worldWidth = 1024;
-	int worldHeight = 1024;
-
-	int screenChunkLoadWidth = 500;
-	int screenChunkLoadHeight = 500;
-	*/
-	//ofNoFill();
-	//ofDisableAlphaBlending();
 	for (auto& pair : loadedChunks) {
 		Chunk* chunk = pair.second;
 		ofVec2f& chunkPos = chunk->getChunkMetaData()->chunkPos;
@@ -52,21 +36,6 @@ void WorldData::draw()
 		int chunkOffsetY = chunkPos.y * chunkHeight * blockHeight;
 
 		chunk->frameBuffer.draw(chunkOffsetX, chunkOffsetY);
-
-		/*int chunkWidth = chunk->getChunkMetaData()->chunkWidth;
-		int chunkHeight = chunk->getChunkMetaData()->chunkHeight;
-		int x, y;
-
-		for (int i = 0; i < chunk->getChunkMetaData()->numBlocks; i++) {
-			x = blockWidth * (i % chunkWidth) + chunkOffsetX;
-			y = blockHeight * (i / chunkHeight) + chunkOffsetY;
-			ofSetColor(abs(200 - (x / blockWidth) / 2 - (y / blockHeight) / 2) % 255 + 1, ((x / blockWidth) * 4 % 255), ((y / blockHeight) * 4 % 255));
-			ofDrawRectangle(x, y, blockWidth, blockHeight);
-		}*/
-
-		/*c.setHsb((int)((chunkPos.x + chunkPos.y) * 100 + 200) % 255, 255, 255, 20);
-		ofSetColor(c);
-		ofDrawRectangle(chunkOffsetX, chunkOffsetY, chunkWidth * blockWidth, chunkHeight * blockHeight);*/
 	}
 
 	/* Draw the chunk loading rectangle. */
@@ -74,10 +43,10 @@ void WorldData::draw()
 	//float& zoom = getWorldSpawn()->getEntityController().lock()->getPlayer().lock()->getCamera().lock()->getZoom();
 	//int chunkPixelWidth = chunkWidth * blockWidth;
 	//int chunkPixelHeight = chunkHeight * blockHeight;
-	//int playerLeftChunkBorder	= ((playerPos->x) - (screenChunkLoadWidth / 2) * zoom);
-	//int playerRightChunkBorder	= ((playerPos->x) + (screenChunkLoadWidth / 2) * zoom);
-	//int playerUpChunkBorder		= ((playerPos->y) - (screenChunkLoadHeight / 2) * zoom);
-	//int playerDownChunkBorder	= ((playerPos->y) + (screenChunkLoadHeight / 2) * zoom);
+	//int playerLeftChunkBorder	= ((playerPos->x) - (ofGetWidth() / 2) * zoom);
+	//int playerRightChunkBorder	= ((playerPos->x) + (ofGetWidth() / 2) * zoom);
+	//int playerUpChunkBorder		= ((playerPos->y) - (ofGetHeight() / 2) * zoom);
+	//int playerDownChunkBorder	= ((playerPos->y) + (ofGetHeight() / 2) * zoom);
 	//
 	//ofSetColor(ofColor::black, 255);
 	//ofNoFill();
@@ -110,20 +79,21 @@ void WorldData::updateChunks()
 {
 	{
 		ofxTimer timer("updateChunks()");
+		resetRenderedChunksInThisFrame();
 
-		// TODO: Implement this function
 		ofVec2f* playerPos = getWorldSpawn()->getEntityController().lock()->getPlayer().lock()->getWorldPos();
 		float& zoom = getWorldSpawn()->getEntityController().lock()->getPlayer().lock()->getCamera().lock()->getZoom();
 
+		/* Calculate where the chunk loading borders are from the player. */
 		int chunkPixelWidth = chunkWidth * blockWidth;
 		int chunkPixelHeight = chunkHeight * blockHeight;
+		int playerLeftChunkBorder =		((playerPos->x) - (ofGetWidth() / 2) * zoom) / chunkPixelWidth;
+		int playerRightChunkBorder =	((playerPos->x) + (ofGetWidth() / 2) * zoom) / chunkPixelWidth;
+		int playerUpChunkBorder =		((playerPos->y) - (ofGetHeight() / 2) * zoom) / chunkPixelHeight;
+		int playerDownChunkBorder =		((playerPos->y) + (ofGetHeight() / 2) * zoom) / chunkPixelHeight;
 
-		int playerLeftChunkBorder = ((playerPos->x) - (screenChunkLoadWidth / 2) * zoom) / chunkPixelWidth;
-		int playerRightChunkBorder = ((playerPos->x) + (screenChunkLoadWidth / 2) * zoom) / chunkPixelWidth;
-		int playerUpChunkBorder = ((playerPos->y) - (screenChunkLoadHeight / 2) * zoom) / chunkPixelHeight;
-		int playerDownChunkBorder = ((playerPos->y) + (screenChunkLoadHeight / 2) * zoom) / chunkPixelHeight;
-
-		// Free the ones outside the range
+		/* Add the chunkId's to need to be deleted to a list to avoid editing the loadedChunks container
+		while iterating through it. */
 		vector<int> toDelete;
 		for (auto& pair : loadedChunks) {
 			ofVec2f chunkPos = convertChunkIdToVec(pair.first);
@@ -133,12 +103,14 @@ void WorldData::updateChunks()
 				toDelete.push_back(pair.first);
 			}
 		}
+
+		/* Remove these chunks from memory. */
 		for (int chunkId : toDelete) {
 			freeChunk(loadedChunks[chunkId]);
 			loadedChunks.erase(chunkId);
 		}
 
-		// Get the correct chunks
+		/* Loads the chunks from memory that are supposed to be on the screen */
 		for (int i = playerLeftChunkBorder; i < playerRightChunkBorder + 1; i++) {
 			for (int j = playerUpChunkBorder; j < playerDownChunkBorder + 1; j++) {
 				loadChunk({ (float)i, (float)j });
@@ -147,48 +119,56 @@ void WorldData::updateChunks()
 
 		debugPush("LoadedChunks: " + ofToString(loadedChunks.size()));
 		debugPush("LoadedBlocks: " + ofToString(loadedChunks.size() * chunkWidth * chunkHeight));
-
 	}
 }
 
 void WorldData::freeChunk(Chunk* chunk)
 {
-	ofVec2f& chunkPos = chunk->getChunkMetaData()->chunkPos;
-	freeChunk(chunkPos);
+	freeChunk(chunk->getChunkMetaData()->chunkPos);
 }
 
 void WorldData::freeChunk(const ofVec2f& chunkPos)
 {
 	int chunkId = convertChunkVecToId(chunkPos);
+	/* Check to see if this chunk is not loaded. */
 	if (loadedChunks.count(chunkId) == 0) {
 		cout << "WorldData::freeChunk: chunkDoes not exist. Can't free\n";
 		return;
 	}
 
-	Chunk* chunk = loadedChunks[chunkId];
-	chunk->freeData();
-	delete chunk;
+	/* Unload the chunk. */
+	delete loadedChunks[chunkId];
 }
 
 Chunk* WorldData::loadChunk(const ofVec2f& chunkPos)
 {
+	/* Ignore requests to load chunks outside the game world. */
 	if (chunkPos.x >= numChunksX || chunkPos.y >= numChunksY ||
 		chunkPos.x < 0 || chunkPos.y < 0) {
 		return nullptr;
 	}
+	
 	int chunkId = convertChunkVecToId(chunkPos);
 
+	/* Only load the chunk from memory if it is not stored in the cache. If it's in the cache just return
+	that instead. */
 	if (loadedChunks.count(chunkId) != 0) {
-		//cout << "WorldData::loadChunk: Chunk already loaded at " << chunkPos << endl;
 		return loadedChunks[chunkId];
 	}
 
-	int dataSize = getChunkDataSize();
-	int offset = chunkId * dataSize;
+	/* Limit the amount of chunks we can load from memory every frame to stop stuttering as you move through
+	the world. On a slow pc this process could be visible if maxRenderPerFrame is too low. Having a lower value
+	gives you a steadier fps but a slow pc would not be able to render fast enough to make good usage of this.
+	So far maxRenderPerFrame is a small number, and instead we have semi-larger chunks. */
+	if (!canRenderAnotherChunkInThisFrame()) {
+		return nullptr;
+	}
+	incrementRenderedChunksInThisFrame();
 
+	/* Load the chunk from memory and allocate enough space for the chunk on the heap. */
+	int offset = chunkId * getChunkDataSize();
 	Chunk* chunk = new Chunk(chunkPos, chunkWidth, chunkHeight, this);
 	chunk->loadChunk(chunkId);
-
 	loadedChunks[chunkId] = chunk;
 	return chunk;
 }
