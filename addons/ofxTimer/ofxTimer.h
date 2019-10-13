@@ -1,6 +1,6 @@
 #pragma once
 #ifndef OFX_TIMER_H
-#define PFX_TIMER_H
+#define OFX_TIMER_H
 
 #include "ofMain.h"
 #include "ofxDebugger/ofxDebugger.h"

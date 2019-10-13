@@ -7,6 +7,9 @@ Chunk::Chunk(ofVec2f chunkPos, int chunkWidth, int chunkHeight, WorldData * worl
 		chunkPos, chunkWidth, chunkHeight
 	)
 {
+	int blockWidth = getWorldData()->blockWidth;
+	int blockHeight = getWorldData()->blockHeight;
+	frameBuffer.allocate(save.chunkWidth * blockWidth, save.chunkHeight * blockHeight);
 }
 
 void Chunk::createRandomData()
@@ -30,6 +33,18 @@ void Chunk::loadChunk(int chunkId)
 	offset += sizeof(ChunkSaved);
 	blocks = new Block[save.chunkWidth * save.chunkHeight];
 	getWorldData()->getWorldFile().lock()->read(blocks, offset, sizeof(Block) * save.numBlocks);
+
+	frameBuffer.begin();
+	int x, y;
+	int blockWidth = getWorldData()->blockWidth;
+	int blockHeight = getWorldData()->blockHeight;
+	for (int i = 0; i < getChunkMetaData()->numBlocks; i++) {
+		x = blockWidth * (i % getWorldData()->chunkWidth);
+		y = blockHeight * (i / getWorldData()->chunkHeight);
+		ofSetColor(abs(200 - (x / blockWidth) / 2 - (y / blockHeight) / 2) % 255 + 1, ((x / blockWidth) * 4 % 255), ((y / blockHeight) * 4 % 255));
+		ofDrawRectangle(x, y, blockWidth, blockHeight);
+	}
+	frameBuffer.end();
 }
 
 void Chunk::saveChunk()

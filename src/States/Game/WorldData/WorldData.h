@@ -27,8 +27,8 @@ public:
 	int blockWidth = 16;
 	int blockHeight = 16;
 
-	int chunkWidth = 4;
-	int chunkHeight = 4;
+	int chunkWidth = 16;
+	int chunkHeight = 16;
 
 	int worldWidth = 1024;
 	int worldHeight = 1024;

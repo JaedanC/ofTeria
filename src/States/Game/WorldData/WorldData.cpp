@@ -44,15 +44,16 @@ void WorldData::draw()
 	int screenChunkLoadHeight = 500;
 	*/
 	//ofNoFill();
-	ofDisableAlphaBlending();
+	//ofDisableAlphaBlending();
 	for (auto& pair : loadedChunks) {
 		Chunk* chunk = pair.second;
 		ofVec2f& chunkPos = chunk->getChunkMetaData()->chunkPos;
 		int chunkOffsetX = chunkPos.x * chunkWidth * blockWidth;
 		int chunkOffsetY = chunkPos.y * chunkHeight * blockHeight;
 
+		chunk->frameBuffer.draw(chunkOffsetX, chunkOffsetY);
 
-		int chunkWidth = chunk->getChunkMetaData()->chunkWidth;
+		/*int chunkWidth = chunk->getChunkMetaData()->chunkWidth;
 		int chunkHeight = chunk->getChunkMetaData()->chunkHeight;
 		int x, y;
 
@@ -61,7 +62,7 @@ void WorldData::draw()
 			y = blockHeight * (i / chunkHeight) + chunkOffsetY;
 			ofSetColor(abs(200 - (x / blockWidth) / 2 - (y / blockHeight) / 2) % 255 + 1, ((x / blockWidth) * 4 % 255), ((y / blockHeight) * 4 % 255));
 			ofDrawRectangle(x, y, blockWidth, blockHeight);
-		}
+		}*/
 
 		/*c.setHsb((int)((chunkPos.x + chunkPos.y) * 100 + 200) % 255, 255, 255, 20);
 		ofSetColor(c);
@@ -145,6 +146,7 @@ void WorldData::updateChunks()
 		}
 
 		debugPush("LoadedChunks: " + ofToString(loadedChunks.size()));
+		debugPush("LoadedBlocks: " + ofToString(loadedChunks.size() * chunkWidth * chunkHeight));
 
 	}
 }
@@ -165,7 +167,7 @@ void WorldData::freeChunk(const ofVec2f& chunkPos)
 
 	Chunk* chunk = loadedChunks[chunkId];
 	chunk->freeData();
-	delete[] chunk;
+	delete chunk;
 }
 
 Chunk* WorldData::loadChunk(const ofVec2f& chunkPos)

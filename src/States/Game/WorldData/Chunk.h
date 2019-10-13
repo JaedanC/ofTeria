@@ -38,6 +38,8 @@ private:
 	ChunkSaved save;
 
 public:
+	ofFbo frameBuffer;
+
 	/* Takes in a chunkPos, chunkWidth, chunkHeight and a pointer to the WorldData instance that owns us. */
 	Chunk(ofVec2f chunkPos, int chunkWidth, int chunkHeight, WorldData* worldData);
 
