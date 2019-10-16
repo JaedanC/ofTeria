@@ -10,7 +10,7 @@ EntityController::EntityController(WorldSpawn* worldSpawn)
 
 void EntityController::update()
 {
-	getPlayer().lock()->update();
+	getPlayer().lock()->updateEntity();
 }
 
 void EntityController::draw()

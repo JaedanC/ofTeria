@@ -3,15 +3,24 @@
 #define ENTITY_H
 
 #include "ofMain.h"
+#include "Hitbox.h"
 
 class EntityController;
 class Entity {
+private:
+	virtual void update() = 0;
+
 protected:
 	/* Pointer to the EntityController instance that owns us. */
 	EntityController* entityController;
 
 	/* Generic worldPos of any entity instance. */
 	ofVec2f worldPos;
+
+	/* Hitboxes. */
+	Hitbox hitbox;
+
+	ofVec2f velocity;
 
 public:
 	/* Takes in a pointer to the EntityController instance that owns us. */
@@ -22,14 +31,21 @@ public:
 		cout << "Destroying Entity\n";
 	}
 
+	/**/
+	inline Hitbox* getHitbox() { return &hitbox; }
+
+	/**/
+	inline ofVec2f* getVelocity() { return &velocity; }
+
 	/* Returns the worldPos of this Entity. */
 	inline ofVec2f* getWorldPos() { return &worldPos; }
 
 	/* Returns a Pointer to the EntityController instance that owns us. */
 	inline EntityController* getEntityController() { return entityController; }
 
-	/* All classes that inherit from this base class need to implement these. */
-	virtual void update() = 0;
+	/* All classes that inherit from this base class need to implement these. See
+	update() which is private. */
+	void updateEntity();
 	virtual void draw() = 0;
 	
 	// TODO: SpriteController

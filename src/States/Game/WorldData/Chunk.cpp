@@ -21,7 +21,26 @@ void Chunk::createRandomData()
 	}
 }
 
-void Chunk::loadChunk(int chunkId)
+void Chunk::generateFbo()
+{
+	frameBuffer.begin();
+	int x, y;
+	int blockWidth = getWorldData()->blockWidth;
+	int blockHeight = getWorldData()->blockHeight;
+	ofNoFill();
+	ofSetLineWidth(3);
+	for (int i = 0; i < getChunkMetaData()->numBlocks; i++) {
+		x = blockWidth * (i % getWorldData()->chunkWidth);
+		y = blockHeight * (i / getWorldData()->chunkHeight);
+		ofSetColor(abs(200 - (x / blockWidth) / 2 - (y / blockHeight) / 2) % 255 + 1, ((x / blockWidth) * 4 % 255), ((y / blockHeight) * 4 % 255));
+		ofDrawRectangle(x, y, blockWidth, blockHeight);
+	}
+	ofFill();
+
+	frameBuffer.end();
+}
+
+void Chunk::onlyLoadChunkData(int chunkId)
 {
 	/* Reads the chunk from disk and loads the data into their corresponding buffers. */
 	int offset = chunkId * getWorldData()->getChunkDataSize();
@@ -29,20 +48,15 @@ void Chunk::loadChunk(int chunkId)
 	offset += sizeof(ChunkSaved);
 	blocks = new Block[save.chunkWidth * save.chunkHeight];
 	getWorldData()->getWorldFile().lock()->read(blocks, offset, sizeof(Block) * save.numBlocks);
+}
+
+void Chunk::loadChunk(int chunkId)
+{
+	onlyLoadChunkData(chunkId);
 
 	/* When a chunk is loaded from memory a framebuffer for the chunk is immediately drawn. This saves
 	GPU draws calls to per chunk not per block. Causes stuttering if too many chunks are loaded per frame. */
-	frameBuffer.begin();
-	int x, y;
-	int blockWidth = getWorldData()->blockWidth;
-	int blockHeight = getWorldData()->blockHeight;
-	for (int i = 0; i < getChunkMetaData()->numBlocks; i++) {
-		x = blockWidth * (i % getWorldData()->chunkWidth);
-		y = blockHeight * (i / getWorldData()->chunkHeight);
-		ofSetColor(abs(200 - (x / blockWidth) / 2 - (y / blockHeight) / 2) % 255 + 1, ((x / blockWidth) * 4 % 255), ((y / blockHeight) * 4 % 255));
-		ofDrawRectangle(x, y, blockWidth, blockHeight);
-	}
-	frameBuffer.end();
+	generateFbo();
 }
 
 void Chunk::saveChunk()

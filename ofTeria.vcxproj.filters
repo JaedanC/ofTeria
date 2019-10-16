@@ -22,6 +22,7 @@
     <ClCompile Include="src\States\Game\Entities\Entity\Player.cpp" />
     <ClCompile Include="src\States\Game\Entities\Entity\Entity.cpp" />
     <ClCompile Include="src\States\Game\Entities\Entity\Camera\Camera.cpp" />
+    <ClCompile Include="src\States\Game\Entities\Entity\Hitbox.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="src">
@@ -52,6 +53,7 @@
     <ClInclude Include="src\States\PlayState.h" />
     <ClInclude Include="src\ofApp.h" />
     <ClInclude Include="addons\ofxTimer\ofxTimer.h" />
+    <ClInclude Include="src\States\Game\Entities\Entity\Hitbox.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="icon.rc" />

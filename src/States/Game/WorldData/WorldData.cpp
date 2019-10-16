@@ -35,6 +35,10 @@ void WorldData::draw()
 		int chunkOffsetX = chunkPos.x * chunkWidth * blockWidth;
 		int chunkOffsetY = chunkPos.y * chunkHeight * blockHeight;
 
+		if (!chunk->frameBuffer.isAllocated()) {
+			cout << "Dead framebuffer @ " << pair.first << endl;
+		}
+
 		chunk->frameBuffer.draw(chunkOffsetX, chunkOffsetY);
 	}
 
@@ -191,7 +195,11 @@ Block* WorldData::getBlock(const ofVec2f& worldPos)
 Block* WorldData::getBlock(const ofVec2f& chunkPos, const ofVec2f& chunkRelativePos)
 {
 	Chunk* chunk = getChunk(chunkPos);
-	return chunk->getBlock(chunkRelativePos);
+	if (chunk) {
+		return chunk->getBlock(chunkRelativePos);
+	} else {
+		return nullptr;
+	}
 }
 
 Chunk* WorldData::getChunk(const ofVec2f& chunkPos)

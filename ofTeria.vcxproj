@@ -201,6 +201,7 @@
     <ClCompile Include="src\States\Game\Entities\EntityController.cpp" />
     <ClCompile Include="src\States\Game\Entities\Entity\Camera\Camera.cpp" />
     <ClCompile Include="src\States\Game\Entities\Entity\Entity.cpp" />
+    <ClCompile Include="src\States\Game\Entities\Entity\Hitbox.cpp" />
     <ClCompile Include="src\States\Game\Entities\Entity\Player.cpp" />
     <ClCompile Include="src\States\Game\WorldData\Chunk.cpp" />
     <ClCompile Include="src\States\Game\WorldData\WorldData.cpp" />
@@ -226,6 +227,7 @@
     <ClInclude Include="src\States\Game\Entities\EntityController.h" />
     <ClInclude Include="src\States\Game\Entities\Entity\Camera\Camera.h" />
     <ClInclude Include="src\States\Game\Entities\Entity\Entity.h" />
+    <ClInclude Include="src\States\Game\Entities\Entity\Hitbox.h" />
     <ClInclude Include="src\States\Game\Entities\Entity\Player.h" />
     <ClInclude Include="src\States\Game\WorldData\Chunk.h" />
     <ClInclude Include="src\States\Game\WorldData\WorldData.h" />

@@ -9,38 +9,44 @@
 
 Player::Player(EntityController* entityController)
 	: Entity(entityController), camera(make_shared<Camera>(this))
+
 {
 	cout << "Constructing Player\n";
+	//25, 37 size hitbox
+	float w = 25; float h = 37;
+	hitbox.set(getWorldPos(), -ofVec2f{w / 2, h / 2}, w, h);
 }
 
 void Player::update()
 {
 	if (PlayState::Instance()->queryInput("left", QUERY_DOWN)) {
-		worldPos.x -= 5;
+		getVelocity()->x -= 1;
 	}
 	if (PlayState::Instance()->queryInput("right", QUERY_DOWN)) {
-		worldPos.x += 5;
+		getVelocity()->x += 1;
 	}
 	if (PlayState::Instance()->queryInput("up", QUERY_DOWN)) {
-		worldPos.y -= 5;
+		getVelocity()->y -= 1;
 	}
 	if (PlayState::Instance()->queryInput("down", QUERY_DOWN)) {
-		worldPos.y += 5;
+		getVelocity()->y += 1;
 	}
 	if (PlayState::Instance()->queryInput("zoomin", QUERY_DOWN)) {
 		getCamera().lock()->getZoom() -= 0.01;
-		cout << "Zoom In\n";
 	}
 	if (PlayState::Instance()->queryInput("zoomout", QUERY_DOWN)) {
 		getCamera().lock()->getZoom() += 0.01;
-		cout << "Zoom Out\n";
 	}
 
+	// Friction
+	*getVelocity() *= 0.99;
+
+	// Gravity
+	// TODO
 }
 
 void Player::draw()
 {
 	debugPush("Player WorldPos: " + ofToString(worldPos));
-	ofSetColor(ofColor::purple);
-	ofDrawRectangle(worldPos, 5, 5);
+	getHitbox()->draw();
 }

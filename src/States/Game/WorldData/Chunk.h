@@ -53,6 +53,12 @@ public:
 	either. Just for testing purposes. */
 	void createRandomData();
 
+	/* */
+	void generateFbo();
+
+	/**/
+	void onlyLoadChunkData(int chunkId);
+
 	/* Reads from memory and fills the Chunk with the data inside the disk at the chunkId. */
 	void loadChunk(int chunkId);
 
