@@ -28,10 +28,12 @@ public:
 	inline Player* getPlayer() { return player; }
 
 	/* Changes the zoom factor of the Camera. */
-	inline void setZoom(float zoom_) { zoom = zoom_; }
+	inline void setZoom(float zoom_) {
+		zoom = ofClamp(zoom_, 0.2, 5);
+	}
 
 	/* Returns the zoom factor of the Camera. */
-	inline float& getZoom() { return zoom; }
+	inline float getZoom() { return zoom; }
 
 	/* Returns a ofVec2f* pointing to the players exact position in the world. */
 	ofVec2f* getPlayerPos();
@@ -42,6 +44,8 @@ public:
 
 	/* Once you are finshed drawing worldPosition's you should call this function. */
 	void popCameraMatrix();
+
+
 };
 
 

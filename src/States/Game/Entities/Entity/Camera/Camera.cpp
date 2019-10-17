@@ -21,7 +21,7 @@ ofVec2f* Camera::getPlayerPos()
 void Camera::pushCameraMatrix()
 {
 	debugPush("Zoom Level: " + ofToString(zoom));
-	ofVec2f& blockDim = getPlayer()->getEntityController()->getWorldSpawn()->getWorldData().lock()->getBlockDim();
+	glm::uvec2& blockDim = getPlayer()->getEntityController()->getWorldSpawn()->getWorldData().lock()->getBlockDim();
 	ofPushMatrix();
 	ofScale(1 / zoom);
 

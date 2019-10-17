@@ -19,8 +19,8 @@ void Entity::updateEntity()
 	int x = bw * floor((worldPos.x + velocity.x) / bw);
 	int y = bh * floor((worldPos.y + velocity.y) / bh);
 	Block* block = getEntityController()->getWorldSpawn()->getWorldData().lock()->getBlock(worldPos + velocity);
-	if (!block) {
 		worldPos += velocity;
+	if (!block) {
 		goto pass;
 	}
 	else {

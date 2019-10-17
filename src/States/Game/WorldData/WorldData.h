@@ -77,7 +77,7 @@ public:
 
 	chunkId of 14 = ofVec2f(2, 3)	
 	*/
-	inline ofVec2f convertChunkIdToVec(int id) { return ofVec2f(id % numChunksX, id / numChunksX); }
+	inline glm::uvec2 convertChunkIdToVec(int id) { return glm::uvec2(id % numChunksX, id / numChunksX); }
 
 	/* Performs the reverse operation of convertChunkIdToVec().
 	Example:
@@ -90,10 +90,10 @@ public:
 
 	chunkPos{3, 1} = chunkId of 8
 	*/
-	inline int convertChunkVecToId(const ofVec2f& vec) { return (int)(vec.y * numChunksX + vec.x); }
+	inline int convertChunkVecToId(const glm::uvec2& vec) { return (vec.y * numChunksX + vec.x); }
 
 	/* Returns a ofVec2f containing blockWidth and blockHeight. */
-	inline ofVec2f getBlockDim() { return ofVec2f(blockWidth, blockHeight); }
+	inline glm::uvec2 getBlockDim() { return glm::uvec2(blockWidth, blockHeight); }
 
 	/* Returns the sizeof each Chunk when they are written to memory. As in
 	This is the sizeof(<ChunkMetaData>) + sizeof(<BlockData>) * numberOfBlocksInAChunk. */
@@ -112,24 +112,24 @@ public:
 	void freeChunk(Chunk* chunk);
 
 	/* Free a chunk from memory that is at the chunkPos. Does not update the loadedChunks map. */
-	void freeChunk(const ofVec2f& chunkPos);
+	void freeChunk(const glm::uvec2& chunkPos);
 
 	/* Loads a chunk from disk into the loadedChunks cache at the chunkPos specified. Returns the chunk
 	at the chunkPos if it is already in the cache. */
-	Chunk* loadChunk(const ofVec2f& chunkPos);
+	Chunk* loadChunk(const glm::uvec2& chunkPos);
 
 	/* Returns the Block at the worldPos. If the block is not in the loadedChunk cache it is added 
 	and then the Block is returned. Currently does not check if the block you are asking for is out of
 	bounds and will likely throw an error when you go to read outside the bounds of the world. */
-	Block* getBlock(const ofVec2f& worldPos);
+	Block* getBlock(const glm::vec2& worldPos);
 
 	/* Returns a block given a chunkPos and the relative position of the block from the top left of the
 	chunk. */
-	Block* getBlock(const ofVec2f& chunkPos, const ofVec2f& chunkRelativePos);
+	Block* getBlock(const glm::vec2& chunkPos, const glm::vec2& chunkRelativePos);
 
 	/* Returns the chunk at the chunkPos. If the Chunk is not in the loadedChunk cache it is added and
 	then returned. */
-	Chunk* getChunk(const ofVec2f& chunkPos);
+	Chunk* getChunk(const glm::vec2& chunkPos);
 };
 
 

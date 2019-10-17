@@ -15,12 +15,12 @@ struct Block {
 /* Any data that need to be stored alongside a Chunk should be stored in here. Update the contructor, accordingly
 if you change the fields. No pointers allowed in here. Everything should be by value. */
 struct ChunkSaved {
-	ChunkSaved(ofVec2f chunkPos, int chunkWidth, int chunkHeight)
+	ChunkSaved(glm::uvec2 chunkPos, int chunkWidth, int chunkHeight)
 		: chunkPos(chunkPos), chunkWidth(chunkWidth), chunkHeight(chunkHeight)
 	{
 		numBlocks = chunkWidth * chunkHeight;
 	}
-	ofVec2f chunkPos;
+	glm::uvec2 chunkPos;
 	int chunkWidth;
 	int chunkHeight;
 	int numBlocks;
@@ -37,11 +37,13 @@ private:
 	Block* blocks;
 	ChunkSaved save;
 
+	bool fboLoaded = false;
 public:
 	ofFbo frameBuffer;
 
 	/* Takes in a chunkPos, chunkWidth, chunkHeight and a pointer to the WorldData instance that owns us. */
-	Chunk(ofVec2f chunkPos, int chunkWidth, int chunkHeight, WorldData* worldData);
+	Chunk(glm::uvec2 chunkPos, int chunkWidth, int chunkHeight, WorldData* worldData);
+	~Chunk();
 
 	/* Returns a pointer to the WorldData instance that owns us. */
 	inline WorldData* getWorldData() { return worldData; }
@@ -53,26 +55,17 @@ public:
 	either. Just for testing purposes. */
 	void createRandomData();
 
-	/* */
-	void generateFbo();
-
-	/**/
-	void onlyLoadChunkData(int chunkId);
-
-	/* Reads from memory and fills the Chunk with the data inside the disk at the chunkId. */
-	void loadChunk(int chunkId);
+	void drawChunk(float worldX, float worldY);
 
 	/* Saves this chunkBack to memory. */
 	void saveChunk();
 
-	void freeData();
 
 	/* Returns a pointer to the Block at the chunkRelativePosition of the block relative to the chunkPos in
 	the world. */
-	Block* getBlock(const ofVec2f& chunkRelativePos);
-
-	/* Returns a pointer to the Block in the blockIndex position of blocks array. */
+	Block* getBlock(const glm::uvec2& chunkRelativePos);
 	Block* getBlock(int blockIndex);
+
 };
 
 #endif /* CHUNK_H */

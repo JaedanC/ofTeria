@@ -12,9 +12,14 @@ WorldSpawn::WorldSpawn(const string& worldName)
 	cout << "Constructing WorldSpawn\n";
 }
 
-ofVec2f const WorldSpawn::convertScreenPosToWorldPos(ofVec2f& cameraWorldPos, ofVec2f& screenPos, int zoom)
+ofVec2f const WorldSpawn::convertScreenPosToWorldPos(ofVec2f& screenPos)
 {
-	ofVec2f worldPos = cameraWorldPos + screenPos / zoom;
+	
+	float zoom = getEntityController().lock()->getPlayer().lock()->getCamera().lock()->getZoom();
+	ofVec2f* playerPos = getEntityController().lock()->getPlayer().lock()->getWorldPos();
+	ofVec2f worldPos = *playerPos + screenPos * zoom;
+	worldPos.x -= zoom * ofGetWidth() / 2.0f;
+	worldPos.y -= zoom * ofGetHeight() / 2.0f;
 	return worldPos;
 }
 

@@ -30,7 +30,7 @@ public:
 	kept in WorldPos format if they wish to be drawn otherwise you will never see them on the screen. See draw().
 	Only things inside drawWorld() are mapped using the player's camera, otherwise, drawBackground() and
 	drawOverlay use screenPos. This could be changed later on. */
-	ofVec2f const convertScreenPosToWorldPos(ofVec2f& cameraWorldPos, ofVec2f& screenPos, int zoom=1);
+	ofVec2f const convertScreenPosToWorldPos(ofVec2f& screenPos);
 
 	/* Get the name of the world. */
 	inline string& getWorldName() { return worldName; }

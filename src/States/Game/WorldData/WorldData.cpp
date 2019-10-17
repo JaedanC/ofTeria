@@ -31,15 +31,11 @@ void WorldData::draw()
 
 	for (auto& pair : loadedChunks) {
 		Chunk* chunk = pair.second;
-		ofVec2f& chunkPos = chunk->getChunkMetaData()->chunkPos;
+		glm::uvec2& chunkPos = chunk->getChunkMetaData()->chunkPos;
 		int chunkOffsetX = chunkPos.x * chunkWidth * blockWidth;
 		int chunkOffsetY = chunkPos.y * chunkHeight * blockHeight;
 
-		if (!chunk->frameBuffer.isAllocated()) {
-			cout << "Dead framebuffer @ " << pair.first << endl;
-		}
-
-		chunk->frameBuffer.draw(chunkOffsetX, chunkOffsetY);
+		chunk->drawChunk(chunkOffsetX, chunkOffsetY);
 	}
 
 	/* Draw the chunk loading rectangle. */
@@ -71,11 +67,10 @@ void WorldData::temporaryCreateWorld()
 	getWorldFile().lock()->resize(dataSize);
 
 	for (int chunkId = 0; chunkId < numChunks; chunkId++) {
-		ofVec2f chunkPos = convertChunkIdToVec(chunkId);
+		glm::uvec2 chunkPos = convertChunkIdToVec(chunkId);
 		Chunk chunk(chunkPos, chunkWidth, chunkHeight, this);
 		chunk.createRandomData();
 		chunk.saveChunk();
-		chunk.freeData();
 	}
 }
 
@@ -86,7 +81,7 @@ void WorldData::updateChunks()
 		resetRenderedChunksInThisFrame();
 
 		ofVec2f* playerPos = getWorldSpawn()->getEntityController().lock()->getPlayer().lock()->getWorldPos();
-		float& zoom = getWorldSpawn()->getEntityController().lock()->getPlayer().lock()->getCamera().lock()->getZoom();
+		float zoom = getWorldSpawn()->getEntityController().lock()->getPlayer().lock()->getCamera().lock()->getZoom();
 
 		/* Calculate where the chunk loading borders are from the player. */
 		int chunkPixelWidth = chunkWidth * blockWidth;
@@ -131,7 +126,7 @@ void WorldData::freeChunk(Chunk* chunk)
 	freeChunk(chunk->getChunkMetaData()->chunkPos);
 }
 
-void WorldData::freeChunk(const ofVec2f& chunkPos)
+void WorldData::freeChunk(const glm::uvec2& chunkPos)
 {
 	int chunkId = convertChunkVecToId(chunkPos);
 	/* Check to see if this chunk is not loaded. */
@@ -144,7 +139,7 @@ void WorldData::freeChunk(const ofVec2f& chunkPos)
 	delete loadedChunks[chunkId];
 }
 
-Chunk* WorldData::loadChunk(const ofVec2f& chunkPos)
+Chunk* WorldData::loadChunk(const glm::uvec2& chunkPos)
 {
 	/* Ignore requests to load chunks outside the game world. */
 	if (chunkPos.x >= numChunksX || chunkPos.y >= numChunksY ||
@@ -172,12 +167,11 @@ Chunk* WorldData::loadChunk(const ofVec2f& chunkPos)
 	/* Load the chunk from memory and allocate enough space for the chunk on the heap. */
 	int offset = chunkId * getChunkDataSize();
 	Chunk* chunk = new Chunk(chunkPos, chunkWidth, chunkHeight, this);
-	chunk->loadChunk(chunkId);
 	loadedChunks[chunkId] = chunk;
 	return chunk;
 }
 
-Block* WorldData::getBlock(const ofVec2f& worldPos)
+Block* WorldData::getBlock(const glm::vec2& worldPos)
 {
 	ofVec2f chunkPos = {
 		worldPos.x / chunkWidth,
@@ -192,7 +186,7 @@ Block* WorldData::getBlock(const ofVec2f& worldPos)
 	return getBlock(chunkPos, chunkRelativePos);
 }
 
-Block* WorldData::getBlock(const ofVec2f& chunkPos, const ofVec2f& chunkRelativePos)
+Block* WorldData::getBlock(const glm::vec2& chunkPos, const glm::vec2& chunkRelativePos)
 {
 	Chunk* chunk = getChunk(chunkPos);
 	if (chunk) {
@@ -202,7 +196,7 @@ Block* WorldData::getBlock(const ofVec2f& chunkPos, const ofVec2f& chunkRelative
 	}
 }
 
-Chunk* WorldData::getChunk(const ofVec2f& chunkPos)
+Chunk* WorldData::getChunk(const glm::vec2& chunkPos)
 {
 	Chunk* chunk;
 	int chunkId = convertChunkVecToId(chunkPos);
