@@ -173,15 +173,17 @@ Chunk* WorldData::loadChunk(const glm::uvec2& chunkPos)
 
 Block* WorldData::getBlock(const glm::vec2& worldPos)
 {
-	ofVec2f chunkPos = {
-		worldPos.x / chunkWidth,
-		worldPos.y / chunkHeight
+	glm::vec2 chunkPos = {
+		floor(worldPos.x / (chunkWidth * blockWidth)),
+		floor(worldPos.y / (chunkHeight * blockHeight))
 	};
 
-	int a = static_cast<int>(worldPos.x) % chunkWidth;
-	int b = static_cast<int>(worldPos.y) % chunkHeight;
+	int chunkRelativeX = floor(worldPos.x);
+	int chunkRelativeY = floor(worldPos.y);
+	chunkRelativeX %= chunkWidth;
+	chunkRelativeY %= chunkHeight;
 
-	ofVec2f chunkRelativePos = { (float)a, (float)b };
+	glm::vec2 chunkRelativePos = { chunkRelativeX, chunkRelativeY };
 
 	return getBlock(chunkPos, chunkRelativePos);
 }
