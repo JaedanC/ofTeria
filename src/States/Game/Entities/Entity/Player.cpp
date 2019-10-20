@@ -23,16 +23,16 @@ Player::Player(EntityController* entityController)
 void Player::update()
 {
 	if (PlayState::Instance()->queryInput("left", QUERY_DOWN)) {
-		getVelocity()->x -= 1;
+		getVelocity()->x -= 100 * ofGetLastFrameTime();
 	}
 	if (PlayState::Instance()->queryInput("right", QUERY_DOWN)) {
-		getVelocity()->x += 1;
+		getVelocity()->x += 100 * ofGetLastFrameTime();
 	}
 	if (PlayState::Instance()->queryInput("up", QUERY_DOWN)) {
-		getVelocity()->y -= 1;
+		getVelocity()->y -= 100 * ofGetLastFrameTime();
 	}
 	if (PlayState::Instance()->queryInput("down", QUERY_DOWN)) {
-		getVelocity()->y += 1;
+		getVelocity()->y += 100 * ofGetLastFrameTime();
 	}
 	if (PlayState::Instance()->queryInput("zoomin", QUERY_DOWN)) {
 		getCamera().lock()->setZoom(getCamera().lock()->getZoom() - 0.01);
@@ -42,7 +42,7 @@ void Player::update()
 	}
 
 	// Friction
-	*getVelocity() *= 0.99;
+	*getVelocity() = *getVelocity() * pow(0.9, ofGetLastFrameTime() * 60);
 
 	// Gravity
 	// TODO
