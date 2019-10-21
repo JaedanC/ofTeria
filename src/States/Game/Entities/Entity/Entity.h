@@ -8,7 +8,9 @@
 class EntityController;
 class Entity {
 private:
+	virtual void fixedUpdate() = 0;
 	virtual void update() = 0;
+	virtual void draw() = 0;
 
 protected:
 	/* Pointer to the EntityController instance that owns us. */
@@ -46,7 +48,8 @@ public:
 	/* All classes that inherit from this base class need to implement these. See
 	update() which is private. */
 	void updateEntity();
-	virtual void draw() = 0;
+	void fixedUpdateEntity();
+	void drawEntity();
 	
 	// TODO: SpriteController
 	// TODO: vector<Hitbox> hitboxes

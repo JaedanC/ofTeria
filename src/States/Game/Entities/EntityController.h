@@ -30,6 +30,7 @@ public:
 	/* Calls all the update/draw functions of the Entities in the world. Currently only the player
 	exists but later this will be a vector<Entity>. */
 	void update();
+	void fixedUpdate();
 	void draw();
 };
 

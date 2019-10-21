@@ -24,6 +24,7 @@ public:
 
 	/* Inherited abstract functions from the Entity Class. */
 	virtual void update();
+	virtual void fixedUpdate();
 	virtual void draw();
 };
 

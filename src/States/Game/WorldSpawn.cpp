@@ -34,6 +34,11 @@ void WorldSpawn::update()
 	getWorldData().lock()->updateChunks();
 }
 
+void WorldSpawn::fixedUpdate()
+{
+	getEntityController().lock()->fixedUpdate();
+}
+
 void WorldSpawn::draw()
 {
 	drawBackground();

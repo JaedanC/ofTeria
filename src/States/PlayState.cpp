@@ -11,6 +11,14 @@ void PlayState::setup()
 
 void PlayState::update(ofxGameEngine* game)
 {
+	elapsedTime += ofGetLastFrameTime();
+	int passes = floor(elapsedTime/100 * fixedUpdateRate);
+	elapsedTime -= passes * (1 / (double)fixedUpdateRate);
+	for (int i = 0; i < passes; i++) {
+		fixedUpdate(game);
+	}
+
+
 	if (queryInput("jump")) {
 		cout << "PlayState is not getting blocked!\n";
 	}
@@ -19,6 +27,11 @@ void PlayState::update(ofxGameEngine* game)
 	}
 
 	getWorldSpawn().lock()->update();
+}
+
+void PlayState::fixedUpdate(ofxGameEngine* game)
+{
+	getWorldSpawn().lock()->fixedUpdate();
 }
 
 void PlayState::draw(ofxGameEngine* game)

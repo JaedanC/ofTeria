@@ -13,7 +13,12 @@ void EntityController::update()
 	getPlayer().lock()->updateEntity();
 }
 
+void EntityController::fixedUpdate()
+{
+	getPlayer().lock()->fixedUpdateEntity();
+}
+
 void EntityController::draw()
 {
-	getPlayer().lock()->draw();
+	getPlayer().lock()->drawEntity();
 }

@@ -47,6 +47,7 @@ public:
 
 	/* Updates all my members that have an update() function. */
 	void update();
+	void fixedUpdate();
 
 	/* Calls the drawBackground(), drawWorld(), drawOverlay() functions. drawWorld uses the Player's camera so you can
 	draw straight to worldPos. */

@@ -22,17 +22,23 @@ Player::Player(EntityController* entityController)
 
 void Player::update()
 {
+	debugPush("GetLastFrameTime: " + ofToString(ofGetLastFrameTime()));
+	debugPush("Velocity: " + ofToString(*getVelocity()));
+}
+
+void Player::fixedUpdate()
+{
 	if (PlayState::Instance()->queryInput("left", QUERY_DOWN)) {
-		getVelocity()->x -= 100 * ofGetLastFrameTime();
+		getVelocity()->x -= 1;
 	}
 	if (PlayState::Instance()->queryInput("right", QUERY_DOWN)) {
-		getVelocity()->x += 100 * ofGetLastFrameTime();
+		getVelocity()->x += 1;
 	}
 	if (PlayState::Instance()->queryInput("up", QUERY_DOWN)) {
-		getVelocity()->y -= 100 * ofGetLastFrameTime();
+		getVelocity()->y -= 1;
 	}
 	if (PlayState::Instance()->queryInput("down", QUERY_DOWN)) {
-		getVelocity()->y += 100 * ofGetLastFrameTime();
+		getVelocity()->y += 1;
 	}
 	if (PlayState::Instance()->queryInput("zoomin", QUERY_DOWN)) {
 		getCamera().lock()->setZoom(getCamera().lock()->getZoom() - 0.01);
@@ -42,7 +48,7 @@ void Player::update()
 	}
 
 	// Friction
-	*getVelocity() = *getVelocity() * pow(0.9, ofGetLastFrameTime() * 60);
+	//*getVelocity() = *getVelocity() * pow(0.9, ofGetLastFrameTime() * 60);
 
 	// Gravity
 	// TODO
@@ -59,10 +65,8 @@ void Player::draw()
 	auto camera = getCamera().lock();
 	int blockWidth = getEntityController()->getWorldSpawn()->getWorldData().lock()->blockWidth;
 	int blockHeight = getEntityController()->getWorldSpawn()->getWorldData().lock()->blockHeight;
-	
 
 	debugPush("Mouse WorldPos: " + ofToString(check_location));
-
 
 	ofSetColor(ofColor::blue);
 	if (getEntityController()->getWorldSpawn()->getWorldData().lock()->getBlock(check_location)) {

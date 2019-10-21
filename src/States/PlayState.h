@@ -12,6 +12,7 @@ class PlayState : public ofxGameState
 {
 private:
 	shared_ptr<WorldSpawn> worldSpawn;
+
 protected:
 	PlayState()
 		: ofxGameState(
@@ -21,10 +22,14 @@ protected:
 		), worldSpawn(make_shared<WorldSpawn>("worldname"))
 	{}
 public:
+	int fixedUpdateRate = 60;
+	float elapsedTime = 0;
+
 	inline weak_ptr<WorldSpawn> getWorldSpawn() { return worldSpawn; }
 
 	virtual void setup();
 	virtual void exit() {}
+	virtual void fixedUpdate(ofxGameEngine* game);
 	virtual void update(ofxGameEngine* game);
 	virtual void draw(ofxGameEngine* game);
 

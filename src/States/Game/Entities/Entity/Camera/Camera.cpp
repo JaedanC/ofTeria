@@ -6,6 +6,7 @@
 #include "../../../WorldSpawn.h"
 #include "../../../WorldData/WorldData.h"
 #include "../addons/ofxDebugger/ofxDebugger.h"
+#include "../../../../PlayState.h"
 
 Camera::Camera(Player* player)
 	: player(player)
@@ -26,7 +27,6 @@ void Camera::pushCameraMatrix()
 	ofScale(1 / zoom);
 
 	offsetPos = zoom * ofVec2f(ofGetWidth(), ofGetHeight()) / 2.0;
-
 	ofTranslate(-(*getPlayerPos() - offsetPos));
 }
 
