@@ -21,7 +21,6 @@ void Player::update()
 {
 	debugPush("Velocity: " + ofToString(*getVelocity()));
 	debugPush("PlayerPos: " + ofToString(worldPos));
-	debugPush("Mouse WorldPos: " + ofToString(check_location));
 }
 
 void Player::fixedUpdate()
@@ -52,22 +51,21 @@ void Player::fixedUpdate()
 
 void Player::draw()
 {
-
 	// --------------------------------------------------------------------------
 	// --------------------------------------------------------------------------
 	// Testing the getBlock function
-	ofVec2f check_location = getEntityController()->getWorldSpawn()->convertScreenPosToWorldPos(ofVec2f{ (float)ofGetMouseX(), (float)ofGetMouseY() });
-	Block* block = getEntityController()->getWorldSpawn()->getWorldData().lock()->getBlock(check_location);
+	ofVec2f mouseWorldPos = getEntityController()->getWorldSpawn()->convertScreenPosToWorldPos(ofVec2f{ (float)ofGetMouseX(), (float)ofGetMouseY() });
+	Block* block = getEntityController()->getWorldSpawn()->getWorldData().lock()->getBlock(mouseWorldPos);
 
 	int blockWidth = getEntityController()->getWorldSpawn()->getWorldData().lock()->blockWidth;
 	int blockHeight = getEntityController()->getWorldSpawn()->getWorldData().lock()->blockHeight;
 
-
-
 	ofSetColor(ofColor::blue);
-	if (getEntityController()->getWorldSpawn()->getWorldData().lock()->getBlock(check_location)) {
-		ofDrawRectangle(check_location, blockWidth, blockHeight);
+	if (getEntityController()->getWorldSpawn()->getWorldData().lock()->getBlock(mouseWorldPos)) {
+		ofDrawRectangle(mouseWorldPos, blockWidth, blockHeight);
 	}
+
+	debugPush("Mouse WorldPos: " + ofToString(mouseWorldPos));
 	// --------------------------------------------------------------------------
 	// --------------------------------------------------------------------------
 }
