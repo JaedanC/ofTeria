@@ -14,7 +14,7 @@ Chunk::Chunk(glm::uvec2 chunkPos, int chunkWidth, int chunkHeight, WorldData * w
 	/* Reads the chunk from disk and loads the data into their corresponding buffers. */
 	int chunkId = getWorldData()->convertChunkVecToId(chunkPos);
 	int offset = chunkId * getWorldData()->getChunkDataSize();
-	getWorldData()->getWorldFile().lock()->read(getChunkMetaData(), offset, sizeof(ChunkSaved));
+	//getWorldData()->getWorldFile().lock()->read(getChunkMetaData(), offset, sizeof(ChunkSaved));
 	offset += sizeof(ChunkSaved);
 	blocks = new Block[save.chunkWidth * save.chunkHeight];
 	getWorldData()->getWorldFile().lock()->read(blocks, offset, sizeof(Block) * save.numBlocks);
@@ -26,13 +26,14 @@ Chunk::Chunk(glm::uvec2 chunkPos, int chunkWidth, int chunkHeight, WorldData * w
 	int x, y;
 	//int blockWidth = getWorldData()->blockWidth;
 	//int blockHeight = getWorldData()->blockHeight;
-	ofNoFill();
+	//ofNoFill();
 	ofSetLineWidth(3);
 	ofEnableAlphaBlending();
 	for (int i = 0; i < getChunkMetaData()->numBlocks; i++) {
 		x = blockWidth * (i % getWorldData()->chunkWidth);
 		y = blockHeight * (i / getWorldData()->chunkHeight);
-		ofSetColor(abs(200 - (x / blockWidth) / 2 - (y / blockHeight) / 2) % 255 + 1, ((x / blockWidth) * 4 % 255), ((y / blockHeight) * 4 % 255), 100);
+		//ofSetColor(abs(200 - (x / blockWidth) / 2 - (y / blockHeight) / 2) % 255 + 1, ((x / blockWidth) * 4 % 255), ((y / blockHeight) * 4 % 255), 100);
+		ofSetColor(abs(200 - (x / blockWidth) / 2 - (y / blockHeight) / 2) % 255 + 1, ((x / blockWidth) * 4 % 255), ((y / blockHeight) * 4 % 255));
 		ofDrawRectangle(x, y, blockWidth, blockHeight);
 	}
 	ofFill();
@@ -46,13 +47,11 @@ Chunk::~Chunk()
 
 void Chunk::createRandomData()
 {
-	blocks = new Block[save.chunkWidth * save.chunkHeight];
 	for (int i = 0; i < save.chunkWidth * save.chunkHeight; i++) {
 		blocks[i].debug = i;
 		blocks[i].id = i / 2;
 	}
 }
-
 
 void Chunk::drawChunk(float worldX, float worldY)
 {

@@ -132,5 +132,4 @@ public:
 	Chunk* getChunk(const glm::vec2& chunkPos);
 };
 
-
 #endif /* WORLD_DATA_H */

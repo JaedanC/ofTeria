@@ -61,6 +61,7 @@ size_t WorldData::getChunkDataSize()
 
 void WorldData::temporaryCreateWorld()
 {
+	cout << "WorldData::temporaryCreateWorld: Creating world\n";
 	//num_chunks, numChunksX, numChunksY
 	//chunkWidth, chunkHeight
 	int dataSize = getChunkDataSize() * numChunks;
