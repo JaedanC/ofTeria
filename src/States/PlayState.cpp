@@ -12,16 +12,18 @@ void PlayState::setup()
 void PlayState::update(ofxGameEngine* game)
 {
 	elapsedTime += ofGetLastFrameTime();
-	int passes = floor(elapsedTime/100 * fixedUpdateRate);
+	int passes = floor(elapsedTime * fixedUpdateRate);
 	elapsedTime -= passes * (1 / (double)fixedUpdateRate);
-	for (int i = 0; i < passes; i++) {
+	framePercentage = ofMap(elapsedTime, 0, 1.0 / fixedUpdateRate, 0, 1);
+
+	debugPush("Passes: " + ofToString(passes));
+	debugPush("fixedUpdateRate: " + ofToString(fixedUpdateRate));
+	debugPush("framePercentage: " + ofToString(framePercentage));
+	debugPush("elapsedTime: " + ofToString(elapsedTime));
+	while (passes--) {
 		fixedUpdate(game);
 	}
 
-
-	if (queryInput("jump")) {
-		cout << "PlayState is not getting blocked!\n";
-	}
 	if (queryInput("toggleConsole")) {
 		ofxGameEngine::Instance()->PushState(ConsoleState::Instance());
 	}

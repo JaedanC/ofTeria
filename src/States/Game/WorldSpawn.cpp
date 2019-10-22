@@ -14,10 +14,10 @@ WorldSpawn::WorldSpawn(const string& worldName)
 
 ofVec2f const WorldSpawn::convertScreenPosToWorldPos(ofVec2f& screenPos)
 {
-	
-	float zoom = getEntityController().lock()->getPlayer().lock()->getCamera().lock()->getZoom();
-	ofVec2f* playerPos = getEntityController().lock()->getPlayer().lock()->getWorldPos();
-	ofVec2f worldPos = *playerPos + screenPos * zoom;
+	auto player = getEntityController().lock()->getPlayer().lock();
+	float zoom = player->getCamera().lock()->getZoom();
+	ofVec2f* playerPos = player->getWorldPos();
+	ofVec2f worldPos = *playerPos + screenPos * zoom + *player->getInterp();
 	worldPos.x -= zoom * ofGetWidth() / 2.0f;
 	worldPos.y -= zoom * ofGetHeight() / 2.0f;
 	return worldPos;

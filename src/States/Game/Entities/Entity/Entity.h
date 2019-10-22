@@ -18,6 +18,8 @@ protected:
 
 	/* Generic worldPos of any entity instance. */
 	ofVec2f worldPos;
+	ofVec2f prevWorldPos;
+	ofVec2f interp;
 
 	/* Hitboxes. */
 	Hitbox hitbox;
@@ -40,7 +42,10 @@ public:
 	inline ofVec2f* getVelocity() { return &velocity; }
 
 	/* Returns the worldPos of this Entity. */
-	inline ofVec2f* getWorldPos() { return &worldPos; }
+	inline ofVec2f* getWorldPos() { return &prevWorldPos; }
+
+	/**/
+	inline ofVec2f* getInterp() { return &interp; }
 
 	/* Returns a Pointer to the EntityController instance that owns us. */
 	inline EntityController* getEntityController() { return entityController; }

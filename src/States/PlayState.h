@@ -24,6 +24,7 @@ protected:
 public:
 	int fixedUpdateRate = 60;
 	float elapsedTime = 0;
+	float framePercentage = 0;
 
 	inline weak_ptr<WorldSpawn> getWorldSpawn() { return worldSpawn; }
 

@@ -27,7 +27,8 @@ void Camera::pushCameraMatrix()
 	ofScale(1 / zoom);
 
 	offsetPos = zoom * ofVec2f(ofGetWidth(), ofGetHeight()) / 2.0;
-	ofTranslate(-(*getPlayerPos() - offsetPos));
+	ofVec2f playerInterpolation = PlayState::Instance()->framePercentage * *getPlayer()->getVelocity();
+	ofTranslate(offsetPos - *getPlayerPos() - playerInterpolation);
 }
 
 void Camera::popCameraMatrix()

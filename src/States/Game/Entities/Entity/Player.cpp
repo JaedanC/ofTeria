@@ -1,12 +1,11 @@
 #include "Player.h"
 #include "ofMain.h"
-#include "../EntityController.h"
-#include "../addons/ofxDebugger/ofxDebugger.h"
-#include "../src/Keyboard/KeyboardInput.h"
-#include "../addons/ofxGameStates/ofxGameEngine.h"
-#include "../src/States/PlayState.h"
 #include "Camera/Camera.h"
+#include "../addons/ofxDebugger/ofxDebugger.h"
+#include "../addons/ofxGameStates/ofxGameEngine.h"
 #include "../EntityController.h"
+#include "../src/Keyboard/KeyboardInput.h"
+#include "../src/States/PlayState.h"
 #include "../../WorldSpawn.h"
 #include "../../WorldData/WorldData.h"
 
@@ -17,7 +16,7 @@ Player::Player(EntityController* entityController)
 	cout << "Constructing Player\n";
 	//25, 37 size hitbox
 	float w = 25; float h = 37;
-	hitbox.set(getWorldPos(), -ofVec2f{w / 2, h / 2}, w, h);
+	hitbox.setOffset(this, -ofVec2f{w / 2, h / 2}, w, h);
 }
 
 void Player::update()
@@ -56,16 +55,14 @@ void Player::fixedUpdate()
 
 void Player::draw()
 {
-	debugPush("Player WorldPos: " + ofToString(worldPos));
-	getHitbox()->draw();
 
 	ofVec2f check_location = getEntityController()->getWorldSpawn()->convertScreenPosToWorldPos(ofVec2f{ (float)ofGetMouseX(), (float)ofGetMouseY() });
 	Block* block = getEntityController()->getWorldSpawn()->getWorldData().lock()->getBlock(check_location);
 
-	auto camera = getCamera().lock();
 	int blockWidth = getEntityController()->getWorldSpawn()->getWorldData().lock()->blockWidth;
 	int blockHeight = getEntityController()->getWorldSpawn()->getWorldData().lock()->blockHeight;
 
+	debugPush("Player WorldPos: " + ofToString(worldPos));
 	debugPush("Mouse WorldPos: " + ofToString(check_location));
 
 	ofSetColor(ofColor::blue);
