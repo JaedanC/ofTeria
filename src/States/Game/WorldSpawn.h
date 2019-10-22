@@ -54,6 +54,7 @@ public:
 	void draw();
 
 private:
+	// See draw()
 	void drawBackground();
 	void drawWorld();
 	void drawOverlay();

@@ -80,7 +80,7 @@ void WorldData::updateChunks()
 		ofxTimer timer("updateChunks()");
 		resetRenderedChunksInThisFrame();
 
-		ofVec2f* playerPos = getWorldSpawn()->getEntityController().lock()->getPlayer().lock()->getWorldPos();
+		ofVec2f* playerPos = getWorldSpawn()->getEntityController().lock()->getPlayer().lock()->getPrevWorldPos();
 		float zoom = getWorldSpawn()->getEntityController().lock()->getPlayer().lock()->getCamera().lock()->getZoom();
 
 		/* Calculate where the chunk loading borders are from the player. */

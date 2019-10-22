@@ -17,6 +17,6 @@ void Hitbox::draw()
 {
 	ofSetColor(0);
 	ofNoFill();
-	ofDrawRectangle(*entity->getWorldPos() + entityOffset + *entity->getInterp(), w, h);
+	ofDrawRectangle(*entity->getPrevWorldPos() + entityOffset + *entity->getInterp(), w, h);
 	ofFill();
 }

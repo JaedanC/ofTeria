@@ -14,7 +14,7 @@ private:
 	if the player has a sniper rifle (from terraria) or gets close to the edge of the world. */
 	ofVec2f offsetPos;
 
-	/* This is the zoom factor. High numbers indicate more zoomed out. So techniqcally this should be called 'scale'. */
+	/* This is the zoom factor. High numbers indicate more zoomed out. So technically this should be called 'scale'. */
 	float zoom = 1;
 
 public:
@@ -44,9 +44,6 @@ public:
 
 	/* Once you are finshed drawing worldPosition's you should call this function. */
 	void popCameraMatrix();
-
-
 };
-
 
 #endif /* CAMERA_H */

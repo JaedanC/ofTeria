@@ -14,9 +14,7 @@ Player::Player(EntityController* entityController)
 
 {
 	cout << "Constructing Player\n";
-	//25, 37 size hitbox
-	float w = 25; float h = 37;
-	hitbox.setOffset(this, -ofVec2f{w / 2, h / 2}, w, h);
+	hitbox.setOffset(this, -ofVec2f{ width / 2, height / 2}, width, height);
 }
 
 void Player::update()
@@ -46,16 +44,17 @@ void Player::fixedUpdate()
 		getCamera().lock()->setZoom(getCamera().lock()->getZoom() + 0.01);
 	}
 
-	// Friction
-	//*getVelocity() = *getVelocity() * pow(0.9, ofGetLastFrameTime() * 60);
-
-	// Gravity
 	// TODO
+	// Friction
+	// Gravity
 }
 
 void Player::draw()
 {
 
+	// --------------------------------------------------------------------------
+	// --------------------------------------------------------------------------
+	// Testing the getBlock function
 	ofVec2f check_location = getEntityController()->getWorldSpawn()->convertScreenPosToWorldPos(ofVec2f{ (float)ofGetMouseX(), (float)ofGetMouseY() });
 	Block* block = getEntityController()->getWorldSpawn()->getWorldData().lock()->getBlock(check_location);
 
@@ -69,4 +68,6 @@ void Player::draw()
 	if (getEntityController()->getWorldSpawn()->getWorldData().lock()->getBlock(check_location)) {
 		ofDrawRectangle(check_location, blockWidth, blockHeight);
 	}
+	// --------------------------------------------------------------------------
+	// --------------------------------------------------------------------------
 }

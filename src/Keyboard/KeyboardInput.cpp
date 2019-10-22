@@ -2,8 +2,6 @@
 
 KeyboardInput::KeyboardInput()
 {
-	specialBindings.reserve(42);
-
 	specialBindings["lmouse"] = OF_MOUSE_BUTTON_LEFT + MOUSE_OFFSET_CONSTANT;
 	specialBindings["rmouse"] = OF_MOUSE_BUTTON_RIGHT + MOUSE_OFFSET_CONSTANT;
 	specialBindings["mmouse"] = OF_MOUSE_BUTTON_MIDDLE + MOUSE_OFFSET_CONSTANT;

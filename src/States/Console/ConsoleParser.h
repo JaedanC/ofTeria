@@ -5,6 +5,7 @@
 #include "ofMain.h"
 class ConsoleState;
 
+/* Commands in the consoleParser are defined in these structures. */
 struct Command {
 	string command;
 	string commandHelp;
@@ -12,6 +13,8 @@ struct Command {
 	void(*function)(vector<string>);
 };
 
+/* This class uses the pystring library to takes in the commands and run the corresponding
+Command which is stored in the commands map. */
 class ConsoleParser {
 private:
 	ofColor colorFailed = ofColor(255, 100, 100);

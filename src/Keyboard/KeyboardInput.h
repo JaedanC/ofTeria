@@ -4,6 +4,10 @@
 
 #include "ofMain.h"
 
+/* To store the mouse in the keyPress data we add this constant to stop clashes with how OF
+exposes mousePressEvent 'key' value. */
+#define MOUSE_OFFSET_CONSTANT 256
+
 /* Classes that wish to be notified about exact key presses (which could be a text field)
 should inherit from this Callback interface. Currently you must implement both functions.
 To be notified the class should add itself to the Callback list. This is done by calling
@@ -26,30 +30,42 @@ GameEngine::Instance()->getKeyboardInput()->registerKeyReleasedCallback(this);
 |			i				|								|
 |___________________________|_______________________________|
 */
-
-#define MOUSE_OFFSET_CONSTANT 256
-
 class KeyboardCallbacks {
 public:
 	virtual void keyPressed(int key) = 0;
 	virtual void keyReleased(int key) = 0;
 };
 
+/* Queries for keys are one of these types.
+Pressed: Activate on key press. 
+Down: Activate when the key is down.
+Released: Activate when the key is released.
+*/
 enum QueryType {
 	QUERY_PRESSED,
 	QUERY_DOWN,
 	QUERY_RELEASED
 };
 
+/* Classes can register to recieve raw input callbacks. Not many things will use
+callback_released. */
 enum CallbackType {
 	CALLBACK_PRESSED,
 	CALLBACK_RELEASED
 };
 
+/* This class handles raw Keyboard Input from OpenFrameworks and exposes high level functions that
+let you query based on alias's and various different query types. Classes can also opte*/
 class KeyboardInput {
 public:
+	/* These three are closely linked together. SpecialBindings maps wierd keys like 'Alt' or 'F3'
+	to strings so that you can refer to them as strings rather than knowing their exact value that
+	OpenFrameworks exposes them as. */
 	KeyboardInput();
 	unordered_map<string, int> specialBindings;
+
+	/* Takes in a special key string and returns the OpenFrameworks defined number for it. Works
+	for mouse input too, however this is displaced by the defined constant above. */
 	int KeyboardInput::convertStringToKey(const string& str);
 
 	/*

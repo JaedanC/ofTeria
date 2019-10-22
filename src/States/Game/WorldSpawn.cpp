@@ -52,6 +52,7 @@ void WorldSpawn::draw()
 
 void WorldSpawn::drawBackground()
 {
+	// TODO:
 }
 
 void WorldSpawn::drawWorld()
