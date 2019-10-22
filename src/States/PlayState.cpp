@@ -16,10 +16,10 @@ void PlayState::update(ofxGameEngine* game)
 	elapsedTime -= passes * (1 / (double)fixedUpdateRate);
 	framePercentage = ofMap(elapsedTime, 0, 1.0 / fixedUpdateRate, 0, 1);
 
-	debugPush("Passes: " + ofToString(passes));
-	debugPush("fixedUpdateRate: " + ofToString(fixedUpdateRate));
-	debugPush("framePercentage: " + ofToString(framePercentage));
-	debugPush("elapsedTime: " + ofToString(elapsedTime));
+	//debugPush("Passes: " + ofToString(passes));
+	//debugPush("fixedUpdateRate: " + ofToString(fixedUpdateRate));
+	//debugPush("framePercentage: " + ofToString(framePercentage));
+	//debugPush("elapsedTime: " + ofToString(elapsedTime));
 	while (passes--) {
 		fixedUpdate(game);
 	}

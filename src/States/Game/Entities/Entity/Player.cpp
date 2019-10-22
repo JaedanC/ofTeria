@@ -19,8 +19,9 @@ Player::Player(EntityController* entityController)
 
 void Player::update()
 {
-	debugPush("GetLastFrameTime: " + ofToString(ofGetLastFrameTime()));
 	debugPush("Velocity: " + ofToString(*getVelocity()));
+	debugPush("PlayerPos: " + ofToString(worldPos));
+	debugPush("Mouse WorldPos: " + ofToString(check_location));
 }
 
 void Player::fixedUpdate()
@@ -61,8 +62,7 @@ void Player::draw()
 	int blockWidth = getEntityController()->getWorldSpawn()->getWorldData().lock()->blockWidth;
 	int blockHeight = getEntityController()->getWorldSpawn()->getWorldData().lock()->blockHeight;
 
-	debugPush("Player WorldPos: " + ofToString(worldPos));
-	debugPush("Mouse WorldPos: " + ofToString(check_location));
+
 
 	ofSetColor(ofColor::blue);
 	if (getEntityController()->getWorldSpawn()->getWorldData().lock()->getBlock(check_location)) {

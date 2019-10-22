@@ -66,7 +66,7 @@ void WorldData::temporaryCreateWorld()
 	int dataSize = getChunkDataSize() * numChunks;
 	getWorldFile().lock()->resize(dataSize);
 
-	for (int chunkId = 0; chunkId < numChunks; chunkId++) {
+	for (unsigned int chunkId = 0; chunkId < numChunks; chunkId++) {
 		glm::uvec2 chunkPos = convertChunkIdToVec(chunkId);
 		Chunk chunk(chunkPos, chunkWidth, chunkHeight, this);
 		chunk.createRandomData();

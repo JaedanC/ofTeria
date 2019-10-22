@@ -67,7 +67,6 @@ void ofApp::draw(){
 	// Debug Values
 	ofSetColor(ofColor::white);
 	debugPush("FrameRate: " + ofToString(ofGetFrameRate()));
-	debugPush("FrameRate: " + ofToString(ofGetFrameRate()));
 	//debugPush("WindowPosition: " + ofToString(ofVec2f(ofGetWindowPositionX(), ofGetWindowPositionY())));
 	//debugPush("WindowSize: " + ofToString(ofGetWindowSize()));
 

@@ -28,17 +28,17 @@ public:
 	Large - 8400 blocks wide and 2400 blocks high, sky limit about 800-900 blocks
 	above underground level. A Large world has 20,160,000 blocks, exactly 1.75x the 
 	size of a Medium world and 4x the size of a Small world. */
-	int worldWidth = 1024; // In blocks
-	int worldHeight = 1024;
-	int chunkWidth = 64; // In blocks
-	int chunkHeight = 64;
-	int blockWidth = 16; // In pixels @ zoom == 1
-	int blockHeight = 16;
+	unsigned int worldWidth = 1024; // In blocks
+	unsigned int worldHeight = 1024;
+	unsigned int chunkWidth = 64; // In blocks
+	unsigned int chunkHeight = 64;
+	unsigned int blockWidth = 16; // In pixels @ zoom == 1
+	unsigned int blockHeight = 16;
 
 	/* These are initialised in the constructor. */
-	int numChunksX;
-	int numChunksY;
-	int numChunks;
+	unsigned int numChunksX;
+	unsigned int numChunksY;
+	unsigned int numChunks;
 
 	/* Takes in a pointer the WorldSpawn instance that owns us. */
 	WorldData(WorldSpawn* worldSpawn);
