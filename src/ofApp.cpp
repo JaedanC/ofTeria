@@ -53,31 +53,36 @@ void ofApp::setup(){
 }
 
 //--------------------------------------------------------------
-void ofApp::update(){
-	ofxTimer timer("ofApp::update()");
-	engine->update();
-}
+void ofApp::update() {}
 
 //--------------------------------------------------------------
 void ofApp::draw(){
-	ofxTimer timer("ofApp::draw()");
-	// Background
 	ofBackground(ofColor::dimGrey);
 
-	// Debug Values
-	ofSetColor(ofColor::white);
-	debugPush("FrameRate: " + ofToString(ofGetFrameRate()));
-	//debugPush("WindowPosition: " + ofToString(ofVec2f(ofGetWindowPositionX(), ofGetWindowPositionY())));
-	//debugPush("WindowSize: " + ofToString(ofGetWindowSize()));
+	{
+		ofxTimer timer("ofApp::update()");
+		engine->update();
+	}
 
-	// GameState draw
-	engine->draw();
+	{
+		ofxTimer timer("ofApp::draw()");
+		// Background
 
-	// Draw the debug info to screen
-	debugDraw();
+		// Debug Values
+		ofSetColor(ofColor::white);
+		debugPush("FrameRate: " + ofToString(ofGetFrameRate()));
+		//debugPush("WindowPosition: " + ofToString(ofVec2f(ofGetWindowPositionX(), ofGetWindowPositionY())));
+		//debugPush("WindowSize: " + ofToString(ofGetWindowSize()));
 
-	//Reset inputs
-	engine->getKeyboardInput()->resetPollingMaps();
+		// GameState draw
+		engine->draw();
+
+		// Draw the debug info to screen
+		debugDraw();
+
+		//Reset inputs
+		engine->getKeyboardInput()->resetPollingMaps();
+	}
 }
 
 //--------------------------------------------------------------

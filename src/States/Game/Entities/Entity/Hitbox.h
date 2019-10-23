@@ -26,6 +26,12 @@ public:
 	least once before using the Hitbox of it's values will not be defined. */
 	void setOffset(Entity* entity, ofVec2f& offset, float w, float h);
 
+	/*  */
+	inline ofVec2f& getOffset() { return entityOffset; }
+
+	/*  */
+	inline ofVec2f getHitboxDimension() { return ofVec2f{ w, h }; }
+
 	/* Draw's the hitbox to the screen as a wireframe. See this function for an example 
 	on how to use getInterp(). */
 	void draw();

@@ -10,7 +10,7 @@
 #include "../../WorldData/WorldData.h"
 
 Player::Player(EntityController* entityController)
-	: Entity(entityController), camera(make_shared<Camera>(this))
+	: Entity(entityController, true), camera(make_shared<Camera>(this))
 
 {
 	cout << "Constructing Player\n";
@@ -25,24 +25,11 @@ void Player::update()
 
 void Player::fixedUpdate()
 {
-	if (PlayState::Instance()->queryInput("left", QUERY_DOWN)) {
-		getVelocity()->x -= 1;
-	}
-	if (PlayState::Instance()->queryInput("right", QUERY_DOWN)) {
-		getVelocity()->x += 1;
-	}
-	if (PlayState::Instance()->queryInput("up", QUERY_DOWN)) {
-		getVelocity()->y -= 1;
-	}
-	if (PlayState::Instance()->queryInput("down", QUERY_DOWN)) {
-		getVelocity()->y += 1;
-	}
-	if (PlayState::Instance()->queryInput("zoomin", QUERY_DOWN)) {
-		getCamera().lock()->setZoom(getCamera().lock()->getZoom() - 0.01);
-	}
-	if (PlayState::Instance()->queryInput("zoomout", QUERY_DOWN)) {
-		getCamera().lock()->setZoom(getCamera().lock()->getZoom() + 0.01);
-	}
+	getVelocity()->x += queryPlayStateInput("right", QUERY_DOWN) - queryPlayStateInput("left", QUERY_DOWN);
+	getVelocity()->y += queryPlayStateInput("down", QUERY_DOWN) - queryPlayStateInput("up", QUERY_DOWN);
+
+	int zoom = queryPlayStateInput("zoomout", QUERY_DOWN) - queryPlayStateInput("zoomin", QUERY_DOWN);
+	getCamera().lock()->setZoom(getCamera().lock()->getZoom() + zoom * 0.01);
 
 	// TODO
 	// Friction

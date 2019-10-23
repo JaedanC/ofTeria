@@ -20,6 +20,8 @@ protected:
 	virtual void update() = 0;
 	virtual void draw() = 0;
 
+	void calculateCollision();
+
 	/* Pointer to the EntityController instance that owns us. */
 	EntityController* entityController;
 
@@ -34,9 +36,12 @@ protected:
 	/* Vector that stores the velocity of the Entity*/
 	ofVec2f velocity;
 
+	/* Entity Flags */
+	bool affectedByGravity;
+
 public:
 	/* Takes in a pointer to the EntityController instance that owns us. */
-	Entity(EntityController* entityController);
+	Entity(EntityController* entityController, bool affectedByGravity);
 
 	/* Virtual destructor allows safe destroying of classed that inherit from this base class. */
 	virtual ~Entity() {
@@ -49,6 +54,9 @@ public:
 
 	/* Returns a pointer to the Entities Velocity vector*/
 	inline ofVec2f* getVelocity() { return &velocity; }
+
+	/* Adding a velocity. */
+	inline void addVelocity(ofVec2f& v) { velocity += v; }
 
 	/* Returns the previousWorldPos of this Entity. This is usually the
 	function you want to use not getWorldPos. */

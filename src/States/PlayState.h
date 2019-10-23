@@ -8,6 +8,8 @@
 #include "ofxGameStates/ofxGameEngine.h"
 #include "Game/WorldSpawn.h"
 
+#define queryPlayStateInput(x, type) PlayState::Instance()->queryInput(x, type)
+
 /* This is the main PlayState of the game. fixedUpdate() is calculated
 and called from in here. */
 class PlayState : public ofxGameState
